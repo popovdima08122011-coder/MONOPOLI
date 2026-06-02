@@ -205,7 +205,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Board area ── */
 .board-area{
   flex:1;display:flex;align-items:center;justify-content:center;
-  min-width:0;padding:8px;
+  min-width:0;padding:8px;padding-top:100px;
   background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
   position:relative;overflow:hidden;
 }
@@ -295,10 +295,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 ═══════════════════════ */
 .board{
   display:grid;
-  grid-template-columns:115px repeat(9,1fr) 115px;
-  grid-template-rows:115px repeat(9,1fr) 115px;
-  width:min(940px, calc(100vw - 480px), calc(100vh - 16px));
-  height:min(940px, calc(100vw - 480px), calc(100vh - 16px));
+  grid-template-columns:110px repeat(9,1fr) 110px;
+  grid-template-rows:110px repeat(9,1fr) 110px;
+  width:min(960px, calc(100vw - 470px), calc(100vh - 24px));
+  height:min(960px, calc(100vw - 470px), calc(100vh - 24px));
   gap:3px;padding:3px;
   background:#0d1f0d;
   border:3px solid #1b4d1b;
@@ -309,6 +309,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
     0 0 80px rgba(27,77,27,.15),
     0 20px 60px rgba(0,0,0,.8);
   flex-shrink:0;
+  overflow:visible;
   animation:boardIn .8s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes boardIn{from{opacity:0;transform:scale(.85)rotateX(12deg)}to{opacity:1;transform:none}}
@@ -337,7 +338,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* Dice in center of board */
 /* Layout: top area + middle */
-.bc-top{position:absolute;top:8%;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3}
+.bc-top{
+  position:absolute;top:-90px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;z-index:50;
+  width:max-content;
+}
 .bc-middle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
 .center-turn-top{display:flex;flex-direction:column;align-items:center;gap:2px;animation:fadeIn .4s ease}
 .ctt-tok{
@@ -421,11 +426,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Board spaces ── */
 .sp{
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.12);
   border-radius:10px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   cursor:pointer;position:relative;overflow:hidden;
-  background:linear-gradient(180deg,rgba(248,245,238,.96),rgba(255,253,248,.92));
+  background:linear-gradient(165deg,rgba(40,42,68,.92),rgba(28,30,52,.95));
   text-align:center;transition:all .15s;
   gap:0;
 }
@@ -456,20 +461,20 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .sp-img{
   position:absolute;top:30%;left:0;right:0;bottom:0;
   background-size:cover;background-position:center;
-  z-index:1;opacity:.28;
-  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.1));
-  mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.1));
+  z-index:1;opacity:.4;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,1),rgba(0,0,0,.2));
+  mask-image:linear-gradient(180deg,rgba(0,0,0,1),rgba(0,0,0,.2));
 }
 .sp-name{
-  font-size:min(1.9vw,.78rem);line-height:1.05;
+  font-size:min(1.7vw,.74rem);line-height:1.05;
   z-index:3;word-break:break-word;max-width:100%;
-  font-weight:900;color:#0a0a0a;padding:0 2px;
-  text-shadow:0 1px 1px rgba(255,255,255,.5);
+  font-weight:800;color:#f0f0f5;padding:0 2px;
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
 }
-.sp-price{font-size:min(1.5vw,.62rem);color:#1a5a1a;z-index:3;font-weight:900;background:rgba(255,255,255,.6);border-radius:3px;padding:0 2px}
+.sp-price{font-size:min(1.4vw,.6rem);color:#4ade80;z-index:3;font-weight:900;padding:0 2px;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 
 .sp-special-icon{font-size:min(2.5vw,16px);z-index:3;margin-bottom:2px}
-.sp-special-name{font-size:min(1.2vw,.46rem);font-weight:800;color:#333;z-index:3;line-height:1.1;padding:0 1px;word-break:break-word}
+.sp-special-name{font-size:min(1.3vw,.52rem);font-weight:700;color:#c4b5fd;z-index:3;line-height:1.1;padding:0 2px;word-break:break-word}
 
 .sp-tokens{
   display:flex;flex-wrap:wrap;gap:1px;
@@ -477,13 +482,13 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   justify-content:center;z-index:20;
 }
 .tok{
-  font-size:min(3vw,18px);
-  width:min(5vw,30px);height:min(5vw,30px);
+  font-size:min(5vw,32px);
+  width:min(8vw,52px);height:min(8vw,52px);
   border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  background:rgba(255,255,255,.85);
-  border:2px solid currentColor;
-  box-shadow:0 2px 8px rgba(0,0,0,.6);
+  background:rgba(255,255,255,.92);
+  border:3px solid currentColor;
+  box-shadow:0 3px 12px rgba(0,0,0,.7);
   cursor:default;
 }
 
@@ -769,45 +774,45 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 <script>
 const BOARD=[
   {id:0, name:'СТАРТ',        type:'go',    flag:'🏁'},
-  {id:1, name:'🇲🇦 Марокко',  type:'property',color:'#a0522d',price:60,  rent:[2,10,30,90,160,250],  hc:50, mg:30},
+  {id:1, name:'🇪🇬 Каир',      type:'property',color:'#8B4513',price:60,  rent:[2,10,30,90,160,250],  hc:50, mg:30},
   {id:2, name:'Общ. касса',   type:'community'},
-  {id:3, name:'🇳🇬 Нигерия',  type:'property',color:'#a0522d',price:60,  rent:[4,20,60,180,320,450], hc:50, mg:30},
+  {id:3, name:'🇪🇬 Гиза',      type:'property',color:'#8B4513',price:60,  rent:[4,20,60,180,320,450], hc:50, mg:30},
   {id:4, name:'💸 Налог $200',type:'tax',amount:200},
   {id:5, name:'✈️ Аэропорт 1',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-  {id:6, name:'🇮🇳 Индия',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
+  {id:6, name:'🇮🇳 Мумбаи',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
   {id:7, name:'🎲 Шанс',      type:'chance'},
-  {id:8, name:'🇨🇳 Китай',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
-  {id:9, name:'🇯🇵 Япония',   type:'property',color:'#00bcd4',price:120, rent:[8,40,100,300,450,600], hc:50, mg:60},
+  {id:8, name:'🇮🇳 Дели',      type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
+  {id:9, name:'🇮🇳 Бангалор',  type:'property',color:'#00bcd4',price:120, rent:[8,40,100,300,450,600], hc:50, mg:60},
   {id:10,name:'⛓️ ТЮРЬМА',   type:'jail'},
-  {id:11,name:'🇧🇷 Бразилия', type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
+  {id:11,name:'🇨🇳 Пекин',     type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
   {id:12,name:'⚡ Электр.',   type:'utility', price:150,mg:75},
-  {id:13,name:'🇦🇷 Аргентина',type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
-  {id:14,name:'🇲🇽 Мексика',  type:'property',color:'#e91e8c',price:160, rent:[12,60,180,500,700,900], hc:100,mg:80},
+  {id:13,name:'🇨🇳 Шанхай',    type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
+  {id:14,name:'🇨🇳 Гуанчжоу',  type:'property',color:'#e91e8c',price:160, rent:[12,60,180,500,700,900], hc:100,mg:80},
   {id:15,name:'✈️ Аэропорт 2',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-  {id:16,name:'🇺🇸 Нью-Йорк', type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
+  {id:16,name:'🇧🇷 Рио',       type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
   {id:17,name:'Общ. касса',   type:'community'},
-  {id:18,name:'🇺🇸 Чикаго',   type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
-  {id:19,name:'🇺🇸 Лос-Анж.', type:'property',color:'#ff6f00',price:200, rent:[16,80,220,600,800,1000], hc:100,mg:100},
+  {id:18,name:'🇧🇷 Сан-Паулу', type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
+  {id:19,name:'🇧🇷 Бразилиа',  type:'property',color:'#ff6f00',price:200, rent:[16,80,220,600,800,1000], hc:100,mg:100},
   {id:20,name:'🅿️ ПАРКОВКА',  type:'freeparking'},
-  {id:21,name:'🇹🇷 Стамбул',  type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
+  {id:21,name:'🇦🇪 Дубай',     type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
   {id:22,name:'🎲 Шанс',      type:'chance'},
-  {id:23,name:'🇪🇬 Каир',     type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
-  {id:24,name:'🇦🇪 Дубай',    type:'property',color:'#f44336',price:240, rent:[20,100,300,750,925,1100], hc:150,mg:120},
+  {id:23,name:'🇦🇪 Абу-Даби',  type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
+  {id:24,name:'🇦🇪 Шарджа',    type:'property',color:'#f44336',price:240, rent:[20,100,300,750,925,1100], hc:150,mg:120},
   {id:25,name:'✈️ Аэропорт 3',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-  {id:26,name:'🇩🇪 Берлин',   type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
-  {id:27,name:'🇫🇷 Париж',    type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
+  {id:26,name:'🇩🇪 Берлин',    type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
+  {id:27,name:'🇩🇪 Мюнхен',    type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
   {id:28,name:'💧 Водопров.',  type:'utility', price:150,mg:75},
-  {id:29,name:'🇮🇹 Рим',      type:'property',color:'#ffd600',price:280, rent:[24,120,360,850,1025,1200], hc:150,mg:140},
+  {id:29,name:'🇩🇪 Гамбург',   type:'property',color:'#ffd600',price:280, rent:[24,120,360,850,1025,1200], hc:150,mg:140},
   {id:30,name:'🚔 В ТЮРЬМУ',  type:'gotojail'},
-  {id:31,name:'🇬🇧 Лондон',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
-  {id:32,name:'🇪🇸 Мадрид',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
+  {id:31,name:'🇫🇷 Париж',     type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
+  {id:32,name:'🇫🇷 Лион',      type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
   {id:33,name:'Общ. касса',   type:'community'},
-  {id:34,name:'🇨🇭 Цюрих',    type:'property',color:'#43a047',price:320, rent:[28,150,450,1000,1200,1400], hc:200,mg:160},
+  {id:34,name:'🇫🇷 Марсель',   type:'property',color:'#43a047',price:320, rent:[28,150,450,1000,1200,1400], hc:200,mg:160},
   {id:35,name:'✈️ Аэропорт 4',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
   {id:36,name:'🎲 Шанс',      type:'chance'},
-  {id:37,name:'🇷🇺 Москва',   type:'property',color:'#1565c0',price:350, rent:[35,175,500,1100,1300,1500], hc:200,mg:175},
+  {id:37,name:'🇺🇸 Нью-Йорк',  type:'property',color:'#1565c0',price:350, rent:[35,175,500,1100,1300,1500], hc:200,mg:175},
   {id:38,name:'💸 Налог $75', type:'tax',amount:75},
-  {id:39,name:'🌍 Мир',       type:'property',color:'#1565c0',price:400, rent:[50,200,600,1400,1700,2000], hc:200,mg:200},
+  {id:39,name:'🇺🇸 Лос-Анджелес',type:'property',color:'#1565c0',price:400, rent:[50,200,600,1400,1700,2000], hc:200,mg:200},
 ];
 
 const CHANCE_C=[
@@ -843,9 +848,9 @@ const TOKENS=['🎩','🚗','🐕','⚓','👒','🚂','👞','🛳️'];
 const COLORS=['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#e91e63'];
 // Картинки стран для карточек (flagcdn — бесплатные флаги)
 const CITY_IMG={
-  1:'ma',3:'ng',6:'in',8:'cn',9:'jp',11:'br',13:'ar',14:'mx',
-  16:'us',18:'us',19:'us',21:'tr',23:'eg',24:'ae',26:'de',27:'fr',
-  29:'it',31:'gb',32:'es',34:'ch',37:'ru',39:'un'
+  1:'eg',3:'eg',6:'in',8:'in',9:'in',11:'cn',13:'cn',14:'cn',
+  16:'br',18:'br',19:'br',21:'ae',23:'ae',24:'ae',26:'de',27:'de',
+  29:'de',31:'fr',32:'fr',34:'fr',37:'us',39:'us'
 };
 function cityImgUrl(id){const code=CITY_IMG[id];return code?`https://flagcdn.com/w160/${code}.png`:'';}
 const DIFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
@@ -1623,13 +1628,13 @@ function buildBoard(){
   // Center
   const center=document.createElement('div');
   center.id='bc-center';
-  center.style.cssText='grid-column:2/11;grid-row:2/11;position:relative;';
+  center.style.cssText='grid-column:2/11;grid-row:2/11;position:relative;overflow:visible;';
   center.innerHTML=`
+    <div class="bc-top">
+      <div class="bc-logo">МОНОПОЛИЯ 🌍</div>
+      <div id="center-turn-top" class="center-turn-top"></div>
+    </div>
     <div class="bc-inner">
-      <div class="bc-top">
-        <div class="bc-logo">МОНОПОЛИЯ</div>
-        <div id="center-turn-top" class="center-turn-top"></div>
-      </div>
       <div class="bc-middle">
         <div id="center-dice" class="center-dice3d" style="display:none">
           <div class="dice3d" id="cdice1"><div class="d-face df-front"></div><div class="d-face df-back"></div><div class="d-face df-right"></div><div class="d-face df-left"></div><div class="d-face df-top"></div><div class="d-face df-bottom"></div></div>
@@ -1653,14 +1658,14 @@ function buildBoard(){
     let inner='';
     if(isCorner){
       const icons={0:'🏁',10:'⛓️',20:'🅿️',30:'🚔'};
-      const labels={0:'СТАРТ',10:'ТЮРЬМА',20:'ПАРКОВКА',30:'В ТЮРЬМУ'};
+      const labels={0:'СТАРТ',10:'ТЮРЬМА',20:'ПРОПУСК ХОДА',30:'В ТЮРЬМУ'};
       inner=`<div class="sp-corner-icon">${icons[sp.id]||''}</div><div class="sp-corner-label">${labels[sp.id]||''}</div>`;
     } else if(sp.type==='property'||sp.type==='railroad'||sp.type==='utility'){
       const flag=sp.name.match(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]/u)||[''];
       const cleanName=sp.name.replace(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]\s*/gu,'').trim();
       const img=cityImgUrl(sp.id);
       inner=`
-        ${sp.color?`<div class="sp-color-bar" style="background:${sp.color}"></div>`:''}
+        ${sp.color?`<div class="sp-color-bar" id="cb${sp.id}" style="background:${sp.color}"></div>`:''}
         <div class="sp-owner-bar" id="ob${sp.id}"></div>
         ${img?`<div class="sp-img" style="background-image:url('${img}')"></div>`:`<div class="sp-flag">${flag[0]||''}</div>`}
         <div class="sp-name">${cleanName}</div>
@@ -1881,17 +1886,21 @@ function renderGame(){
     }
     const ow=document.getElementById('o'+sp.id);
     const ob=document.getElementById('ob'+sp.id);
+    const cbar=document.getElementById('cb'+sp.id);
     if(ow){
       const pd=gs.props[sp.id];
       if(pd?.owner){
         const ownerP=gs.players[pd.owner];
-        ow.style.background=ownerP?.color||'#fff';
-        ow.style.borderColor='#fff';
-        ow.textContent=ownerP?.token||'';
-        // owner color glow border
-        if(ob){ob.style.border='3px solid '+(ownerP?.color||'#fff');ob.style.boxShadow='inset 0 0 8px '+(ownerP?.color||'#fff');}
+        const col=ownerP?.color||'#fff';
+        ow.style.background=col;ow.style.borderColor='#fff';ow.textContent=ownerP?.token||'';
+        // top bar becomes owner color
+        if(cbar)cbar.style.background=col;
+        // glow border around whole space in owner color
+        if(ob){ob.style.border='3px solid '+col;ob.style.boxShadow='inset 0 0 10px '+col;}
       } else {
-        ow.style.background='transparent'; ow.style.borderColor='transparent'; ow.textContent='';
+        ow.style.background='transparent';ow.style.borderColor='transparent';ow.textContent='';
+        // restore country color
+        if(cbar)cbar.style.background=sp.color||'transparent';
         if(ob){ob.style.border='0 solid transparent';ob.style.boxShadow='none';}
       }
     }
@@ -1969,8 +1978,12 @@ function renderGame(){
 }
 
 const _origAct=act;
+let _rollLock=false;
 window.act=function(type,...args){
   if(type==='ROLL'){
+    if(_rollLock)return;  // защита от двойного броска
+    _rollLock=true;
+    setTimeout(()=>{_rollLock=false;},1500);
     if(amHost){
       _origAct(type,...args);
       if(GS)showDiceOverlay(GS.dice[0],GS.dice[1]);
