@@ -295,10 +295,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 ═══════════════════════ */
 .board{
   display:grid;
-  grid-template-columns:100px repeat(9,1fr) 100px;
-  grid-template-rows:100px repeat(9,1fr) 100px;
-  width:min(820px, calc(100vh - 16px));
-  height:min(820px, calc(100vh - 16px));
+  grid-template-columns:115px repeat(9,1fr) 115px;
+  grid-template-rows:115px repeat(9,1fr) 115px;
+  width:min(940px, calc(100vw - 480px), calc(100vh - 16px));
+  height:min(940px, calc(100vw - 480px), calc(100vh - 16px));
+  gap:3px;padding:3px;
   background:#0d1f0d;
   border:3px solid #1b4d1b;
   border-radius:4px;
@@ -314,7 +315,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Center ── */
 .bc-inner{
-  position:absolute;inset:3px;
+  position:absolute;inset:3px;border-radius:16px;
   background:linear-gradient(145deg,#0a1a0a,#0d1a0d,#0a160a);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:6px;overflow:hidden;
@@ -335,43 +336,65 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .bc-sub{font-size:clamp(.4rem,.9vw,.7rem);color:rgba(255,215,0,.25);letter-spacing:3px;text-transform:uppercase;position:relative;z-index:1}
 
 /* Dice in center of board */
-.center-dice{
-  display:none;flex-direction:row;align-items:center;justify-content:center;
-  gap:20px;position:relative;z-index:10;
-  animation:diceAppear .35s cubic-bezier(.16,1,.3,1);
+/* Layout: top area + middle */
+.bc-top{position:absolute;top:8%;left:0;right:0;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3}
+.bc-middle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+.center-turn-top{display:flex;flex-direction:column;align-items:center;gap:2px;animation:fadeIn .4s ease}
+.ctt-tok{
+  width:min(7vw,56px);height:min(7vw,56px);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:min(4vw,30px);
+  border:3px solid;box-shadow:0 0 16px currentColor,0 4px 12px rgba(0,0,0,.5);
+  background:rgba(255,255,255,.1);
+}
+.ctt-name{font-size:min(1.8vw,1rem);font-weight:800;color:#fff}
+.ctt-label{font-size:min(1.3vw,.7rem);color:#c4b5fd;letter-spacing:1px;font-weight:700}
+
+/* 3D DICE */
+.center-dice3d{
+  display:none;gap:min(6vw,50px);align-items:center;justify-content:center;
+  perspective:600px;animation:diceAppear .35s cubic-bezier(.16,1,.3,1);
 }
 @keyframes diceAppear{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
-/* Dice result total */
-.dice-result-total{
-  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
-  font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:4px;
-  color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6);
-  white-space:nowrap;animation:fadeUp .4s ease;
-}
-.cdice{
-  width:min(15vw,120px);height:min(15vw,120px);
-  background:linear-gradient(145deg,#ffffff,#f0f0f0);
-  border-radius:24px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  grid-template-rows:repeat(3,1fr);
-  padding:14px;gap:2px;
-  box-shadow:
-    0 16px 50px rgba(0,0,0,.9),
-    0 0 0 3px rgba(255,255,255,.5),
-    0 0 80px rgba(124,58,237,.2),
-    inset 0 4px 8px rgba(255,255,255,.9),
-    inset 0 -4px 8px rgba(0,0,0,.12);
+.dice3d{
+  position:relative;
+  width:min(11vw,90px);height:min(11vw,90px);
+  transform-style:preserve-3d;
   transition:transform .1s;
 }
-.cdice .pip{
-  width:100%;height:100%;border-radius:50%;
-  background:radial-gradient(circle at 35% 35%,#444,#111);
-  box-shadow:inset 0 1px 2px rgba(0,0,0,.5);
-  align-self:center;justify-self:center;
-  max-width:20px;max-height:20px;
+.dice3d.rolling{animation:dice3dRoll .9s cubic-bezier(.3,.1,.3,1)}
+@keyframes dice3dRoll{
+  0%{transform:rotateX(0)rotateY(0)}
+  100%{transform:rotateX(720deg)rotateY(1080deg)}
 }
-.cdice .pip.hide{visibility:hidden}
+.d-face{
+  position:absolute;width:100%;height:100%;
+  background:linear-gradient(145deg,#ffffff,#e8e8e8);
+  border-radius:16px;
+  border:1px solid rgba(0,0,0,.1);
+  display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  padding:12%;gap:4%;
+  box-shadow:inset 0 0 12px rgba(0,0,0,.15);
+  backface-visibility:hidden;
+}
+.d-face .pip{
+  width:100%;height:100%;border-radius:50%;align-self:center;justify-self:center;
+  background:radial-gradient(circle at 35% 35%,#555,#111);
+  max-width:16px;max-height:16px;
+}
+.d-face .pip.hide{visibility:hidden}
+.df-front{transform:translateZ(min(5.5vw,45px))}
+.df-back{transform:rotateY(180deg)translateZ(min(5.5vw,45px))}
+.df-right{transform:rotateY(90deg)translateZ(min(5.5vw,45px))}
+.df-left{transform:rotateY(-90deg)translateZ(min(5.5vw,45px))}
+.df-top{transform:rotateX(90deg)translateZ(min(5.5vw,45px))}
+.df-bottom{transform:rotateX(-90deg)translateZ(min(5.5vw,45px))}
+.dice-result-total{
+  position:absolute;bottom:18%;left:50%;transform:translateX(-50%);
+  font-family:'Bebas Neue',cursive;font-size:min(4vw,2rem);letter-spacing:3px;
+  color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6);
+  white-space:nowrap;animation:fadeUp .4s ease;z-index:5;
+}
+
 .cdice.spin{animation:diceSpin .12s ease-in-out}
 @keyframes diceSpin{0%{transform:rotate3d(1,1,1,0deg)scale(1)}50%{transform:rotate3d(1,1,0,180deg)scale(1.15)}100%{transform:rotate3d(1,1,1,360deg)scale(1)}}
 .cdice.land{animation:diceLand .4s cubic-bezier(.36,.07,.19,.97)}
@@ -398,10 +421,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Board spaces ── */
 .sp{
-  border:1px solid rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:10px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   cursor:pointer;position:relative;overflow:hidden;
-  background:linear-gradient(180deg,rgba(245,242,235,.92),rgba(252,250,245,.88));
+  background:linear-gradient(180deg,rgba(248,245,238,.96),rgba(255,253,248,.92));
   text-align:center;transition:all .15s;
   gap:0;
 }
@@ -411,9 +435,9 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 
 .sp-corner{
-  background:linear-gradient(135deg,rgba(40,30,70,.85),rgba(20,15,40,.9))!important;
+  background:linear-gradient(135deg,rgba(50,38,88,.9),rgba(25,18,48,.92))!important;
   display:flex;flex-direction:column;align-items:center;justify-content:center!important;
-  gap:5px;padding:6px;border:1px solid rgba(124,58,237,.2);
+  gap:6px;padding:8px;border:1px solid rgba(124,58,237,.3);border-radius:14px;
 }
 .sp-corner-icon{font-size:min(4.5vw,32px);filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
 .sp-corner-label{font-size:min(1.35vw,.58rem);font-weight:900;color:#c4b5fd;letter-spacing:.5px;line-height:1.1;text-transform:uppercase}
@@ -421,6 +445,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .sp-color-bar{
   position:absolute;top:0;left:0;right:0;height:30%;z-index:2;
   box-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+.sp-owner-bar{
+  position:absolute;inset:0;z-index:1;pointer-events:none;
+  border:0 solid transparent;border-radius:inherit;
+  transition:all .2s;
 }
 
 .sp-flag{font-size:min(3.5vw,22px);line-height:1;z-index:3;margin-top:28%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
@@ -1597,14 +1626,17 @@ function buildBoard(){
   center.style.cssText='grid-column:2/11;grid-row:2/11;position:relative;';
   center.innerHTML=`
     <div class="bc-inner">
-      <div class="bc-logo">МОНОПОЛИЯ</div>
-      <div class="bc-sub">🌍 Мировое господство</div>
-      <div id="center-dice" class="center-dice" style="display:none">
-        <div class="cdice" id="cdice1"></div>
-        <div class="cdice-plus">+</div>
-        <div class="cdice" id="cdice2"></div>
+      <div class="bc-top">
+        <div class="bc-logo">МОНОПОЛИЯ</div>
+        <div id="center-turn-top" class="center-turn-top"></div>
       </div>
-      <div id="center-info"></div>
+      <div class="bc-middle">
+        <div id="center-dice" class="center-dice3d" style="display:none">
+          <div class="dice3d" id="cdice1"><div class="d-face df-front"></div><div class="d-face df-back"></div><div class="d-face df-right"></div><div class="d-face df-left"></div><div class="d-face df-top"></div><div class="d-face df-bottom"></div></div>
+          <div class="dice3d" id="cdice2"><div class="d-face df-front"></div><div class="d-face df-back"></div><div class="d-face df-right"></div><div class="d-face df-left"></div><div class="d-face df-top"></div><div class="d-face df-bottom"></div></div>
+        </div>
+        <div id="center-info"></div>
+      </div>
     </div>
   `;
   board.appendChild(center);
@@ -1629,6 +1661,7 @@ function buildBoard(){
       const img=cityImgUrl(sp.id);
       inner=`
         ${sp.color?`<div class="sp-color-bar" style="background:${sp.color}"></div>`:''}
+        <div class="sp-owner-bar" id="ob${sp.id}"></div>
         ${img?`<div class="sp-img" style="background-image:url('${img}')"></div>`:`<div class="sp-flag">${flag[0]||''}</div>`}
         <div class="sp-name">${cleanName}</div>
         ${sp.price?`<div class="sp-price">$${sp.price}</div>`:''}
@@ -1681,67 +1714,59 @@ function spClick(id){
 /* ═══════════════════════════════════════════════════════
    3D DICE ANIMATION — IN CENTER OF BOARD
 ═══════════════════════════════════════════════════════ */
-// Раскладка точек на кубике (3x3 grid позиции)
-const PIP_LAYOUT={
-  1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]
-};
-function renderPips(el,n){
-  el.innerHTML='';
+// Раскладка точек на кубике (3x3 grid)
+const PIP_LAYOUT={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+function fillFace(face,n){
+  face.innerHTML='';
   const active=PIP_LAYOUT[n]||[];
-  for(let i=0;i<9;i++){
-    const p=document.createElement('div');
-    p.className='pip'+(active.includes(i)?'':' hide');
-    el.appendChild(p);
-  }
+  for(let i=0;i<9;i++){const p=document.createElement('div');p.className='pip'+(active.includes(i)?'':' hide');face.appendChild(p);}
+}
+// Установить все 6 граней кубика так чтобы спереди была нужная цифра
+function setDieFaces(die,topNum){
+  const faces=die.querySelectorAll('.d-face');
+  // front, back, right, left, top, bottom
+  const nums=[topNum, 7-topNum, (topNum%6)+1, 6-(topNum%6), ((topNum+1)%6)+1, 5-((topNum)%6)];
+  const order=['df-front','df-back','df-right','df-left','df-top','df-bottom'];
+  order.forEach((cls,i)=>{const f=die.querySelector('.'+cls);if(f)fillFace(f,Math.max(1,Math.min(6,nums[i]||1)));});
+  fillFace(die.querySelector('.df-front'),topNum);
 }
 function showDiceOverlay(d1, d2){
-  const faces=['','⚀','⚁','⚂','⚃','⚄','⚅'];
   const wrap=document.getElementById('center-dice');
   const die1=document.getElementById('cdice1');
   const die2=document.getElementById('cdice2');
   const ci=document.getElementById('center-info');
   if(!wrap||!die1||!die2)return;
-  ci.style.display='none';
+  if(ci)ci.style.display='none';
   wrap.style.display='flex';
-  wrap.style.opacity='1';
 
-  let f=0;
-  const iv=setInterval(()=>{
-    renderPips(die1,Math.ceil(Math.random()*6));
-    renderPips(die2,Math.ceil(Math.random()*6));
-    die1.classList.toggle('spin');
-    die2.classList.toggle('spin');
-    f++;
-  },80);
+  setDieFaces(die1,d1);
+  setDieFaces(die2,d2);
+  die1.classList.remove('rolling');die2.classList.remove('rolling');
+  void die1.offsetWidth;void die2.offsetWidth;
+  die1.classList.add('rolling');die2.classList.add('rolling');
 
   setTimeout(()=>{
-    clearInterval(iv);
-    renderPips(die1,d1);
-    renderPips(die2,d2);
-    die1.classList.remove('spin');
-    die2.classList.remove('spin');
-    die1.classList.add('land');
-    die2.classList.add('land');
-    // Show total result
+    die1.classList.remove('rolling');die2.classList.remove('rolling');
+    die1.style.transform='rotateX(0)rotateY(0)';
+    die2.style.transform='rotateX(0)rotateY(0)';
+    // total
     let totalEl=document.getElementById('dice-total-show');
-    if(!totalEl){totalEl=document.createElement('div');totalEl.id='dice-total-show';totalEl.className='dice-result-total';wrap.appendChild(totalEl);}
-    const dbl2=d1===d2;
-    totalEl.textContent=`${d1} + ${d2} = ${d1+d2}${dbl2?' 🎯 ДУБЛЬ!':''}`;
-    // Update small dice
-    document.getElementById('die1').textContent=faces[d1];
-    document.getElementById('die2').textContent=faces[d2];
+    if(!totalEl){totalEl=document.createElement('div');totalEl.id='dice-total-show';totalEl.className='dice-result-total';wrap.parentElement.appendChild(totalEl);}
+    const dbl=d1===d2;
+    totalEl.textContent=`${d1} + ${d2} = ${d1+d2}${dbl?' 🎯 ДУБЛЬ!':''}`;
+    // small dice
+    const f=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+    document.getElementById('die1').textContent=f[d1];
+    document.getElementById('die2').textContent=f[d2];
     document.getElementById('die1').dataset.val=d1;
     document.getElementById('die2').dataset.val=d2;
-    const dbl=d1===d2;
-    document.getElementById('dice-lbl').textContent=`${d1+d2}${dbl?' 🎯':''}`; 
+    document.getElementById('dice-lbl').textContent=`${d1+d2}${dbl?' 🎯':''}`;
     setTimeout(()=>{
-      die1.classList.remove('land');
-      die2.classList.remove('land');
       wrap.style.display='none';
       const te=document.getElementById('dice-total-show');if(te)te.remove();
-      ci.style.display='';
-    },1600);
-  },700);
+      if(ci)ci.style.display='';
+    },1800);
+  },900);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1855,6 +1880,7 @@ function renderGame(){
       }
     }
     const ow=document.getElementById('o'+sp.id);
+    const ob=document.getElementById('ob'+sp.id);
     if(ow){
       const pd=gs.props[sp.id];
       if(pd?.owner){
@@ -1862,7 +1888,12 @@ function renderGame(){
         ow.style.background=ownerP?.color||'#fff';
         ow.style.borderColor='#fff';
         ow.textContent=ownerP?.token||'';
-      } else { ow.style.background='transparent'; ow.style.borderColor='transparent'; ow.textContent=''; }
+        // owner color glow border
+        if(ob){ob.style.border='3px solid '+(ownerP?.color||'#fff');ob.style.boxShadow='inset 0 0 8px '+(ownerP?.color||'#fff');}
+      } else {
+        ow.style.background='transparent'; ow.style.borderColor='transparent'; ow.textContent='';
+        if(ob){ob.style.border='0 solid transparent';ob.style.boxShadow='none';}
+      }
     }
   });
 
@@ -1886,17 +1917,21 @@ function renderGame(){
         ${gs.auction.bidder?`<div style="font-size:.65rem;color:#aaa">Лидирует: ${gs.players[gs.auction.bidder]?.name}</div>`:''}
       </div>`;
     } else {
-      const cp=gs.players[curId];
-      if(cp){
-        ci.innerHTML=`<div class="center-turn">
-          <div class="center-turn-tok" style="text-shadow:0 0 20px ${cp.color}">${cp.token}</div>
-          <div class="center-turn-name">${cp.name}</div>
-          <div class="center-turn-label">${curId===myId?'ТВОЙ ХОД! 🎯':'Ждём ход...'}</div>
-        </div>`;
-        ci.querySelector('.center-turn-label').textContent = curId===myId?'ТВОЙ ХОД! 🎯':'Ждём ход...';
-      }
+      ci.innerHTML='';
     }
   }
+  // Turn info at TOP of board
+  const ctt=document.getElementById('center-turn-top');
+  if(ctt && !gs.winner){
+    const cp=gs.players[curId];
+    if(cp){
+      ctt.innerHTML=`
+        <div class="ctt-tok" style="color:${cp.color};border-color:${cp.color}">${cp.token}</div>
+        <div class="ctt-name">${cp.name}${curId===myId?' (Ты)':''}</div>
+        <div class="ctt-label">${curId===myId?'🎯 ТВОЙ ХОД!':'⏳ Ходит...'}</div>
+      `;
+    }
+  } else if(ctt){ ctt.innerHTML=''; }
 
   /* ── Auction panel ── */
   if(gs.phase==='auction'&&gs.auction){
