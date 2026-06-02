@@ -222,8 +222,9 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* Panel card */
 .pcard{
-  background:var(--panel2);border:1px solid rgba(255,255,255,.06);
-  border-radius:12px;padding:11px;flex-shrink:0;
+  background:rgba(28,28,48,.6);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:11px;flex-shrink:0;
+  backdrop-filter:blur(8px);
 }
 .pcard .panel-title{color:#a78bfa;font-size:.6rem;letter-spacing:2px;margin-bottom:8px}
 
@@ -281,6 +282,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .proplist{display:flex;flex-direction:column;gap:3px;max-height:130px;overflow-y:auto}
 .propitem{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:8px;background:rgba(255,255,255,.03);font-size:.72rem;border:1px solid rgba(255,255,255,.04)}
 .propdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.prop-circle{width:24px;height:24px;border-radius:50%;flex-shrink:0;background-size:cover;background-position:center;border:2px solid;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .propname{font-weight:700;font-size:.72rem}
 .propinfo{font-size:.63rem;color:#4a5568}
 
@@ -347,20 +349,29 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   white-space:nowrap;animation:fadeUp .4s ease;
 }
 .cdice{
-  width:min(14vw,110px);height:min(14vw,110px);
-  background:linear-gradient(145deg,#ffffff,#e8e8e8);
-  border-radius:20px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:min(8vw,64px);
+  width:min(15vw,120px);height:min(15vw,120px);
+  background:linear-gradient(145deg,#ffffff,#f0f0f0);
+  border-radius:24px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:repeat(3,1fr);
+  padding:14px;gap:2px;
   box-shadow:
-    0 12px 40px rgba(0,0,0,.9),
-    0 0 0 3px rgba(255,255,255,.4),
-    0 0 60px rgba(255,255,255,.1),
-    inset 0 3px 6px rgba(255,255,255,.9),
-    inset 0 -3px 6px rgba(0,0,0,.15);
-  transform-style:preserve-3d;
+    0 16px 50px rgba(0,0,0,.9),
+    0 0 0 3px rgba(255,255,255,.5),
+    0 0 80px rgba(124,58,237,.2),
+    inset 0 4px 8px rgba(255,255,255,.9),
+    inset 0 -4px 8px rgba(0,0,0,.12);
   transition:transform .1s;
 }
+.cdice .pip{
+  width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#444,#111);
+  box-shadow:inset 0 1px 2px rgba(0,0,0,.5);
+  align-self:center;justify-self:center;
+  max-width:20px;max-height:20px;
+}
+.cdice .pip.hide{visibility:hidden}
 .cdice.spin{animation:diceSpin .12s ease-in-out}
 @keyframes diceSpin{0%{transform:rotate3d(1,1,1,0deg)scale(1)}50%{transform:rotate3d(1,1,0,180deg)scale(1.15)}100%{transform:rotate3d(1,1,1,360deg)scale(1)}}
 .cdice.land{animation:diceLand .4s cubic-bezier(.36,.07,.19,.97)}
@@ -387,10 +398,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Board spaces ── */
 .sp{
-  border:1px solid rgba(0,0,0,.3);
+  border:1px solid rgba(255,255,255,.08);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   cursor:pointer;position:relative;overflow:hidden;
-  background:linear-gradient(180deg,#f0ece0,#faf7f0);
+  background:linear-gradient(180deg,rgba(245,242,235,.92),rgba(252,250,245,.88));
   text-align:center;transition:all .15s;
   gap:0;
 }
@@ -400,12 +411,12 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 
 .sp-corner{
-  background:linear-gradient(135deg,#1a3a2a,#0d2418)!important;
+  background:linear-gradient(135deg,rgba(40,30,70,.85),rgba(20,15,40,.9))!important;
   display:flex;flex-direction:column;align-items:center;justify-content:center!important;
-  gap:4px;padding:6px;
+  gap:5px;padding:6px;border:1px solid rgba(124,58,237,.2);
 }
-.sp-corner-icon{font-size:min(4vw,28px)}
-.sp-corner-label{font-size:min(1.3vw,.55rem);font-weight:900;color:#4ade80;letter-spacing:.5px;line-height:1;text-transform:uppercase}
+.sp-corner-icon{font-size:min(4.5vw,32px);filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.sp-corner-label{font-size:min(1.35vw,.58rem);font-weight:900;color:#c4b5fd;letter-spacing:.5px;line-height:1.1;text-transform:uppercase}
 
 .sp-color-bar{
   position:absolute;top:0;left:0;right:0;height:30%;z-index:2;
@@ -414,10 +425,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 .sp-flag{font-size:min(3.5vw,22px);line-height:1;z-index:3;margin-top:28%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 .sp-img{
-  position:absolute;top:30%;left:0;right:0;bottom:38%;
+  position:absolute;top:30%;left:0;right:0;bottom:0;
   background-size:cover;background-position:center;
-  z-index:2;opacity:.55;
-  border-top:1px solid rgba(0,0,0,.1);
+  z-index:1;opacity:.28;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.1));
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.1));
 }
 .sp-name{
   font-size:min(1.9vw,.78rem);line-height:1.05;
@@ -435,7 +447,16 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   position:absolute;bottom:2px;left:1px;right:1px;
   justify-content:center;z-index:20;
 }
-.tok{font-size:min(3.5vw,20px);filter:drop-shadow(0 2px 6px rgba(0,0,0,.9));cursor:default}
+.tok{
+  font-size:min(3vw,18px);
+  width:min(5vw,30px);height:min(5vw,30px);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.85);
+  border:2px solid currentColor;
+  box-shadow:0 2px 8px rgba(0,0,0,.6);
+  cursor:default;
+}
 
 .sp-houses{
   position:absolute;top:29%;left:1px;right:1px;
@@ -448,8 +469,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   font-size:5px;color:#fff;font-weight:900;box-shadow:0 0 6px #dc2626;
 }
 .sp-own{
-  position:absolute;top:28%;right:1px;
-  width:6px;height:6px;border-radius:50%;z-index:11;
+  position:absolute;top:3px;right:3px;
+  width:min(2.4vw,16px);height:min(2.4vw,16px);border-radius:50%;z-index:12;
+  border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:min(1.4vw,9px);background-size:cover;background-position:center;
 }
 
 /* ── Modals ── */
@@ -485,6 +509,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .tag:hover{background:rgba(255,255,255,.12);transform:scale(1.05)}
 .tag.on{background:rgba(124,58,237,.2);color:#a78bfa;border-color:rgba(124,58,237,.5)}
 .tdot{width:7px;height:7px;border-radius:50%}
+.tag-circle{width:18px;height:18px;border-radius:50%;background-size:cover;background-position:center;border:1.5px solid;flex-shrink:0}
 
 /* Winner */
 .win-overlay{
@@ -510,6 +535,20 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   max-width:280px;
 }
 @keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
+
+/* Movement highlight */
+@keyframes moveHighlight{
+  0%{box-shadow:0 0 0 0 rgba(246,201,14,.8)}
+  50%{box-shadow:0 0 20px 6px rgba(246,201,14,.6)}
+  100%{box-shadow:0 0 0 0 rgba(246,201,14,0)}
+}
+.sp.just-landed{animation:moveHighlight 1.2s ease-out;z-index:25}
+@keyframes tokHop{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px) scale(1.2)}
+  100%{transform:translateY(0)}
+}
+.tok.hopping{animation:tokHop .4s ease-in-out}
 
 /* Scrollbars */
 ::-webkit-scrollbar{width:4px}
@@ -1470,6 +1509,7 @@ function doBuildL(gs,a){
   const{playerId:pid,spaceId,op}=a;
   const sp=BOARD[spaceId];const pd=gs.props[spaceId];
   if(!pd||pd.owner!==pid)return gs;
+  if((op==='buy'||op==='sell')&&gs.order[gs.curIdx]!==pid)return gs;
   const pl=gs.players[pid];let g={...gs};
   if(op==='buy'){
     // Нельзя строить без монополии (все участки одного цвета)
@@ -1560,9 +1600,9 @@ function buildBoard(){
       <div class="bc-logo">МОНОПОЛИЯ</div>
       <div class="bc-sub">🌍 Мировое господство</div>
       <div id="center-dice" class="center-dice" style="display:none">
-        <div class="cdice" id="cdice1">⚀</div>
+        <div class="cdice" id="cdice1"></div>
         <div class="cdice-plus">+</div>
-        <div class="cdice" id="cdice2">⚁</div>
+        <div class="cdice" id="cdice2"></div>
       </div>
       <div id="center-info"></div>
     </div>
@@ -1641,6 +1681,19 @@ function spClick(id){
 /* ═══════════════════════════════════════════════════════
    3D DICE ANIMATION — IN CENTER OF BOARD
 ═══════════════════════════════════════════════════════ */
+// Раскладка точек на кубике (3x3 grid позиции)
+const PIP_LAYOUT={
+  1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]
+};
+function renderPips(el,n){
+  el.innerHTML='';
+  const active=PIP_LAYOUT[n]||[];
+  for(let i=0;i<9;i++){
+    const p=document.createElement('div');
+    p.className='pip'+(active.includes(i)?'':' hide');
+    el.appendChild(p);
+  }
+}
 function showDiceOverlay(d1, d2){
   const faces=['','⚀','⚁','⚂','⚃','⚄','⚅'];
   const wrap=document.getElementById('center-dice');
@@ -1654,8 +1707,8 @@ function showDiceOverlay(d1, d2){
 
   let f=0;
   const iv=setInterval(()=>{
-    die1.textContent=faces[Math.ceil(Math.random()*6)];
-    die2.textContent=faces[Math.ceil(Math.random()*6)];
+    renderPips(die1,Math.ceil(Math.random()*6));
+    renderPips(die2,Math.ceil(Math.random()*6));
     die1.classList.toggle('spin');
     die2.classList.toggle('spin');
     f++;
@@ -1663,8 +1716,8 @@ function showDiceOverlay(d1, d2){
 
   setTimeout(()=>{
     clearInterval(iv);
-    die1.textContent=faces[d1];
-    die2.textContent=faces[d2];
+    renderPips(die1,d1);
+    renderPips(die2,d2);
     die1.classList.remove('spin');
     die2.classList.remove('spin');
     die1.classList.add('land');
@@ -1769,6 +1822,16 @@ function renderGame(){
   }
 
   /* ── Board tokens + houses ── */
+  // Detect movement for animation
+  if(!window._lastPos)window._lastPos={};
+  gs.order.forEach(pid=>{
+    const p=gs.players[pid];
+    if(p&&window._lastPos[pid]!==undefined&&window._lastPos[pid]!==p.position){
+      const sp=document.getElementById('sp'+p.position);
+      if(sp){sp.classList.remove('just-landed');void sp.offsetWidth;sp.classList.add('just-landed');setTimeout(()=>sp.classList.remove('just-landed'),1200);}
+    }
+    if(p)window._lastPos[pid]=p.position;
+  });
   BOARD.forEach(sp=>{
     const tt=document.getElementById('t'+sp.id);
     if(tt){
@@ -1778,7 +1841,7 @@ function renderGame(){
         if(!p||p.bankrupt||p.position!==sp.id)return;
         const s=document.createElement('span');
         s.className='tok';s.title=p.name;s.textContent=p.token;
-        s.style.cssText=`text-shadow:0 0 8px ${p.color},0 2px 4px rgba(0,0,0,.8)`;
+        s.style.color=p.color;
         tt.appendChild(s);
       });
     }
@@ -1797,7 +1860,9 @@ function renderGame(){
       if(pd?.owner){
         const ownerP=gs.players[pd.owner];
         ow.style.background=ownerP?.color||'#fff';
-      } else ow.style.background='transparent';
+        ow.style.borderColor='#fff';
+        ow.textContent=ownerP?.token||'';
+      } else { ow.style.background='transparent'; ow.style.borderColor='transparent'; ow.textContent=''; }
     }
   });
 
@@ -1852,8 +1917,12 @@ function renderGame(){
     mp.innerHTML=props.length?props.map(pid=>{
       const sp=BOARD[pid];const pd=gs.props[pid];
       const h=pd?.houses===5?'🏨':pd?.houses?`🏠${pd.houses}`:'';
+      const img=cityImgUrl(pid);
+      const circle=img
+        ?`<div class="prop-circle" style="background-image:url('${img}');border-color:${sp.color||'#888'}"></div>`
+        :`<div class="prop-circle" style="background:${sp.color||'#888'};border-color:${sp.color||'#888'}"></div>`;
       return `<div class="propitem">
-        ${sp.color?`<div class="propdot" style="background:${sp.color};box-shadow:0 0 6px ${sp.color}66"></div>`:'<div style="width:10px"></div>'}
+        ${circle}
         <div><div class="propname">${sp.name}</div><div class="propinfo">${h}${pd?.mortgaged?' 🔒':''}</div></div>
       </div>`;
     }).join(''):'<div style="font-size:.74rem;color:#444;padding:8px">Нет участков.</div>';
@@ -1891,23 +1960,25 @@ function openTrade(){
 function closeTrade(){document.getElementById('m-trade').style.display='none';}
 function refreshTP(){
   const myP=GS?.players[myId];
+  const mkTag=(pid,arr,fn)=>{
+    const sp=BOARD[pid];const t=document.createElement('span');
+    t.className='tag'+(arr.includes(pid)?' on':'');
+    const img=cityImgUrl(pid);
+    const circle=img?`<span class="tag-circle" style="background-image:url('${img}');border-color:${sp.color||'#888'}"></span>`
+      :`<span class="tag-circle" style="background:${sp.color||'#888'};border-color:${sp.color||'#888'}"></span>`;
+    t.innerHTML=`${circle}${sp.name.split(' ')[0]}`;
+    t.onclick=fn;
+    return t;
+  };
   const gEl=document.getElementById('t-give-p');gEl.innerHTML='';
   (myP?.properties||[]).forEach(pid=>{
-    const sp=BOARD[pid];const t=document.createElement('span');
-    t.className='tag'+(tGive.includes(pid)?' on':'');
-    t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
-    t.onclick=()=>{if(tGive.includes(pid))tGive=tGive.filter(x=>x!==pid);else tGive.push(pid);refreshTP();};
-    gEl.appendChild(t);
+    gEl.appendChild(mkTag(pid,tGive,()=>{if(tGive.includes(pid))tGive=tGive.filter(x=>x!==pid);else tGive.push(pid);refreshTP();}));
   });
   const tid=document.getElementById('t-who').value;
   const tEl=document.getElementById('t-take-p');tEl.innerHTML='';
   if(tid&&GS?.players[tid]){
     (GS.players[tid].properties||[]).forEach(pid=>{
-      const sp=BOARD[pid];const t=document.createElement('span');
-      t.className='tag'+(tTake.includes(pid)?' on':'');
-      t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
-      t.onclick=()=>{if(tTake.includes(pid))tTake=tTake.filter(x=>x!==pid);else tTake.push(pid);refreshTP();};
-      tEl.appendChild(t);
+      tEl.appendChild(mkTag(pid,tTake,()=>{if(tTake.includes(pid))tTake=tTake.filter(x=>x!==pid);else tTake.push(pid);refreshTP();}));
     });
   }
 }
@@ -1936,7 +2007,14 @@ function openBuild(){
   const list=document.getElementById('build-list');
   document.getElementById('build-err').style.display='none';
   list.innerHTML='';
+  const isMyTurn=GS.order[GS.curIdx]===myId;
   if(!(myP?.properties?.length)){list.innerHTML='<div style="font-size:.82rem;color:#666;padding:12px;text-align:center">У тебя нет участков.</div>';document.getElementById('m-build').style.display='flex';return;}
+  if(!isMyTurn){
+    const w=document.createElement('div');
+    w.style.cssText='font-size:.82rem;color:#f59e0b;padding:12px;text-align:center;line-height:1.5;background:rgba(245,158,11,.08);border-radius:10px;margin-bottom:10px';
+    w.innerHTML='⏳ Дома строить можно только в свой ход!<br><span style="font-size:.72rem;color:#888">Заложить/выкупить — в любой момент.</span>';
+    list.appendChild(w);
+  }
 
   // Group by color
   const byColor={};
@@ -1966,12 +2044,12 @@ function openBuild(){
       </div>
     </div><div class="biacts"></div>`;
     const acts=d.querySelector('.biacts');
-    if(sp.type==='property'&&all&&!pd.mortgaged&&pd.houses<5){
+    if(isMyTurn&&sp.type==='property'&&all&&!pd.mortgaged&&pd.houses<5){
       const b=document.createElement('button');b.className='btn btn-green btn-sm';
       b.textContent=pd.houses===4?'🏨 +Отель':'🏠 +Дом';
       b.onclick=()=>{bAct(pid,'buy');};acts.appendChild(b);
     }
-    if(sp.type==='property'&&pd.houses>0){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent='−Дом';b.onclick=()=>bAct(pid,'sell');acts.appendChild(b);}
+    if(isMyTurn&&sp.type==='property'&&pd.houses>0){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent='−Дом';b.onclick=()=>bAct(pid,'sell');acts.appendChild(b);}
     if(!pd.mortgaged&&!pd.houses){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent=`🔒 $${sp.mg}`;b.onclick=()=>bAct(pid,'mortgage');acts.appendChild(b);}
     if(pd.mortgaged){const cost=Math.ceil(sp.mg*1.1);const b=document.createElement('button');b.className='btn btn-blue btn-sm';b.textContent=`🔓 $${cost}`;b.onclick=()=>bAct(pid,'unmortgage');acts.appendChild(b);}
     if(!all&&sp.type==='property'&&!pd.mortgaged&&pd.houses===0){
