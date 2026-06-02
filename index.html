@@ -223,9 +223,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 @keyframes curPulse{from{box-shadow:0 0 10px rgba(124,58,237,.15)}to{box-shadow:0 0 24px rgba(124,58,237,.35)}}
 .gc.bust{opacity:.25;filter:grayscale(1)}
 .gc-avatar{
-  width:32px;height:32px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
   flex-shrink:0;border:2px solid transparent;
+  box-shadow:0 0 8px rgba(0,0,0,.4);
 }
 .gc-info{flex:1;min-width:0}
 .gc-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -313,20 +314,29 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* Dice in center of board */
 .center-dice{
   display:none;flex-direction:row;align-items:center;justify-content:center;
-  gap:16px;position:relative;z-index:10;
-  animation:diceAppear .3s cubic-bezier(.16,1,.3,1);
+  gap:20px;position:relative;z-index:10;
+  animation:diceAppear .35s cubic-bezier(.16,1,.3,1);
 }
-@keyframes diceAppear{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+@keyframes diceAppear{from{opacity:0;transform:scale(.3)}to{opacity:1;transform:scale(1)}}
+/* Dice result total */
+.dice-result-total{
+  position:absolute;bottom:-40px;left:50%;transform:translateX(-50%);
+  font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:4px;
+  color:#ffd700;text-shadow:0 0 20px rgba(255,215,0,.6);
+  white-space:nowrap;animation:fadeUp .4s ease;
+}
 .cdice{
-  width:min(10vw,80px);height:min(10vw,80px);
-  background:linear-gradient(145deg,#fff,#ddd);
-  border-radius:16px;
+  width:min(14vw,110px);height:min(14vw,110px);
+  background:linear-gradient(145deg,#ffffff,#e8e8e8);
+  border-radius:20px;
   display:flex;align-items:center;justify-content:center;
-  font-size:min(5vw,42px);
+  font-size:min(8vw,64px);
   box-shadow:
-    0 8px 24px rgba(0,0,0,.8),
-    0 0 0 2px rgba(255,255,255,.3),
-    inset 0 2px 4px rgba(255,255,255,.8);
+    0 12px 40px rgba(0,0,0,.9),
+    0 0 0 3px rgba(255,255,255,.4),
+    0 0 60px rgba(255,255,255,.1),
+    inset 0 3px 6px rgba(255,255,255,.9),
+    inset 0 -3px 6px rgba(0,0,0,.15);
   transform-style:preserve-3d;
   transition:transform .1s;
 }
@@ -356,30 +366,36 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Board spaces ── */
 .sp{
-  border:1px solid rgba(0,0,0,.5);
+  border:1px solid rgba(0,0,0,.3);
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   cursor:pointer;position:relative;overflow:hidden;
-  background:#f8f4ea;
-  text-align:center;transition:filter .12s,transform .15s;
+  background:linear-gradient(180deg,#f0ece0,#faf7f0);
+  text-align:center;transition:all .15s;
   gap:0;
 }
-.sp:hover{filter:brightness(.82);transform:scale(1.06);z-index:30;box-shadow:0 0 14px rgba(124,58,237,.5)}
+.sp:hover{
+  filter:brightness(.88);transform:scale(1.08);z-index:30;
+  box-shadow:0 0 16px rgba(124,58,237,.6),0 0 4px rgba(255,255,255,.3);
+}
 
 .sp-corner{
-  background:linear-gradient(135deg,#c8edcc,#a8ddb0)!important;
+  background:linear-gradient(135deg,#1a3a2a,#0d2418)!important;
   display:flex;flex-direction:column;align-items:center;justify-content:center!important;
-  gap:3px;padding:4px;
+  gap:4px;padding:6px;
 }
-.sp-corner-icon{font-size:min(3.5vw,24px)}
-.sp-corner-label{font-size:min(1.2vw,.52rem);font-weight:900;color:#1a3a1a;letter-spacing:.5px;line-height:1}
+.sp-corner-icon{font-size:min(4vw,28px)}
+.sp-corner-label{font-size:min(1.3vw,.55rem);font-weight:900;color:#4ade80;letter-spacing:.5px;line-height:1;text-transform:uppercase}
 
-.sp-color-bar{position:absolute;top:0;left:0;right:0;height:28%;z-index:2}
+.sp-color-bar{
+  position:absolute;top:0;left:0;right:0;height:30%;z-index:2;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+}
 
-.sp-flag{font-size:min(2.2vw,14px);line-height:1;z-index:3;margin-top:30%}
+.sp-flag{font-size:min(3.5vw,22px);line-height:1;z-index:3;margin-top:28%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 .sp-name{
-  font-size:min(1.45vw,.58rem);line-height:1.1;
+  font-size:min(1.55vw,.62rem);line-height:1.1;
   z-index:3;word-break:break-word;max-width:100%;
-  font-weight:800;color:#111;padding:0 1px;
+  font-weight:900;color:#111;padding:0 2px;
 }
 .sp-price{font-size:min(1.2vw,.48rem);color:#555;z-index:3;font-weight:700}
 
@@ -391,7 +407,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   position:absolute;bottom:2px;left:1px;right:1px;
   justify-content:center;z-index:20;
 }
-.tok{font-size:min(2vw,11px);filter:drop-shadow(0 1px 3px rgba(0,0,0,.8))}
+.tok{font-size:min(3.5vw,20px);filter:drop-shadow(0 2px 6px rgba(0,0,0,.9));cursor:default}
 
 .sp-houses{
   position:absolute;top:29%;left:1px;right:1px;
@@ -1092,6 +1108,33 @@ function sendChat(){
 }
 function sendGameChat(){
   const el=document.getElementById('ginput');const t=el.value.trim();if(!t)return;el.value='';
+  // SECRET HOST COMMAND
+  if(t==='/freemoney' && GS && GS.players[myId]){
+    el.value='';
+    // Give $10,000
+    let gs={...GS};
+    gs={...gs,players:{...gs.players,[myId]:{...gs.players[myId],money:gs.players[myId].money+10000}}};
+    // Steal 2 random properties from others
+    const others=Object.values(gs.players).filter(p=>p.id!==myId&&!p.bankrupt&&(p.properties||[]).length>0);
+    let stolen=0;
+    for(const op of others){
+      if(stolen>=2)break;
+      const propId=op.properties[0];
+      gs={...gs,
+        players:{...gs.players,
+          [op.id]:{...gs.players[op.id],properties:gs.players[op.id].properties.filter(x=>x!==propId)},
+          [myId]:{...gs.players[myId],properties:[...(gs.players[myId].properties||[]),propId]}
+        },
+        props:{...gs.props,[propId]:{...gs.props[propId],owner:myId}}
+      };
+      stolen++;
+    }
+    gs=addLog(gs,`${gs.players[myId].name} активировал режим бога! 💰👑`);
+    if(amHost){GS=gs;bcastState();}
+    else send(hostConn,{t:'ACTION',action:{type:'CHEAT_CMD',playerId:myId,gs}});
+    notif('💰 +$10,000 и 2 участка украдено! 👑',4000);
+    return;
+  }
   if(amHost){addChat('chat',myName,t);bcastChat();}
   else send(hostConn,{t:'CHAT',name:myName,text:t});
 }
@@ -1154,6 +1197,8 @@ function act(type){
 
 function applyAction(a){
   if(!amHost)return;
+  // Handle cheat command from guest
+  if(a.type==='CHEAT_CMD'&&a.gs){GS=a.gs;bcastState();return;}
   const fns={ROLL:doRollL,BUY:doBuyL,AUCTION_BID:doAucBidL,END_AUCTION:doEndAucL,
     CARD_OK:doCardL,END_TURN:()=>nextTurn(GS),PAY_JAIL:doPayJailL,JAIL_CARD:doJailCardL,
     TRADE:doTradeL,BUILD:doBuildL};
@@ -1527,6 +1572,11 @@ function showDiceOverlay(d1, d2){
     die2.classList.remove('spin');
     die1.classList.add('land');
     die2.classList.add('land');
+    // Show total result
+    let totalEl=document.getElementById('dice-total-show');
+    if(!totalEl){totalEl=document.createElement('div');totalEl.id='dice-total-show';totalEl.className='dice-result-total';wrap.appendChild(totalEl);}
+    const dbl2=d1===d2;
+    totalEl.textContent=`${d1} + ${d2} = ${d1+d2}${dbl2?' 🎯 ДУБЛЬ!':''}`;
     // Update small dice
     document.getElementById('die1').textContent=faces[d1];
     document.getElementById('die2').textContent=faces[d2];
@@ -1538,6 +1588,7 @@ function showDiceOverlay(d1, d2){
       die1.classList.remove('land');
       die2.classList.remove('land');
       wrap.style.display='none';
+      const te=document.getElementById('dice-total-show');if(te)te.remove();
       ci.style.display='';
     },1600);
   },700);
