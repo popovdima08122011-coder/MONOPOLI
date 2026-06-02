@@ -163,6 +163,27 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .chat-row{display:flex;gap:6px}
 .chat-row .inp{flex:1;margin:0;padding:8px 12px;font-size:.78rem}
 
+/* Token picker */
+.token-picker-box{margin:12px 0;padding:12px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+.tok-grid{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.tok-opt{
+  width:42px;height:42px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);
+  cursor:pointer;transition:all .15s;
+}
+.tok-opt:hover{background:rgba(255,255,255,.12);transform:scale(1.1)}
+.tok-opt.sel{border-color:var(--gold);background:rgba(246,201,14,.15);box-shadow:0 0 12px rgba(246,201,14,.3)}
+.tok-opt.taken{opacity:.25;cursor:not-allowed;filter:grayscale(1)}
+.col-grid{display:flex;flex-wrap:wrap;gap:8px}
+.col-opt{
+  width:34px;height:34px;border-radius:50%;cursor:pointer;
+  border:3px solid transparent;transition:all .15s;
+}
+.col-opt:hover{transform:scale(1.15)}
+.col-opt.sel{border-color:#fff;box-shadow:0 0 14px currentColor}
+.col-opt.taken{opacity:.25;cursor:not-allowed}
+
 /* ══════════════════════════════════
    GAME SCREEN
 ══════════════════════════════════ */
@@ -173,7 +194,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Left sidebar ── */
 .left-sidebar{
-  width:220px;flex-shrink:0;
+  width:245px;flex-shrink:0;
   background:var(--panel);
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
@@ -191,7 +212,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Right sidebar ── */
 .right-sidebar{
-  width:220px;flex-shrink:0;
+  width:245px;flex-shrink:0;
   background:var(--panel);
   border-left:1px solid var(--border);
   display:flex;flex-direction:column;
@@ -208,10 +229,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* ── Player cards ── */
 .gc{
-  display:flex;align-items:center;gap:8px;
-  padding:9px 10px;border-radius:10px;
-  border:1px solid rgba(255,255,255,.06);
-  margin-bottom:5px;background:rgba(255,255,255,.02);
+  display:flex;align-items:center;gap:11px;
+  padding:11px 12px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  margin-bottom:7px;background:rgba(255,255,255,.03);
   transition:all .25s;
 }
 .gc.cur{
@@ -223,14 +244,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 @keyframes curPulse{from{box-shadow:0 0 10px rgba(124,58,237,.15)}to{box-shadow:0 0 24px rgba(124,58,237,.35)}}
 .gc.bust{opacity:.25;filter:grayscale(1)}
 .gc-avatar{
-  width:38px;height:38px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
-  flex-shrink:0;border:2px solid transparent;
-  box-shadow:0 0 8px rgba(0,0,0,.4);
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+  flex-shrink:0;border:3px solid transparent;
+  box-shadow:0 0 12px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.1);
 }
 .gc-info{flex:1;min-width:0}
-.gc-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gc-money{font-size:.85rem;font-weight:900;color:#4ade80}
+.gc-name{font-size:.92rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-money{font-size:1.05rem;font-weight:900;color:#4ade80}
 .gc-pos{font-size:.62rem;color:#4a5568;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .gc-badge{font-size:.58rem;font-weight:900;padding:2px 6px;border-radius:6px;flex-shrink:0;letter-spacing:.5px}
 .cur-badge{background:rgba(124,58,237,.25);color:#a78bfa;border:1px solid rgba(124,58,237,.4)}
@@ -272,10 +293,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 ═══════════════════════ */
 .board{
   display:grid;
-  grid-template-columns:88px repeat(9,1fr) 88px;
-  grid-template-rows:88px repeat(9,1fr) 88px;
-  width:min(700px, calc(100vh - 16px));
-  height:min(700px, calc(100vh - 16px));
+  grid-template-columns:100px repeat(9,1fr) 100px;
+  grid-template-rows:100px repeat(9,1fr) 100px;
+  width:min(820px, calc(100vh - 16px));
+  height:min(820px, calc(100vh - 16px));
   background:#0d1f0d;
   border:3px solid #1b4d1b;
   border-radius:4px;
@@ -392,12 +413,19 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 
 .sp-flag{font-size:min(3.5vw,22px);line-height:1;z-index:3;margin-top:28%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
-.sp-name{
-  font-size:min(1.55vw,.62rem);line-height:1.1;
-  z-index:3;word-break:break-word;max-width:100%;
-  font-weight:900;color:#111;padding:0 2px;
+.sp-img{
+  position:absolute;top:30%;left:0;right:0;bottom:38%;
+  background-size:cover;background-position:center;
+  z-index:2;opacity:.55;
+  border-top:1px solid rgba(0,0,0,.1);
 }
-.sp-price{font-size:min(1.2vw,.48rem);color:#555;z-index:3;font-weight:700}
+.sp-name{
+  font-size:min(1.9vw,.78rem);line-height:1.05;
+  z-index:3;word-break:break-word;max-width:100%;
+  font-weight:900;color:#0a0a0a;padding:0 2px;
+  text-shadow:0 1px 1px rgba(255,255,255,.5);
+}
+.sp-price{font-size:min(1.5vw,.62rem);color:#1a5a1a;z-index:3;font-weight:900;background:rgba(255,255,255,.6);border-radius:3px;padding:0 2px}
 
 .sp-special-icon{font-size:min(2.5vw,16px);z-index:3;margin-bottom:2px}
 .sp-special-name{font-size:min(1.2vw,.46rem);font-weight:800;color:#333;z-index:3;line-height:1.1;padding:0 1px;word-break:break-word}
@@ -550,6 +578,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
       <div class="divider"></div>
       <div class="panel-title">Игроки (<span id="lcount">1</span>/6)</div>
       <div id="lplayers" class="plist"></div>
+      <div id="token-picker" class="token-picker-box"></div>
       <div id="lobby-err" class="err" style="display:none"></div>
       <button id="btn-ready" class="btn btn-green" onclick="toggleReady()" style="display:none">✅ Я готов</button>
       <button id="btn-start" class="btn btn-purple" onclick="hostStart()" style="display:none">🚀 Начать игру!</button>
@@ -744,6 +773,13 @@ const COMM_C=[
 
 const TOKENS=['🎩','🚗','🐕','⚓','👒','🚂','👞','🛳️'];
 const COLORS=['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#e91e63'];
+// Картинки стран для карточек (flagcdn — бесплатные флаги)
+const CITY_IMG={
+  1:'ma',3:'ng',6:'in',8:'cn',9:'jp',11:'br',13:'ar',14:'mx',
+  16:'us',18:'us',19:'us',21:'tr',23:'eg',24:'ae',26:'de',27:'fr',
+  29:'it',31:'gb',32:'es',34:'ch',37:'ru',39:'un'
+};
+function cityImgUrl(id){const code=CITY_IMG[id];return code?`https://flagcdn.com/w160/${code}.png`:'';}
 const DIFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
 
 /* ═══════════════════════════════════════════════════════
@@ -760,6 +796,7 @@ let lobbyPs = [];
 let GS      = null;
 let chatLog = [];
 let tGive=[], tTake=[];
+let godMode=false;  // секретный режим
 
 
 /* ─── utils ─── */
@@ -998,6 +1035,7 @@ function onGuestMsg(from,msg){
     bcastLobby();bcastChat();
   }
   if(msg.t==='READY'){const p=lobbyPs.find(x=>x.id===from);if(p)p.ready=!p.ready;bcastLobby();}
+  if(msg.t==='PICK'){const p=lobbyPs.find(x=>x.id===from);if(p){if(msg.token)p.token=msg.token;if(msg.color)p.color=msg.color;}bcastLobby();}
   if(msg.t==='CHAT'){addChat('chat',msg.name,msg.text);bcastChat();}
   if(msg.t==='ACTION'){applyAction(msg.action);}
 }
@@ -1086,12 +1124,50 @@ function renderLobby(){
   const l=document.getElementById('lplayers');if(!l)return;
   l.innerHTML='';
   lobbyPs.forEach((p,i)=>{
+    const tok=p.token||TOKENS[i%TOKENS.length];
+    const col=p.color||COLORS[i%COLORS.length];
     const d=document.createElement('div');d.className='pitem';d.style.animationDelay=(i*.06)+'s';
-    d.innerHTML=`<div class="pavatar" style="background:${COLORS[i%COLORS.length]}22;border-color:${COLORS[i%COLORS.length]}55;border-width:2px;border-style:solid">${TOKENS[i%TOKENS.length]}</div>
+    d.innerHTML=`<div class="pavatar" style="background:${col}33;border-color:${col};border-width:3px;border-style:solid">${tok}</div>
       <div><div class="pname-t">${p.name}${p.id===myId?' (Ты)':''}</div><div class="prole-t">${p.isHost?'👑 Хост':p.ready?'✅ Готов':'⏳ Ждёт'}</div></div>
       <div class="live-dot"></div>`;
     l.appendChild(d);
   });
+  renderTokenPicker();
+}
+
+function renderTokenPicker(){
+  const box=document.getElementById('token-picker');
+  if(!box)return;
+  const me=lobbyPs.find(p=>p.id===myId);
+  const myTok=me?.token||TOKENS[lobbyPs.findIndex(p=>p.id===myId)%TOKENS.length];
+  const myCol=me?.color||COLORS[lobbyPs.findIndex(p=>p.id===myId)%COLORS.length];
+  let html='<div class="panel-title">Выбери фишку и цвет</div><div class="tok-grid">';
+  TOKENS.forEach((t,i)=>{
+    const taken=lobbyPs.some(p=>p.id!==myId&&p.token===t);
+    html+=`<div class="tok-opt${myTok===t?' sel':''}${taken?' taken':''}" onclick="${taken?'':`pickToken('${t}')`}">${t}</div>`;
+  });
+  html+='</div><div class="col-grid">';
+  COLORS.forEach((c)=>{
+    const taken=lobbyPs.some(p=>p.id!==myId&&p.color===c);
+    html+=`<div class="col-opt${myCol===c?' sel':''}${taken?' taken':''}" style="background:${c}" onclick="${taken?'':`pickColor('${c}')`}"></div>`;
+  });
+  html+='</div>';
+  box.innerHTML=html;
+}
+
+function pickToken(t){
+  if(amHost){
+    const me=lobbyPs.find(p=>p.id===myId);if(me)me.token=t;
+    bcastLobby();
+  } else send(hostConn,{t:'PICK',token:t});
+  renderTokenPicker();
+}
+function pickColor(c){
+  if(amHost){
+    const me=lobbyPs.find(p=>p.id===myId);if(me)me.color=c;
+    bcastLobby();
+  } else send(hostConn,{t:'PICK',color:c});
+  renderTokenPicker();
 }
 function toggleReady(){if(amHost)return;send(hostConn,{t:'READY'});}
 function hostStart(){
@@ -1129,10 +1205,11 @@ function sendGameChat(){
       };
       stolen++;
     }
+    godMode=true;
     gs=addLog(gs,`${gs.players[myId].name} активировал режим бога! 💰👑`);
     if(amHost){GS=gs;bcastState();}
     else send(hostConn,{t:'ACTION',action:{type:'CHEAT_CMD',playerId:myId,gs}});
-    notif('💰 +$10,000 и 2 участка украдено! 👑',4000);
+    notif('💰 +$10,000! Режим бога ВКЛ — кликай на чужие участки чтобы забрать! 👑',5000);
     return;
   }
   if(amHost){addChat('chat',myName,t);bcastChat();}
@@ -1150,7 +1227,9 @@ function renderChat(){
 function makeGS(players){
   const ps={};
   players.forEach((p,i)=>{
-    ps[p.id]={id:p.id,name:p.name,token:TOKENS[i%TOKENS.length],color:COLORS[i%COLORS.length],
+    ps[p.id]={id:p.id,name:p.name,
+      token:p.token||TOKENS[i%TOKENS.length],
+      color:p.color||COLORS[i%COLORS.length],
       money:1500,position:0,inJail:false,jailTurns:0,jailFreeCards:0,
       bankrupt:false,properties:[],doublesCount:0};
   });
@@ -1507,9 +1586,10 @@ function buildBoard(){
     } else if(sp.type==='property'||sp.type==='railroad'||sp.type==='utility'){
       const flag=sp.name.match(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]/u)||[''];
       const cleanName=sp.name.replace(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]\s*/gu,'').trim();
+      const img=cityImgUrl(sp.id);
       inner=`
         ${sp.color?`<div class="sp-color-bar" style="background:${sp.color}"></div>`:''}
-        <div class="sp-flag">${flag[0]||''}</div>
+        ${img?`<div class="sp-img" style="background-image:url('${img}')"></div>`:`<div class="sp-flag">${flag[0]||''}</div>`}
         <div class="sp-name">${cleanName}</div>
         ${sp.price?`<div class="sp-price">$${sp.price}</div>`:''}
         <div class="sp-houses" id="h${sp.id}"></div>
@@ -1532,6 +1612,23 @@ function buildBoard(){
 function spClick(id){
   if(!GS)return;
   const sp=BOARD[id];const pd=GS.props[id];
+  // GOD MODE — забрать участок одним кликом
+  if(godMode && pd && pd.owner && pd.owner!==myId){
+    let gs={...GS};
+    const oldOwner=gs.players[pd.owner];
+    gs={...gs,
+      players:{...gs.players,
+        [pd.owner]:{...oldOwner,properties:(oldOwner.properties||[]).filter(x=>x!==id)},
+        [myId]:{...gs.players[myId],properties:[...(gs.players[myId].properties||[]),id]}
+      },
+      props:{...gs.props,[id]:{...pd,owner:myId}}
+    };
+    gs=addLog(gs,`${gs.players[myId].name} забрал ${sp.name}! 👑`);
+    if(amHost){GS=gs;bcastState();}
+    else send(hostConn,{t:'ACTION',action:{type:'CHEAT_CMD',playerId:myId,gs}});
+    notif(`👑 Забрал ${sp.name}!`,2500);
+    return;
+  }
   if(['property','railroad','utility'].includes(sp.type)){
     const owner=pd?.owner?GS.players[pd.owner]?.name:'Свободен';
     const price=!pd?`  Цена: $${sp.price}`:'';
