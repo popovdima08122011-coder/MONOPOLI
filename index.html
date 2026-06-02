@@ -1,491 +1,491 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
-  <title>МОНОПОЛИЯ — Онлайн</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-  <script>
-    // Загружаем PeerJS из нескольких CDN
-    (function loadPeerJS(){
-      const CDNs=[
-        'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',
-        'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js',
-      ];
-      let idx=0;
-      function tryNext(){
-        if(idx>=CDNs.length){document.getElementById('peerjs-err').style.display='block';return;}
-        const s=document.createElement('script');s.src=CDNs[idx++];s.crossOrigin='anonymous';
-        s.onload=()=>{window._peerjsLoaded=true;};
-        s.onerror=()=>tryNext();
-        document.head.appendChild(s);
-      }
-      tryNext();
-    })();
-  </script>
-  <style>
-    :root{
-      --bg: #0e0e1a;
-      --panel: #16162a;
-      --panel2: #1c1c30;
-      --border: rgba(255,255,255,.08);
-      --gold: #f6c90e;
-      --purple: #7c3aed;
-      --purple2: #5b21b6;
-      --blue: #2563eb;
-      --green: #16a34a;
-      --red: #dc2626;
-      --text: #e2e8f0;
-      --muted: #64748b;
-    }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>МОНОПОЛИЯ — Онлайн</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script>
+// Загружаем PeerJS из нескольких CDN
+(function loadPeerJS(){
+  const CDNs=[
+    'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js',
+    'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.5.4/peerjs.min.js',
+  ];
+  let idx=0;
+  function tryNext(){
+    if(idx>=CDNs.length){document.getElementById('peerjs-err').style.display='block';return;}
+    const s=document.createElement('script');s.src=CDNs[idx++];s.crossOrigin='anonymous';
+    s.onload=()=>{window._peerjsLoaded=true;};
+    s.onerror=()=>tryNext();
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
+<style>
+:root{
+  --bg: #0e0e1a;
+  --panel: #16162a;
+  --panel2: #1c1c30;
+  --border: rgba(255,255,255,.08);
+  --gold: #f6c90e;
+  --purple: #7c3aed;
+  --purple2: #5b21b6;
+  --blue: #2563eb;
+  --green: #16a34a;
+  --red: #dc2626;
+  --text: #e2e8f0;
+  --muted: #64748b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 
-    /* ─── SCREENS ─── */
-    .screen{display:none;width:100%;height:100vh}
-    .screen.active{display:flex}
+/* ─── SCREENS ─── */
+.screen{display:none;width:100%;height:100vh}
+.screen.active{display:flex}
 
-    /* ══════════════════════════════════
-       HOME
-    ══════════════════════════════════ */
-    #s-home{
-      flex-direction:column;align-items:center;justify-content:center;
-      background:radial-gradient(ellipse at 30% 40%,#1e1040 0%,#0e0e1a 60%),
-      radial-gradient(ellipse at 70% 60%,#0f2040 0%,transparent 60%);
-      padding:20px;overflow-y:auto;
-    }
-    .home-logo{
-      font-family:'Bebas Neue',cursive;
-      font-size:clamp(3.5rem,10vw,7rem);letter-spacing:10px;
-      background:linear-gradient(135deg,#fff 0%,var(--gold) 40%,#ff8c00 70%,var(--gold) 100%);
-      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      animation:logoIn .8s cubic-bezier(.16,1,.3,1) both;
-      filter:drop-shadow(0 0 40px rgba(246,201,14,.25));
-      line-height:1;
-    }
-    @keyframes logoIn{from{opacity:0;transform:translateY(-40px)scale(.85)}to{opacity:1;transform:none}}
-    .home-sub{font-size:.75rem;letter-spacing:5px;color:rgba(255,255,255,.3);text-transform:uppercase;margin:6px 0 36px;animation:fadeUp .7s .2s both}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+/* ══════════════════════════════════
+   HOME
+══════════════════════════════════ */
+#s-home{
+  flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 30% 40%,#1e1040 0%,#0e0e1a 60%),
+             radial-gradient(ellipse at 70% 60%,#0f2040 0%,transparent 60%);
+  padding:20px;overflow-y:auto;
+}
+.home-logo{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(3.5rem,10vw,7rem);letter-spacing:10px;
+  background:linear-gradient(135deg,#fff 0%,var(--gold) 40%,#ff8c00 70%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:logoIn .8s cubic-bezier(.16,1,.3,1) both;
+  filter:drop-shadow(0 0 40px rgba(246,201,14,.25));
+  line-height:1;
+}
+@keyframes logoIn{from{opacity:0;transform:translateY(-40px)scale(.85)}to{opacity:1;transform:none}}
+.home-sub{font-size:.75rem;letter-spacing:5px;color:rgba(255,255,255,.3);text-transform:uppercase;margin:6px 0 36px;animation:fadeUp .7s .2s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-    .home-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:860px}
-    .hcard{
-      flex:1;min-width:280px;max-width:380px;
-      background:linear-gradient(145deg,rgba(28,28,52,.9),rgba(20,20,40,.95));
-      border:1px solid rgba(124,58,237,.25);border-radius:20px;padding:32px;
-      backdrop-filter:blur(20px);
-      animation:fadeUp .7s both;
-      transition:transform .3s,box-shadow .3s;
-      box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 0 1px rgba(124,58,237,.1);
-    }
-    .hcard:nth-child(2){animation-delay:.12s}
-    .hcard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(124,58,237,.2),0 0 0 1px rgba(124,58,237,.3)}
-    .hcard-icon{font-size:2.5rem;margin-bottom:14px;display:block}
-    .hcard h2{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:3px;color:var(--gold);margin-bottom:18px}
+.home-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:860px}
+.hcard{
+  flex:1;min-width:280px;max-width:380px;
+  background:linear-gradient(145deg,rgba(28,28,52,.9),rgba(20,20,40,.95));
+  border:1px solid rgba(124,58,237,.25);border-radius:20px;padding:32px;
+  backdrop-filter:blur(20px);
+  animation:fadeUp .7s both;
+  transition:transform .3s,box-shadow .3s;
+  box-shadow:0 8px 32px rgba(0,0,0,.4),0 0 0 1px rgba(124,58,237,.1);
+}
+.hcard:nth-child(2){animation-delay:.12s}
+.hcard:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(124,58,237,.2),0 0 0 1px rgba(124,58,237,.3)}
+.hcard-icon{font-size:2.5rem;margin-bottom:14px;display:block}
+.hcard h2{font-family:'Bebas Neue',cursive;font-size:1.8rem;letter-spacing:3px;color:var(--gold);margin-bottom:18px}
 
-    .inp{
-      width:100%;padding:12px 16px;border-radius:10px;
-      background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
-      color:var(--text);font-family:'Inter',sans-serif;font-size:.95rem;font-weight:500;
-      outline:none;margin-bottom:12px;transition:border-color .2s,background .2s;
-    }
-    .inp:focus{border-color:var(--purple);background:rgba(124,58,237,.08)}
-    .inp::placeholder{color:#3a3a5c}
-    .inp.code-inp{text-align:left;font-size:.82rem;letter-spacing:1px;word-break:break-all}
+.inp{
+  width:100%;padding:12px 16px;border-radius:10px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:var(--text);font-family:'Inter',sans-serif;font-size:.95rem;font-weight:500;
+  outline:none;margin-bottom:12px;transition:border-color .2s,background .2s;
+}
+.inp:focus{border-color:var(--purple);background:rgba(124,58,237,.08)}
+.inp::placeholder{color:#3a3a5c}
+.inp.code-inp{text-align:left;font-size:.82rem;letter-spacing:1px;word-break:break-all}
 
-    .btn{
-      display:flex;align-items:center;justify-content:center;gap:8px;
-      width:100%;padding:13px 20px;border-radius:10px;border:none;cursor:pointer;
-      font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;
-      transition:all .18s;margin-bottom:8px;position:relative;overflow:hidden;
-    }
-    .btn:active{transform:scale(.97)}
-    .btn:disabled{opacity:.4;cursor:not-allowed}
-    .btn-purple{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.3)}
-    .btn-purple:hover:not(:disabled){box-shadow:0 6px 28px rgba(124,58,237,.5);filter:brightness(1.1)}
-    .btn-blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.3)}
-    .btn-green{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;box-shadow:0 4px 16px rgba(34,197,94,.25)}
-    .btn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
-    .btn-ghost{background:rgba(255,255,255,.06);color:#94a3b8;border:1px solid rgba(255,255,255,.1)}
-    .btn-ghost:hover:not(:disabled){background:rgba(255,255,255,.1);color:var(--text)}
-    .btn-gold{background:linear-gradient(135deg,var(--gold),#e67e22);color:#111;font-weight:800}
-    .btn-sm{padding:7px 14px;font-size:.78rem;width:auto;margin:0}
+.btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:13px 20px;border-radius:10px;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:.92rem;font-weight:700;
+  transition:all .18s;margin-bottom:8px;position:relative;overflow:hidden;
+}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-purple{background:linear-gradient(135deg,var(--purple),var(--purple2));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,.3)}
+.btn-purple:hover:not(:disabled){box-shadow:0 6px 28px rgba(124,58,237,.5);filter:brightness(1.1)}
+.btn-blue{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 4px 16px rgba(59,130,246,.3)}
+.btn-green{background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;box-shadow:0 4px 16px rgba(34,197,94,.25)}
+.btn-red{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
+.btn-ghost{background:rgba(255,255,255,.06);color:#94a3b8;border:1px solid rgba(255,255,255,.1)}
+.btn-ghost:hover:not(:disabled){background:rgba(255,255,255,.1);color:var(--text)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e67e22);color:#111;font-weight:800}
+.btn-sm{padding:7px 14px;font-size:.78rem;width:auto;margin:0}
 
-    /* Ripple */
-    .rpl{position:absolute;border-radius:50%;background:rgba(255,255,255,.25);transform:scale(0);animation:rplA .5s linear;pointer-events:none}
-    @keyframes rplA{to{transform:scale(4);opacity:0}}
+/* Ripple */
+.rpl{position:absolute;border-radius:50%;background:rgba(255,255,255,.25);transform:scale(0);animation:rplA .5s linear;pointer-events:none}
+@keyframes rplA{to{transform:scale(4);opacity:0}}
 
-    .err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 13px;color:#fca5a5;font-size:.82rem;margin-bottom:10px;animation:shake .3s}
-    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:9px 13px;color:#fca5a5;font-size:.82rem;margin-bottom:10px;animation:shake .3s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-    .lbl{font-size:.75rem;color:#64748b;display:block;margin-bottom:5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
-    .divider{height:1px;background:rgba(255,255,255,.07);margin:18px 0}
-    .tip{font-size:.7rem;color:#2a2a4a;text-align:center;margin-top:14px;letter-spacing:1px}
+.lbl{font-size:.75rem;color:#64748b;display:block;margin-bottom:5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+.divider{height:1px;background:rgba(255,255,255,.07);margin:18px 0}
+.tip{font-size:.7rem;color:#2a2a4a;text-align:center;margin-top:14px;letter-spacing:1px}
 
-    .file-warn{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:14px 20px;max-width:640px;font-size:.8rem;color:#fca5a5;line-height:1.7;text-align:center;margin-top:12px}
+.file-warn{display:none;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:14px;padding:14px 20px;max-width:640px;font-size:.8rem;color:#fca5a5;line-height:1.7;text-align:center;margin-top:12px}
 
-    /* ══════════════════════════════════
-       LOBBY
-    ══════════════════════════════════ */
-    #s-lobby{
-      flex-direction:column;align-items:center;justify-content:center;
-      background:radial-gradient(ellipse at 30% 40%,#1e1040,#0e0e1a 60%);
-      padding:20px;overflow-y:auto;
-    }
-    .lobby-wrap{display:flex;gap:20px;width:100%;max-width:900px;flex-wrap:wrap;justify-content:center}
-    .lcard{
-      flex:1;min-width:280px;max-width:420px;
-      background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px;
-      animation:fadeUp .6s both;
-    }
-    .lcard:nth-child(2){animation-delay:.1s}
-    .lcard h2{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:3px;color:var(--gold);margin-bottom:16px}
-    .panel-title{font-size:.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-    .room-code-box{
-      background:rgba(124,58,237,.1);border:1px dashed rgba(124,58,237,.4);
-      border-radius:12px;padding:14px;margin:10px 0 6px;cursor:pointer;
-      font-size:.8rem;word-break:break-all;line-height:1.5;color:var(--gold);font-weight:700;
-      animation:codePulse 2.5s ease-in-out infinite;text-align:center;
-    }
-    @keyframes codePulse{0%,100%{border-color:rgba(124,58,237,.4)}50%{border-color:rgba(124,58,237,.8);box-shadow:0 0 12px rgba(124,58,237,.2)}}
-    .plist{display:flex;flex-direction:column;gap:7px;margin:8px 0}
-    .pitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);animation:slideIn .4s both}
-    @keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
-    .pavatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:2px solid transparent}
-    .pname-t{font-weight:700;font-size:.88rem}
-    .prole-t{font-size:.68rem;color:var(--muted)}
-    .live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 7px #22c55e;margin-left:auto;animation:liveBlink 2s ease-in-out infinite;flex-shrink:0}
-    @keyframes liveBlink{0%,100%{opacity:1;box-shadow:0 0 7px #22c55e}50%{opacity:.4;box-shadow:none}}
-    .chat-box{height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;margin-bottom:8px;scrollbar-width:thin;scrollbar-color:#2a2a4a transparent}
-    .cmsg{font-size:.73rem;line-height:1.3;padding:4px 8px;border-radius:6px}
-    .csys{color:#f6c90e;background:rgba(246,201,14,.06);font-style:italic}
-    .cnm{font-weight:700;color:#a78bfa}
-    .chat-row{display:flex;gap:6px}
-    .chat-row .inp{flex:1;margin:0;padding:8px 12px;font-size:.78rem}
+/* ══════════════════════════════════
+   LOBBY
+══════════════════════════════════ */
+#s-lobby{
+  flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 30% 40%,#1e1040,#0e0e1a 60%);
+  padding:20px;overflow-y:auto;
+}
+.lobby-wrap{display:flex;gap:20px;width:100%;max-width:900px;flex-wrap:wrap;justify-content:center}
+.lcard{
+  flex:1;min-width:280px;max-width:420px;
+  background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:24px;
+  animation:fadeUp .6s both;
+}
+.lcard:nth-child(2){animation-delay:.1s}
+.lcard h2{font-family:'Bebas Neue',cursive;font-size:1.6rem;letter-spacing:3px;color:var(--gold);margin-bottom:16px}
+.panel-title{font-size:.65rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.room-code-box{
+  background:rgba(124,58,237,.1);border:1px dashed rgba(124,58,237,.4);
+  border-radius:12px;padding:14px;margin:10px 0 6px;cursor:pointer;
+  font-size:.8rem;word-break:break-all;line-height:1.5;color:var(--gold);font-weight:700;
+  animation:codePulse 2.5s ease-in-out infinite;text-align:center;
+}
+@keyframes codePulse{0%,100%{border-color:rgba(124,58,237,.4)}50%{border-color:rgba(124,58,237,.8);box-shadow:0 0 12px rgba(124,58,237,.2)}}
+.plist{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.pitem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);animation:slideIn .4s both}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+.pavatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;border:2px solid transparent}
+.pname-t{font-weight:700;font-size:.88rem}
+.prole-t{font-size:.68rem;color:var(--muted)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 7px #22c55e;margin-left:auto;animation:liveBlink 2s ease-in-out infinite;flex-shrink:0}
+@keyframes liveBlink{0%,100%{opacity:1;box-shadow:0 0 7px #22c55e}50%{opacity:.4;box-shadow:none}}
+.chat-box{height:140px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;margin-bottom:8px;scrollbar-width:thin;scrollbar-color:#2a2a4a transparent}
+.cmsg{font-size:.73rem;line-height:1.3;padding:4px 8px;border-radius:6px}
+.csys{color:#f6c90e;background:rgba(246,201,14,.06);font-style:italic}
+.cnm{font-weight:700;color:#a78bfa}
+.chat-row{display:flex;gap:6px}
+.chat-row .inp{flex:1;margin:0;padding:8px 12px;font-size:.78rem}
 
-    /* ══════════════════════════════════
-       GAME SCREEN
-    ══════════════════════════════════ */
-    #s-game{
-      flex-direction:row;background:var(--bg);
-      height:100vh;overflow:hidden;
-    }
+/* ══════════════════════════════════
+   GAME SCREEN
+══════════════════════════════════ */
+#s-game{
+  flex-direction:row;background:var(--bg);
+  height:100vh;overflow:hidden;
+}
 
-    /* ── Left sidebar ── */
-    .left-sidebar{
-      width:220px;flex-shrink:0;
-      background:var(--panel);
-      border-right:1px solid var(--border);
-      display:flex;flex-direction:column;
-      overflow-y:auto;overflow-x:hidden;
-      padding:12px 10px;gap:8px;
-    }
+/* ── Left sidebar ── */
+.left-sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+  padding:12px 10px;gap:8px;
+}
 
-    /* ── Board area ── */
-    .board-area{
-      flex:1;display:flex;align-items:center;justify-content:center;
-      min-width:0;padding:8px;
-      background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
-      position:relative;overflow:hidden;
-    }
+/* ── Board area ── */
+.board-area{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  min-width:0;padding:8px;
+  background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
+  position:relative;overflow:hidden;
+}
 
-    /* ── Right sidebar ── */
-    .right-sidebar{
-      width:220px;flex-shrink:0;
-      background:var(--panel);
-      border-left:1px solid var(--border);
-      display:flex;flex-direction:column;
-      overflow-y:auto;overflow-x:hidden;
-      padding:12px 10px;gap:8px;
-    }
+/* ── Right sidebar ── */
+.right-sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--panel);
+  border-left:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;overflow-x:hidden;
+  padding:12px 10px;gap:8px;
+}
 
-    /* Panel card */
-    .pcard{
-      background:var(--panel2);border:1px solid rgba(255,255,255,.06);
-      border-radius:12px;padding:11px;flex-shrink:0;
-    }
-    .pcard .panel-title{color:#a78bfa;font-size:.6rem;letter-spacing:2px;margin-bottom:8px}
+/* Panel card */
+.pcard{
+  background:var(--panel2);border:1px solid rgba(255,255,255,.06);
+  border-radius:12px;padding:11px;flex-shrink:0;
+}
+.pcard .panel-title{color:#a78bfa;font-size:.6rem;letter-spacing:2px;margin-bottom:8px}
 
-    /* ── Player cards ── */
-    .gc{
-      display:flex;align-items:center;gap:8px;
-      padding:9px 10px;border-radius:10px;
-      border:1px solid rgba(255,255,255,.06);
-      margin-bottom:5px;background:rgba(255,255,255,.02);
-      transition:all .25s;
-    }
-    .gc.cur{
-      border-color:rgba(124,58,237,.6);
-      background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(91,33,182,.06));
-      box-shadow:0 0 16px rgba(124,58,237,.2);
-      animation:curPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes curPulse{from{box-shadow:0 0 10px rgba(124,58,237,.15)}to{box-shadow:0 0 24px rgba(124,58,237,.35)}}
-    .gc.bust{opacity:.25;filter:grayscale(1)}
-    .gc-avatar{
-      width:32px;height:32px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;font-size:.95rem;
-      flex-shrink:0;border:2px solid transparent;
-    }
-    .gc-info{flex:1;min-width:0}
-    .gc-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .gc-money{font-size:.85rem;font-weight:900;color:#4ade80}
-    .gc-pos{font-size:.62rem;color:#4a5568;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .gc-badge{font-size:.58rem;font-weight:900;padding:2px 6px;border-radius:6px;flex-shrink:0;letter-spacing:.5px}
-    .cur-badge{background:rgba(124,58,237,.25);color:#a78bfa;border:1px solid rgba(124,58,237,.4)}
-    .bust-badge{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.35)}
+/* ── Player cards ── */
+.gc{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 10px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
+  margin-bottom:5px;background:rgba(255,255,255,.02);
+  transition:all .25s;
+}
+.gc.cur{
+  border-color:rgba(124,58,237,.6);
+  background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(91,33,182,.06));
+  box-shadow:0 0 16px rgba(124,58,237,.2);
+  animation:curPulse 2s ease-in-out infinite alternate;
+}
+@keyframes curPulse{from{box-shadow:0 0 10px rgba(124,58,237,.15)}to{box-shadow:0 0 24px rgba(124,58,237,.35)}}
+.gc.bust{opacity:.25;filter:grayscale(1)}
+.gc-avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+  flex-shrink:0;border:2px solid transparent;
+}
+.gc-info{flex:1;min-width:0}
+.gc-name{font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-money{font-size:.85rem;font-weight:900;color:#4ade80}
+.gc-pos{font-size:.62rem;color:#4a5568;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-badge{font-size:.58rem;font-weight:900;padding:2px 6px;border-radius:6px;flex-shrink:0;letter-spacing:.5px}
+.cur-badge{background:rgba(124,58,237,.25);color:#a78bfa;border:1px solid rgba(124,58,237,.4)}
+.bust-badge{background:rgba(239,68,68,.2);color:#f87171;border:1px solid rgba(239,68,68,.35)}
 
-    /* ── Action buttons ── */
-    #panel-actions .btn{margin-bottom:5px;font-size:.8rem;padding:9px 12px}
+/* ── Action buttons ── */
+#panel-actions .btn{margin-bottom:5px;font-size:.8rem;padding:9px 12px}
 
-    /* ── Dice (small) ── */
-    .dice-wrap{text-align:center}
-    .dice-row{display:flex;gap:10px;justify-content:center;margin:7px 0}
-    .die{
-      width:42px;height:42px;
-      background:linear-gradient(145deg,#fff,#eee);
-      border-radius:9px;display:flex;align-items:center;justify-content:center;
-      font-size:1.75rem;
-      box-shadow:0 4px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.9);
-    }
-    .dice-lbl{font-size:.7rem;color:#4a5568}
+/* ── Dice (small) ── */
+.dice-wrap{text-align:center}
+.dice-row{display:flex;gap:10px;justify-content:center;margin:7px 0}
+.die{
+  width:42px;height:42px;
+  background:linear-gradient(145deg,#fff,#eee);
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-size:1.75rem;
+  box-shadow:0 4px 12px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.9);
+}
+.dice-lbl{font-size:.7rem;color:#4a5568}
 
-    /* ── Log ── */
-    .glog{height:95px;overflow-y:auto;font-size:.67rem;scrollbar-width:thin;scrollbar-color:#1e1e30 transparent}
-    .loge{padding:3px 2px;border-bottom:1px solid rgba(255,255,255,.04);color:#4a5568;line-height:1.3}
-    .loge:last-child{color:#cbd5e1;font-weight:600}
+/* ── Log ── */
+.glog{height:95px;overflow-y:auto;font-size:.67rem;scrollbar-width:thin;scrollbar-color:#1e1e30 transparent}
+.loge{padding:3px 2px;border-bottom:1px solid rgba(255,255,255,.04);color:#4a5568;line-height:1.3}
+.loge:last-child{color:#cbd5e1;font-weight:600}
 
-    /* ── Prop list ── */
-    .proplist{display:flex;flex-direction:column;gap:3px;max-height:130px;overflow-y:auto}
-    .propitem{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:8px;background:rgba(255,255,255,.03);font-size:.72rem;border:1px solid rgba(255,255,255,.04)}
-    .propdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-    .propname{font-weight:700;font-size:.72rem}
-    .propinfo{font-size:.63rem;color:#4a5568}
+/* ── Prop list ── */
+.proplist{display:flex;flex-direction:column;gap:3px;max-height:130px;overflow-y:auto}
+.propitem{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:8px;background:rgba(255,255,255,.03);font-size:.72rem;border:1px solid rgba(255,255,255,.04)}
+.propdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.propname{font-weight:700;font-size:.72rem}
+.propinfo{font-size:.63rem;color:#4a5568}
 
-    /* ── Auction ── */
-    .aucbox{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px}
-    .aucprice{font-size:1.8rem;font-weight:900;color:#f87171}
+/* ── Auction ── */
+.aucbox{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:10px;text-align:center;margin-bottom:8px}
+.aucprice{font-size:1.8rem;font-weight:900;color:#f87171}
 
-    /* ═══════════════════════
-       THE BOARD
-    ═══════════════════════ */
-    .board{
-      display:grid;
-      grid-template-columns:88px repeat(9,1fr) 88px;
-      grid-template-rows:88px repeat(9,1fr) 88px;
-      width:min(700px, calc(100vh - 16px));
-      height:min(700px, calc(100vh - 16px));
-      background:#0d1f0d;
-      border:3px solid #1b4d1b;
-      border-radius:4px;
-      box-shadow:
-              0 0 0 1px rgba(27,77,27,.6),
-              0 0 30px rgba(27,77,27,.4),
-              0 0 80px rgba(27,77,27,.15),
-              0 20px 60px rgba(0,0,0,.8);
-      flex-shrink:0;
-      animation:boardIn .8s cubic-bezier(.16,1,.3,1) both;
-    }
-    @keyframes boardIn{from{opacity:0;transform:scale(.85)rotateX(12deg)}to{opacity:1;transform:none}}
+/* ═══════════════════════
+   THE BOARD
+═══════════════════════ */
+.board{
+  display:grid;
+  grid-template-columns:88px repeat(9,1fr) 88px;
+  grid-template-rows:88px repeat(9,1fr) 88px;
+  width:min(700px, calc(100vh - 16px));
+  height:min(700px, calc(100vh - 16px));
+  background:#0d1f0d;
+  border:3px solid #1b4d1b;
+  border-radius:4px;
+  box-shadow:
+    0 0 0 1px rgba(27,77,27,.6),
+    0 0 30px rgba(27,77,27,.4),
+    0 0 80px rgba(27,77,27,.15),
+    0 20px 60px rgba(0,0,0,.8);
+  flex-shrink:0;
+  animation:boardIn .8s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes boardIn{from{opacity:0;transform:scale(.85)rotateX(12deg)}to{opacity:1;transform:none}}
 
-    /* ── Center ── */
-    .bc-inner{
-      position:absolute;inset:3px;
-      background:linear-gradient(145deg,#0a1a0a,#0d1a0d,#0a160a);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      gap:6px;overflow:hidden;
-    }
-    .bc-inner::before{
-      content:'';position:absolute;inset:0;
-      background:radial-gradient(ellipse at 50% 50%,rgba(27,94,32,.1),transparent 70%);
-      pointer-events:none;
-    }
-    .bc-logo{
-      font-family:'Bebas Neue',cursive;
-      font-size:clamp(1.4rem,3.5vw,2.8rem);letter-spacing:5px;
-      background:linear-gradient(135deg,#ffd700,#ff8c00,#ffd700);
-      background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-      animation:logoShimmer 3s ease-in-out infinite;position:relative;z-index:1;
-    }
-    @keyframes logoShimmer{0%,100%{background-position:0%}50%{background-position:100%}}
-    .bc-sub{font-size:clamp(.4rem,.9vw,.7rem);color:rgba(255,215,0,.25);letter-spacing:3px;text-transform:uppercase;position:relative;z-index:1}
+/* ── Center ── */
+.bc-inner{
+  position:absolute;inset:3px;
+  background:linear-gradient(145deg,#0a1a0a,#0d1a0d,#0a160a);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;overflow:hidden;
+}
+.bc-inner::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(27,94,32,.1),transparent 70%);
+  pointer-events:none;
+}
+.bc-logo{
+  font-family:'Bebas Neue',cursive;
+  font-size:clamp(1.4rem,3.5vw,2.8rem);letter-spacing:5px;
+  background:linear-gradient(135deg,#ffd700,#ff8c00,#ffd700);
+  background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:logoShimmer 3s ease-in-out infinite;position:relative;z-index:1;
+}
+@keyframes logoShimmer{0%,100%{background-position:0%}50%{background-position:100%}}
+.bc-sub{font-size:clamp(.4rem,.9vw,.7rem);color:rgba(255,215,0,.25);letter-spacing:3px;text-transform:uppercase;position:relative;z-index:1}
 
-    /* Dice in center of board */
-    .center-dice{
-      display:none;flex-direction:row;align-items:center;justify-content:center;
-      gap:16px;position:relative;z-index:10;
-      animation:diceAppear .3s cubic-bezier(.16,1,.3,1);
-    }
-    @keyframes diceAppear{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
-    .cdice{
-      width:min(10vw,80px);height:min(10vw,80px);
-      background:linear-gradient(145deg,#fff,#ddd);
-      border-radius:16px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:min(5vw,42px);
-      box-shadow:
-              0 8px 24px rgba(0,0,0,.8),
-              0 0 0 2px rgba(255,255,255,.3),
-              inset 0 2px 4px rgba(255,255,255,.8);
-      transform-style:preserve-3d;
-      transition:transform .1s;
-    }
-    .cdice.spin{animation:diceSpin .12s ease-in-out}
-    @keyframes diceSpin{0%{transform:rotate3d(1,1,1,0deg)scale(1)}50%{transform:rotate3d(1,1,0,180deg)scale(1.15)}100%{transform:rotate3d(1,1,1,360deg)scale(1)}}
-    .cdice.land{animation:diceLand .4s cubic-bezier(.36,.07,.19,.97)}
-    @keyframes diceLand{0%{transform:scale(1.3)rotate(10deg)}40%{transform:scale(.9)rotate(-5deg)}70%{transform:scale(1.05)}100%{transform:scale(1)rotate(0)}}
-    .cdice-plus{font-family:'Bebas Neue';font-size:min(3vw,24px);color:rgba(255,255,255,.3)}
+/* Dice in center of board */
+.center-dice{
+  display:none;flex-direction:row;align-items:center;justify-content:center;
+  gap:16px;position:relative;z-index:10;
+  animation:diceAppear .3s cubic-bezier(.16,1,.3,1);
+}
+@keyframes diceAppear{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+.cdice{
+  width:min(10vw,80px);height:min(10vw,80px);
+  background:linear-gradient(145deg,#fff,#ddd);
+  border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:min(5vw,42px);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.8),
+    0 0 0 2px rgba(255,255,255,.3),
+    inset 0 2px 4px rgba(255,255,255,.8);
+  transform-style:preserve-3d;
+  transition:transform .1s;
+}
+.cdice.spin{animation:diceSpin .12s ease-in-out}
+@keyframes diceSpin{0%{transform:rotate3d(1,1,1,0deg)scale(1)}50%{transform:rotate3d(1,1,0,180deg)scale(1.15)}100%{transform:rotate3d(1,1,1,360deg)scale(1)}}
+.cdice.land{animation:diceLand .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes diceLand{0%{transform:scale(1.3)rotate(10deg)}40%{transform:scale(.9)rotate(-5deg)}70%{transform:scale(1.05)}100%{transform:scale(1)rotate(0)}}
+.cdice-plus{font-family:'Bebas Neue';font-size:min(3vw,24px);color:rgba(255,255,255,.3)}
 
-    /* Center cards/info */
-    #center-info{position:relative;z-index:2;width:90%;display:flex;align-items:center;justify-content:center}
-    .center-card{
-      padding:10px 14px;border-radius:10px;text-align:center;max-width:160px;
-      animation:popIn .3s cubic-bezier(.16,1,.3,1);
-    }
-    @keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
-    .card-chance{background:rgba(246,201,14,.1);border:1px solid rgba(246,201,14,.3)}
-    .card-comm{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3)}
-    .center-card-type{font-size:.62rem;font-weight:900;letter-spacing:1px;margin-bottom:4px}
-    .center-card-text{font-size:min(1.5vw,.65rem);color:#cbd5e1;line-height:1.35}
-    .center-auction{text-align:center;animation:popIn .3s cubic-bezier(.16,1,.3,1)}
-    .center-turn{text-align:center;animation:fadeIn .4s ease}
-    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-    .center-turn-tok{font-size:min(4vw,2.2rem);filter:drop-shadow(0 0 12px currentColor)}
-    .center-turn-name{font-size:min(1.5vw,.75rem);font-weight:700;color:#e2e8f0;margin:3px 0}
-    .center-turn-label{font-size:min(1.2vw,.62rem);color:#4a5568;letter-spacing:1px}
+/* Center cards/info */
+#center-info{position:relative;z-index:2;width:90%;display:flex;align-items:center;justify-content:center}
+.center-card{
+  padding:10px 14px;border-radius:10px;text-align:center;max-width:160px;
+  animation:popIn .3s cubic-bezier(.16,1,.3,1);
+}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+.card-chance{background:rgba(246,201,14,.1);border:1px solid rgba(246,201,14,.3)}
+.card-comm{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3)}
+.center-card-type{font-size:.62rem;font-weight:900;letter-spacing:1px;margin-bottom:4px}
+.center-card-text{font-size:min(1.5vw,.65rem);color:#cbd5e1;line-height:1.35}
+.center-auction{text-align:center;animation:popIn .3s cubic-bezier(.16,1,.3,1)}
+.center-turn{text-align:center;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.center-turn-tok{font-size:min(4vw,2.2rem);filter:drop-shadow(0 0 12px currentColor)}
+.center-turn-name{font-size:min(1.5vw,.75rem);font-weight:700;color:#e2e8f0;margin:3px 0}
+.center-turn-label{font-size:min(1.2vw,.62rem);color:#4a5568;letter-spacing:1px}
 
-    /* ── Board spaces ── */
-    .sp{
-      border:1px solid rgba(0,0,0,.5);
-      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
-      cursor:pointer;position:relative;overflow:hidden;
-      background:#f8f4ea;
-      text-align:center;transition:filter .12s,transform .15s;
-      gap:0;
-    }
-    .sp:hover{filter:brightness(.82);transform:scale(1.06);z-index:30;box-shadow:0 0 14px rgba(124,58,237,.5)}
+/* ── Board spaces ── */
+.sp{
+  border:1px solid rgba(0,0,0,.5);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  cursor:pointer;position:relative;overflow:hidden;
+  background:#f8f4ea;
+  text-align:center;transition:filter .12s,transform .15s;
+  gap:0;
+}
+.sp:hover{filter:brightness(.82);transform:scale(1.06);z-index:30;box-shadow:0 0 14px rgba(124,58,237,.5)}
 
-    .sp-corner{
-      background:linear-gradient(135deg,#c8edcc,#a8ddb0)!important;
-      display:flex;flex-direction:column;align-items:center;justify-content:center!important;
-      gap:3px;padding:4px;
-    }
-    .sp-corner-icon{font-size:min(3.5vw,24px)}
-    .sp-corner-label{font-size:min(1.2vw,.52rem);font-weight:900;color:#1a3a1a;letter-spacing:.5px;line-height:1}
+.sp-corner{
+  background:linear-gradient(135deg,#c8edcc,#a8ddb0)!important;
+  display:flex;flex-direction:column;align-items:center;justify-content:center!important;
+  gap:3px;padding:4px;
+}
+.sp-corner-icon{font-size:min(3.5vw,24px)}
+.sp-corner-label{font-size:min(1.2vw,.52rem);font-weight:900;color:#1a3a1a;letter-spacing:.5px;line-height:1}
 
-    .sp-color-bar{position:absolute;top:0;left:0;right:0;height:28%;z-index:2}
+.sp-color-bar{position:absolute;top:0;left:0;right:0;height:28%;z-index:2}
 
-    .sp-flag{font-size:min(2.2vw,14px);line-height:1;z-index:3;margin-top:30%}
-    .sp-name{
-      font-size:min(1.45vw,.58rem);line-height:1.1;
-      z-index:3;word-break:break-word;max-width:100%;
-      font-weight:800;color:#111;padding:0 1px;
-    }
-    .sp-price{font-size:min(1.2vw,.48rem);color:#555;z-index:3;font-weight:700}
+.sp-flag{font-size:min(2.2vw,14px);line-height:1;z-index:3;margin-top:30%}
+.sp-name{
+  font-size:min(1.45vw,.58rem);line-height:1.1;
+  z-index:3;word-break:break-word;max-width:100%;
+  font-weight:800;color:#111;padding:0 1px;
+}
+.sp-price{font-size:min(1.2vw,.48rem);color:#555;z-index:3;font-weight:700}
 
-    .sp-special-icon{font-size:min(2.5vw,16px);z-index:3;margin-bottom:2px}
-    .sp-special-name{font-size:min(1.2vw,.46rem);font-weight:800;color:#333;z-index:3;line-height:1.1;padding:0 1px;word-break:break-word}
+.sp-special-icon{font-size:min(2.5vw,16px);z-index:3;margin-bottom:2px}
+.sp-special-name{font-size:min(1.2vw,.46rem);font-weight:800;color:#333;z-index:3;line-height:1.1;padding:0 1px;word-break:break-word}
 
-    .sp-tokens{
-      display:flex;flex-wrap:wrap;gap:1px;
-      position:absolute;bottom:2px;left:1px;right:1px;
-      justify-content:center;z-index:20;
-    }
-    .tok{font-size:min(2vw,11px);filter:drop-shadow(0 1px 3px rgba(0,0,0,.8))}
+.sp-tokens{
+  display:flex;flex-wrap:wrap;gap:1px;
+  position:absolute;bottom:2px;left:1px;right:1px;
+  justify-content:center;z-index:20;
+}
+.tok{font-size:min(2vw,11px);filter:drop-shadow(0 1px 3px rgba(0,0,0,.8))}
 
-    .sp-houses{
-      position:absolute;top:29%;left:1px;right:1px;
-      display:flex;justify-content:center;gap:1px;z-index:10;
-    }
-    .hdot{width:4px;height:5px;background:#22c55e;border-radius:1px;box-shadow:0 0 3px #22c55e}
-    .hotdot{
-      width:90%;height:5px;background:#dc2626;border-radius:2px;
-      display:flex;align-items:center;justify-content:center;
-      font-size:5px;color:#fff;font-weight:900;box-shadow:0 0 6px #dc2626;
-    }
-    .sp-own{
-      position:absolute;top:28%;right:1px;
-      width:6px;height:6px;border-radius:50%;z-index:11;
-    }
+.sp-houses{
+  position:absolute;top:29%;left:1px;right:1px;
+  display:flex;justify-content:center;gap:1px;z-index:10;
+}
+.hdot{width:4px;height:5px;background:#22c55e;border-radius:1px;box-shadow:0 0 3px #22c55e}
+.hotdot{
+  width:90%;height:5px;background:#dc2626;border-radius:2px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:5px;color:#fff;font-weight:900;box-shadow:0 0 6px #dc2626;
+}
+.sp-own{
+  position:absolute;top:28%;right:1px;
+  width:6px;height:6px;border-radius:50%;z-index:11;
+}
 
-    /* ── Modals ── */
-    .moverlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.75);
-      display:flex;align-items:center;justify-content:center;
-      z-index:500;backdrop-filter:blur(8px);padding:16px;
-    }
-    .modal{
-      background:linear-gradient(145deg,#13132a,#16162e);
-      border:1px solid rgba(124,58,237,.2);border-radius:18px;
-      padding:24px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto;
-      box-shadow:0 24px 60px rgba(0,0,0,.7);
-      animation:modalIn .3s cubic-bezier(.16,1,.3,1);
-    }
-    @keyframes modalIn{from{opacity:0;transform:translateY(30px)scale(.95)}to{opacity:1;transform:none}}
-    .modal h3{font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:3px;color:var(--gold);margin-bottom:14px}
-    .bi{background:rgba(255,255,255,.04);border-radius:10px;padding:10px;margin-bottom:7px;border:1px solid rgba(255,255,255,.06)}
-    .bihd{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-    .binm{font-weight:800;font-size:.83rem}
-    .biinf{font-size:.68rem;color:var(--muted)}
-    .biacts{display:flex;gap:5px;flex-wrap:wrap}
-    .biacts .btn{margin:0}
+/* ── Modals ── */
+.moverlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  display:flex;align-items:center;justify-content:center;
+  z-index:500;backdrop-filter:blur(8px);padding:16px;
+}
+.modal{
+  background:linear-gradient(145deg,#13132a,#16162e);
+  border:1px solid rgba(124,58,237,.2);border-radius:18px;
+  padding:24px;width:100%;max-width:400px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 24px 60px rgba(0,0,0,.7);
+  animation:modalIn .3s cubic-bezier(.16,1,.3,1);
+}
+@keyframes modalIn{from{opacity:0;transform:translateY(30px)scale(.95)}to{opacity:1;transform:none}}
+.modal h3{font-family:'Bebas Neue',cursive;font-size:1.5rem;letter-spacing:3px;color:var(--gold);margin-bottom:14px}
+.bi{background:rgba(255,255,255,.04);border-radius:10px;padding:10px;margin-bottom:7px;border:1px solid rgba(255,255,255,.06)}
+.bihd{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.binm{font-weight:800;font-size:.83rem}
+.biinf{font-size:.68rem;color:var(--muted)}
+.biacts{display:flex;gap:5px;flex-wrap:wrap}
+.biacts .btn{margin:0}
 
-    /* Trade tags */
-    .taglist{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;min-height:24px}
-    .tag{
-      display:inline-flex;align-items:center;gap:4px;padding:4px 9px;
-      border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;
-      background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.1);
-      transition:all .12s;
-    }
-    .tag:hover{background:rgba(255,255,255,.12);transform:scale(1.05)}
-    .tag.on{background:rgba(124,58,237,.2);color:#a78bfa;border-color:rgba(124,58,237,.5)}
-    .tdot{width:7px;height:7px;border-radius:50%}
+/* Trade tags */
+.taglist{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;min-height:24px}
+.tag{
+  display:inline-flex;align-items:center;gap:4px;padding:4px 9px;
+  border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;
+  background:rgba(255,255,255,.07);color:#94a3b8;border:1px solid rgba(255,255,255,.1);
+  transition:all .12s;
+}
+.tag:hover{background:rgba(255,255,255,.12);transform:scale(1.05)}
+.tag.on{background:rgba(124,58,237,.2);color:#a78bfa;border-color:rgba(124,58,237,.5)}
+.tdot{width:7px;height:7px;border-radius:50%}
 
-    /* Winner */
-    .win-overlay{
-      position:fixed;inset:0;background:rgba(0,0,0,.88);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      z-index:600;animation:fadeIn .5s;
-    }
-    .win-content{text-align:center;animation:modalIn .7s cubic-bezier(.16,1,.3,1)}
-    .win-trophy{font-size:5rem;animation:trophyBob 1s ease-in-out infinite alternate}
-    @keyframes trophyBob{from{transform:scale(1)rotate(-5deg)}to{transform:scale(1.15)rotate(5deg)}}
-    .win-title{font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:6px;background:linear-gradient(135deg,var(--gold),#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .conf{position:fixed;animation:confFall linear forwards}
-    @keyframes confFall{0%{opacity:1;transform:translateY(-10px)rotate(0)}100%{opacity:0;transform:translateY(100vh)rotate(720deg)}}
+/* Winner */
+.win-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.88);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:600;animation:fadeIn .5s;
+}
+.win-content{text-align:center;animation:modalIn .7s cubic-bezier(.16,1,.3,1)}
+.win-trophy{font-size:5rem;animation:trophyBob 1s ease-in-out infinite alternate}
+@keyframes trophyBob{from{transform:scale(1)rotate(-5deg)}to{transform:scale(1.15)rotate(5deg)}}
+.win-title{font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:6px;background:linear-gradient(135deg,var(--gold),#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.conf{position:fixed;animation:confFall linear forwards}
+@keyframes confFall{0%{opacity:1;transform:translateY(-10px)rotate(0)}100%{opacity:0;transform:translateY(100vh)rotate(720deg)}}
 
-    /* Notifications */
-    .notif-el{
-      position:fixed;bottom:20px;right:20px;
-      background:linear-gradient(135deg,#16162e,#1c1c38);
-      border:1px solid rgba(124,58,237,.3);border-radius:12px;
-      padding:11px 18px;font-size:.83rem;font-weight:600;
-      z-index:400;box-shadow:0 8px 28px rgba(0,0,0,.5);
-      animation:notifIn .35s cubic-bezier(.16,1,.3,1);
-      max-width:280px;
-    }
-    @keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
+/* Notifications */
+.notif-el{
+  position:fixed;bottom:20px;right:20px;
+  background:linear-gradient(135deg,#16162e,#1c1c38);
+  border:1px solid rgba(124,58,237,.3);border-radius:12px;
+  padding:11px 18px;font-size:.83rem;font-weight:600;
+  z-index:400;box-shadow:0 8px 28px rgba(0,0,0,.5);
+  animation:notifIn .35s cubic-bezier(.16,1,.3,1);
+  max-width:280px;
+}
+@keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
 
-    /* Scrollbars */
-    ::-webkit-scrollbar{width:4px}
-    ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:#2a2a4a;border-radius:4px}
+/* Scrollbars */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2a2a4a;border-radius:4px}
 
-    /* Error banner */
-    #peerjs-err{display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#b91c1c;color:#fff;text-align:center;padding:12px;font-size:.88rem;font-weight:700}
+/* Error banner */
+#peerjs-err{display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#b91c1c;color:#fff;text-align:center;padding:12px;font-size:.88rem;font-weight:700}
 
-    @keyframes spin2{to{transform:rotate(360deg)}}
+@keyframes spin2{to{transform:rotate(360deg)}}
 
-    /* Responsive */
-    @media(max-width:900px){
-      #s-game{flex-direction:column;overflow-y:auto;height:auto;min-height:100vh}
-      .left-sidebar,.right-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;height:auto;border:none;border-bottom:1px solid var(--border)}
-      .left-sidebar>.pcard,.right-sidebar>.pcard{flex:1;min-width:160px}
-      .board-area{padding:8px 4px}
-      .board{width:min(96vw,600px);height:min(96vw,600px)}
-    }
-  </style>
+/* Responsive */
+@media(max-width:900px){
+  #s-game{flex-direction:column;overflow-y:auto;height:auto;min-height:100vh}
+  .left-sidebar,.right-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;height:auto;border:none;border-bottom:1px solid var(--border)}
+  .left-sidebar>.pcard,.right-sidebar>.pcard{flex:1;min-width:160px}
+  .board-area{padding:8px 4px}
+  .board{width:min(96vw,600px);height:min(96vw,600px)}
+}
+</style>
 </head>
 <body>
 
@@ -654,788 +654,784 @@
 </div>
 
 <script>
-  const BOARD=[
-    {id:0, name:'СТАРТ',        type:'go',    flag:'🏁'},
-    {id:1, name:'🇲🇦 Марокко',  type:'property',color:'#a0522d',price:60,  rent:[2,10,30,90,160,250],  hc:50, mg:30},
-    {id:2, name:'Общ. касса',   type:'community'},
-    {id:3, name:'🇳🇬 Нигерия',  type:'property',color:'#a0522d',price:60,  rent:[4,20,60,180,320,450], hc:50, mg:30},
-    {id:4, name:'💸 Налог $200',type:'tax',amount:200},
-    {id:5, name:'✈️ Аэропорт 1',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-    {id:6, name:'🇮🇳 Индия',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
-    {id:7, name:'🎲 Шанс',      type:'chance'},
-    {id:8, name:'🇨🇳 Китай',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
-    {id:9, name:'🇯🇵 Япония',   type:'property',color:'#00bcd4',price:120, rent:[8,40,100,300,450,600], hc:50, mg:60},
-    {id:10,name:'⛓️ ТЮРЬМА',   type:'jail'},
-    {id:11,name:'🇧🇷 Бразилия', type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
-    {id:12,name:'⚡ Электр.',   type:'utility', price:150,mg:75},
-    {id:13,name:'🇦🇷 Аргентина',type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
-    {id:14,name:'🇲🇽 Мексика',  type:'property',color:'#e91e8c',price:160, rent:[12,60,180,500,700,900], hc:100,mg:80},
-    {id:15,name:'✈️ Аэропорт 2',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-    {id:16,name:'🇺🇸 Нью-Йорк', type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
-    {id:17,name:'Общ. касса',   type:'community'},
-    {id:18,name:'🇺🇸 Чикаго',   type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
-    {id:19,name:'🇺🇸 Лос-Анж.', type:'property',color:'#ff6f00',price:200, rent:[16,80,220,600,800,1000], hc:100,mg:100},
-    {id:20,name:'🅿️ ПАРКОВКА',  type:'freeparking'},
-    {id:21,name:'🇹🇷 Стамбул',  type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
-    {id:22,name:'🎲 Шанс',      type:'chance'},
-    {id:23,name:'🇪🇬 Каир',     type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
-    {id:24,name:'🇦🇪 Дубай',    type:'property',color:'#f44336',price:240, rent:[20,100,300,750,925,1100], hc:150,mg:120},
-    {id:25,name:'✈️ Аэропорт 3',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-    {id:26,name:'🇩🇪 Берлин',   type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
-    {id:27,name:'🇫🇷 Париж',    type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
-    {id:28,name:'💧 Водопров.',  type:'utility', price:150,mg:75},
-    {id:29,name:'🇮🇹 Рим',      type:'property',color:'#ffd600',price:280, rent:[24,120,360,850,1025,1200], hc:150,mg:140},
-    {id:30,name:'🚔 В ТЮРЬМУ',  type:'gotojail'},
-    {id:31,name:'🇬🇧 Лондон',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
-    {id:32,name:'🇪🇸 Мадрид',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
-    {id:33,name:'Общ. касса',   type:'community'},
-    {id:34,name:'🇨🇭 Цюрих',    type:'property',color:'#43a047',price:320, rent:[28,150,450,1000,1200,1400], hc:200,mg:160},
-    {id:35,name:'✈️ Аэропорт 4',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
-    {id:36,name:'🎲 Шанс',      type:'chance'},
-    {id:37,name:'🇷🇺 Москва',   type:'property',color:'#1565c0',price:350, rent:[35,175,500,1100,1300,1500], hc:200,mg:175},
-    {id:38,name:'💸 Налог $75', type:'tax',amount:75},
-    {id:39,name:'🌍 Мир',       type:'property',color:'#1565c0',price:400, rent:[50,200,600,1400,1700,2000], hc:200,mg:200},
-  ];
+const BOARD=[
+  {id:0, name:'СТАРТ',        type:'go',    flag:'🏁'},
+  {id:1, name:'🇲🇦 Марокко',  type:'property',color:'#a0522d',price:60,  rent:[2,10,30,90,160,250],  hc:50, mg:30},
+  {id:2, name:'Общ. касса',   type:'community'},
+  {id:3, name:'🇳🇬 Нигерия',  type:'property',color:'#a0522d',price:60,  rent:[4,20,60,180,320,450], hc:50, mg:30},
+  {id:4, name:'💸 Налог $200',type:'tax',amount:200},
+  {id:5, name:'✈️ Аэропорт 1',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
+  {id:6, name:'🇮🇳 Индия',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
+  {id:7, name:'🎲 Шанс',      type:'chance'},
+  {id:8, name:'🇨🇳 Китай',    type:'property',color:'#00bcd4',price:100, rent:[6,30,90,270,400,550],  hc:50, mg:50},
+  {id:9, name:'🇯🇵 Япония',   type:'property',color:'#00bcd4',price:120, rent:[8,40,100,300,450,600], hc:50, mg:60},
+  {id:10,name:'⛓️ ТЮРЬМА',   type:'jail'},
+  {id:11,name:'🇧🇷 Бразилия', type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
+  {id:12,name:'⚡ Электр.',   type:'utility', price:150,mg:75},
+  {id:13,name:'🇦🇷 Аргентина',type:'property',color:'#e91e8c',price:140, rent:[10,50,150,450,625,750], hc:100,mg:70},
+  {id:14,name:'🇲🇽 Мексика',  type:'property',color:'#e91e8c',price:160, rent:[12,60,180,500,700,900], hc:100,mg:80},
+  {id:15,name:'✈️ Аэропорт 2',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
+  {id:16,name:'🇺🇸 Нью-Йорк', type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
+  {id:17,name:'Общ. касса',   type:'community'},
+  {id:18,name:'🇺🇸 Чикаго',   type:'property',color:'#ff6f00',price:180, rent:[14,70,200,550,750,950],  hc:100,mg:90},
+  {id:19,name:'🇺🇸 Лос-Анж.', type:'property',color:'#ff6f00',price:200, rent:[16,80,220,600,800,1000], hc:100,mg:100},
+  {id:20,name:'🅿️ ПАРКОВКА',  type:'freeparking'},
+  {id:21,name:'🇹🇷 Стамбул',  type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
+  {id:22,name:'🎲 Шанс',      type:'chance'},
+  {id:23,name:'🇪🇬 Каир',     type:'property',color:'#f44336',price:220, rent:[18,90,250,700,875,1050],  hc:150,mg:110},
+  {id:24,name:'🇦🇪 Дубай',    type:'property',color:'#f44336',price:240, rent:[20,100,300,750,925,1100], hc:150,mg:120},
+  {id:25,name:'✈️ Аэропорт 3',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
+  {id:26,name:'🇩🇪 Берлин',   type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
+  {id:27,name:'🇫🇷 Париж',    type:'property',color:'#ffd600',price:260, rent:[22,110,330,800,975,1150],  hc:150,mg:130},
+  {id:28,name:'💧 Водопров.',  type:'utility', price:150,mg:75},
+  {id:29,name:'🇮🇹 Рим',      type:'property',color:'#ffd600',price:280, rent:[24,120,360,850,1025,1200], hc:150,mg:140},
+  {id:30,name:'🚔 В ТЮРЬМУ',  type:'gotojail'},
+  {id:31,name:'🇬🇧 Лондон',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
+  {id:32,name:'🇪🇸 Мадрид',   type:'property',color:'#43a047',price:300, rent:[26,130,390,900,1100,1275],  hc:200,mg:150},
+  {id:33,name:'Общ. касса',   type:'community'},
+  {id:34,name:'🇨🇭 Цюрих',    type:'property',color:'#43a047',price:320, rent:[28,150,450,1000,1200,1400], hc:200,mg:160},
+  {id:35,name:'✈️ Аэропорт 4',type:'railroad',price:200,rent:[25,50,100,200],mg:100},
+  {id:36,name:'🎲 Шанс',      type:'chance'},
+  {id:37,name:'🇷🇺 Москва',   type:'property',color:'#1565c0',price:350, rent:[35,175,500,1100,1300,1500], hc:200,mg:175},
+  {id:38,name:'💸 Налог $75', type:'tax',amount:75},
+  {id:39,name:'🌍 Мир',       type:'property',color:'#1565c0',price:400, rent:[50,200,600,1400,1700,2000], hc:200,mg:200},
+];
 
-  const CHANCE_C=[
-    {text:'Идите на СТАРТ. +$200.',             action:'goto',target:0},
-    {text:'Иллинойс авеню!',                    action:'goto',target:24},
-    {text:'Чарльз Плейс!',                      action:'goto',target:11},
-    {text:'Ближайшая ЖД.',                      action:'nearestRR'},
-    {text:'Дивиденд банка $50.',                action:'collect',amount:50},
-    {text:'Карта освобождения из тюрьмы.',      action:'jailFree'},
-    {text:'Назад на 3 клетки.',                 action:'back3'},
-    {text:'Идите в тюрьму.',                    action:'jail'},
-    {text:'Штраф $15.',                         action:'pay',amount:15},
-    {text:'Кредит погашен. +$150.',             action:'collect',amount:150},
-    {text:'Поездка на ЖД Ридинг.',              action:'goto',target:5},
-    {text:'Председатель. Заплатите всем $50.',  action:'payAll',amount:50},
-  ];
-  const COMM_C=[
-    {text:'Идите на СТАРТ. +$200.',         action:'goto',target:0},
-    {text:'Ошибка банка. +$200.',           action:'collect',amount:200},
-    {text:'Врач $50.',                      action:'pay',amount:50},
-    {text:'Акции. +$50.',                   action:'collect',amount:50},
-    {text:'Карта освобождения.',            action:'jailFree'},
-    {text:'Идите в тюрьму.',               action:'jail'},
-    {text:'Наследство +$100.',             action:'collect',amount:100},
-    {text:'День рождения! +$10 с каждого.',action:'collectAll',amount:10},
-    {text:'Возврат налога +$20.',           action:'collect',amount:20},
-    {text:'Лотерея +$100.',                action:'collect',amount:100},
-    {text:'Больница -$100.',               action:'pay',amount:100},
-    {text:'Школа -$150.',                  action:'pay',amount:150},
-  ];
+const CHANCE_C=[
+  {text:'Идите на СТАРТ. +$200.',             action:'goto',target:0},
+  {text:'Иллинойс авеню!',                    action:'goto',target:24},
+  {text:'Чарльз Плейс!',                      action:'goto',target:11},
+  {text:'Ближайшая ЖД.',                      action:'nearestRR'},
+  {text:'Дивиденд банка $50.',                action:'collect',amount:50},
+  {text:'Карта освобождения из тюрьмы.',      action:'jailFree'},
+  {text:'Назад на 3 клетки.',                 action:'back3'},
+  {text:'Идите в тюрьму.',                    action:'jail'},
+  {text:'Штраф $15.',                         action:'pay',amount:15},
+  {text:'Кредит погашен. +$150.',             action:'collect',amount:150},
+  {text:'Поездка на ЖД Ридинг.',              action:'goto',target:5},
+  {text:'Председатель. Заплатите всем $50.',  action:'payAll',amount:50},
+];
+const COMM_C=[
+  {text:'Идите на СТАРТ. +$200.',         action:'goto',target:0},
+  {text:'Ошибка банка. +$200.',           action:'collect',amount:200},
+  {text:'Врач $50.',                      action:'pay',amount:50},
+  {text:'Акции. +$50.',                   action:'collect',amount:50},
+  {text:'Карта освобождения.',            action:'jailFree'},
+  {text:'Идите в тюрьму.',               action:'jail'},
+  {text:'Наследство +$100.',             action:'collect',amount:100},
+  {text:'День рождения! +$10 с каждого.',action:'collectAll',amount:10},
+  {text:'Возврат налога +$20.',           action:'collect',amount:20},
+  {text:'Лотерея +$100.',                action:'collect',amount:100},
+  {text:'Больница -$100.',               action:'pay',amount:100},
+  {text:'Школа -$150.',                  action:'pay',amount:150},
+];
 
-  const TOKENS=['🎩','🚗','🐕','⚓','👒','🚂','👞','🛳️'];
-  const COLORS=['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#e91e63'];
-  const DIFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+const TOKENS=['🎩','🚗','🐕','⚓','👒','🚂','👞','🛳️'];
+const COLORS=['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#e91e63'];
+const DIFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
 
-  /* ═══════════════════════════════════════════════════════
-     STATE
-  ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════ */
 
-  let myId    = 'u'+Math.random().toString(36).slice(2,9);
-  let myName  = '';
-  let amHost  = false;
-  let peer    = null;
-  let hostConn= null;
-  let gConns  = {};
-  let lobbyPs = [];
-  let GS      = null;
-  let chatLog = [];
-  let tGive=[], tTake=[];
-
-
-  /* ─── utils ─── */
-  const rnd6=()=>Math.floor(Math.random()*6)+1;
-  const shuf=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;};
-  function vis(id,v){const e=document.getElementById(id);if(e)e.style.display=v?'flex':'none';}
-  function showErr(id,t){const e=document.getElementById(id);if(!e)return;e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}
-  function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s-'+n).classList.add('active');}
-  function notif(txt,dur=3000){
-    let n=document.createElement('div');n.className='notif-el';n.textContent=txt;document.body.appendChild(n);
-    setTimeout(()=>{n.style.opacity='0';n.style.transform='translateX(60px)';n.style.transition='.3s';setTimeout(()=>n.remove(),300);},dur);
-    return;
-    // old code below:
-    let n=document.createElement('div');n.className='notif';n.textContent=txt;document.body.appendChild(n);
-    setTimeout(()=>{n.classList.add('hide');setTimeout(()=>n.remove(),400);},dur);
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     PEERJS — надёжное подключение через несколько серверов
-  ═══════════════════════════════════════════════════════ */
-
-  // Список серверов — пробуем по очереди
-  const PEER_SERVERS = [
-    // Вариант 1: дефолтный PeerJS (без host = используют peerjs.com напрямую)
-    null,
-    // Вариант 2: явный адрес
-    { host: '0.peerjs.com', port: 443, path: '/', secure: true },
-    // Вариант 3: другой путь
-    { host: 'peerjs.com', port: 443, path: '/peerjs', secure: true },
-  ];
-
-  const ICE_SERVERS = [
-    { urls: 'stun:stun.l.google.com:19302' },
-    { urls: 'stun:stun1.l.google.com:19302' },
-    { urls: 'stun:stun2.l.google.com:19302' },
-    { urls: 'stun:stun3.l.google.com:19302' },
-    { urls: 'stun:stun4.l.google.com:19302' },
-    { urls: 'stun:stun.cloudflare.com:3478' },
-    { urls: 'stun:stun.stunprotocol.org:3478' },
-    // Бесплатный TURN от Metered (работает без регистрации)
-    { urls: 'turn:a.relay.metered.ca:80',      username: 'openrelayproject', credential: 'openrelayproject' },
-    { urls: 'turn:a.relay.metered.ca:80?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
-    { urls: 'turn:a.relay.metered.ca:443',     username: 'openrelayproject', credential: 'openrelayproject' },
-    { urls: 'turn:a.relay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
-  ];
+let myId    = 'u'+Math.random().toString(36).slice(2,9);
+let myName  = '';
+let amHost  = false;
+let peer    = null;
+let hostConn= null;
+let gConns  = {};
+let lobbyPs = [];
+let GS      = null;
+let chatLog = [];
+let tGive=[], tTake=[];
 
 
-  function waitForPeerJS(timeout=8000) {
-    return new Promise((res, rej) => {
-      if (typeof Peer !== 'undefined') { res(); return; }
-      const start = Date.now();
-      const check = setInterval(() => {
-        if (typeof Peer !== 'undefined') { clearInterval(check); res(); }
-        else if (Date.now() - start > timeout) {
-          clearInterval(check);
-          rej(new Error('PeerJS не загрузился. Проверь интернет-соединение и перезагрузи страницу.'));
-        }
-      }, 100);
-    });
-  }
+/* ─── utils ─── */
+const rnd6=()=>Math.floor(Math.random()*6)+1;
+const shuf=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;};
+function vis(id,v){const e=document.getElementById(id);if(e)e.style.display=v?'flex':'none';}
+function showErr(id,t){const e=document.getElementById(id);if(!e)return;e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',4000);}
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById('s-'+n).classList.add('active');}
+function notif(txt,dur=3000){
+  const n=document.createElement('div');n.className='notif-el';n.textContent=txt;document.body.appendChild(n);
+  setTimeout(()=>{n.style.opacity='0';n.style.transform='translateX(60px)';n.style.transition='.3s';setTimeout(()=>n.remove(),300);},dur);
+}
 
-  function mkPeerWithConfig(id, serverConfig) {
-    return new Promise((res, rej) => {
-      let p;
-      try {
-        const opts = {
-          config: { iceServers: ICE_SERVERS, iceCandidatePoolSize: 10 },
-          debug: 0,
-        };
-        if (serverConfig) Object.assign(opts, serverConfig);
-        p = new Peer(id, opts);
-      } catch(e) { rej(e); return; }
+/* ═══════════════════════════════════════════════════════
+   PEERJS — надёжное подключение через несколько серверов
+═══════════════════════════════════════════════════════ */
 
-      const timer = setTimeout(() => {
-        try { p.destroy(); } catch(e) {}
-        rej(new Error('timeout'));
-      }, 10000);
+// Список серверов — пробуем по очереди
+const PEER_SERVERS = [
+  // Вариант 1: дефолтный PeerJS (без host = используют peerjs.com напрямую)
+  null,
+  // Вариант 2: явный адрес
+  { host: '0.peerjs.com', port: 443, path: '/', secure: true },
+  // Вариант 3: другой путь
+  { host: 'peerjs.com', port: 443, path: '/peerjs', secure: true },
+];
 
-      p.on('open', () => { clearTimeout(timer); res(p); });
-      p.on('error', (e) => { clearTimeout(timer); try { p.destroy(); } catch(_) {} rej(e); });
-    });
-  }
+const ICE_SERVERS = [
+  { urls: 'stun:stun.l.google.com:19302' },
+  { urls: 'stun:stun1.l.google.com:19302' },
+  { urls: 'stun:stun2.l.google.com:19302' },
+  { urls: 'stun:stun3.l.google.com:19302' },
+  { urls: 'stun:stun4.l.google.com:19302' },
+  { urls: 'stun:stun.cloudflare.com:3478' },
+  { urls: 'stun:stun.stunprotocol.org:3478' },
+  // Бесплатный TURN от Metered (работает без регистрации)
+  { urls: 'turn:a.relay.metered.ca:80',      username: 'openrelayproject', credential: 'openrelayproject' },
+  { urls: 'turn:a.relay.metered.ca:80?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
+  { urls: 'turn:a.relay.metered.ca:443',     username: 'openrelayproject', credential: 'openrelayproject' },
+  { urls: 'turn:a.relay.metered.ca:443?transport=tcp', username: 'openrelayproject', credential: 'openrelayproject' },
+];
 
-  // Пробуем серверы по очереди
-  async function mkPeer(id) {
-    // Ждём загрузки библиотеки PeerJS (особенно важно на iPhone)
-    try {
-      await waitForPeerJS(8000);
-    } catch(e) {
-      throw new Error('PeerJS не загрузился. Убедись что есть интернет и перезагрузи страницу.');
-    }
-    let lastErr = null;
-    for (let i = 0; i < PEER_SERVERS.length; i++) {
-      try {
-        setConnStatus(`🔌 Подключение... (попытка ${i+1}/${PEER_SERVERS.length})`);
-        const p = await mkPeerWithConfig(id, PEER_SERVERS[i]);
-        setConnStatus('');
-        return p;
-      } catch(e) {
-        lastErr = e;
-        console.warn(`Сервер ${i+1} недоступен:`, e.message || e);
+
+function waitForPeerJS(timeout=8000) {
+  return new Promise((res, rej) => {
+    if (typeof Peer !== 'undefined') { res(); return; }
+    const start = Date.now();
+    const check = setInterval(() => {
+      if (typeof Peer !== 'undefined') { clearInterval(check); res(); }
+      else if (Date.now() - start > timeout) {
+        clearInterval(check);
+        rej(new Error('PeerJS не загрузился. Проверь интернет-соединение и перезагрузи страницу.'));
       }
-    }
-    setConnStatus('');
-    throw lastErr || new Error('Все серверы недоступны');
+    }, 100);
+  });
+}
+
+function mkPeerWithConfig(id, serverConfig) {
+  return new Promise((res, rej) => {
+    let p;
+    try {
+      const opts = {
+        config: { iceServers: ICE_SERVERS, iceCandidatePoolSize: 10 },
+        debug: 0,
+      };
+      if (serverConfig) Object.assign(opts, serverConfig);
+      p = new Peer(id, opts);
+    } catch(e) { rej(e); return; }
+
+    const timer = setTimeout(() => {
+      try { p.destroy(); } catch(e) {}
+      rej(new Error('timeout'));
+    }, 10000);
+
+    p.on('open', () => { clearTimeout(timer); res(p); });
+    p.on('error', (e) => { clearTimeout(timer); try { p.destroy(); } catch(_) {} rej(e); });
+  });
+}
+
+// Пробуем серверы по очереди
+async function mkPeer(id) {
+  // Ждём загрузки библиотеки PeerJS (особенно важно на iPhone)
+  try {
+    await waitForPeerJS(8000);
+  } catch(e) {
+    throw new Error('PeerJS не загрузился. Убедись что есть интернет и перезагрузи страницу.');
   }
-
-  function setConnStatus(msg) {
-    // показываем статус в кнопках
-    ['create-err','join-err'].forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (msg) { el.textContent = msg; el.style.display = 'block'; el.style.color = '#f6c90e'; el.style.borderColor = 'rgba(246,201,14,.3)'; el.style.background = 'rgba(246,201,14,.05)'; }
-      else if (el.style.color === 'rgb(246, 201, 14)') el.style.display = 'none';
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     CREATE ROOM
-  ═══════════════════════════════════════════════════════ */
-
-  async function createRoom(){
-    myName=document.getElementById('create-name').value.trim();
-    if(!myName){showErr('create-err','Введи своё имя!');return;}
-    const btn=document.getElementById('btn-create');
-    btn.disabled=true;btn.textContent='⏳ Подключение…';
-    if(peer){try{peer.destroy();}catch(e){}peer=null;}
-    try{
-      peer=await mkPeer(myId);
-    }catch(e){
-      btn.disabled=false;btn.textContent='🚀 Создать комнату';
-      const msg=e?.type==='browser-incompatible'?'Браузер не поддерживает WebRTC. Используй Chrome или Firefox.'
-              :'Не удалось подключиться. Попробуй ещё раз или обнови страницу.';
-      showErr('create-err',msg);return;
+  let lastErr = null;
+  for (let i = 0; i < PEER_SERVERS.length; i++) {
+    try {
+      setConnStatus(`🔌 Подключение... (попытка ${i+1}/${PEER_SERVERS.length})`);
+      const p = await mkPeerWithConfig(id, PEER_SERVERS[i]);
+      setConnStatus('');
+      return p;
+    } catch(e) {
+      lastErr = e;
+      console.warn(`Сервер ${i+1} недоступен:`, e.message || e);
     }
-    amHost=true;
-    lobbyPs=[{id:myId,name:myName,ready:true,isHost:true}];
-    peer.on('connection',conn=>{
-      conn.serialization='json';
-      conn.on('open',()=>{
-        if(lobbyPs.length>=6){send(conn,{t:'KICKED',r:'Лобби заполнено!'});conn.close();return;}
-        gConns[conn.peer]=conn;
-        conn.on('data',d=>onGuestMsg(conn.peer,d));
-        conn.on('close',()=>{
-          delete gConns[conn.peer];
-          const gone=lobbyPs.find(p=>p.id===conn.peer);
-          lobbyPs=lobbyPs.filter(p=>p.id!==conn.peer);
-          if(gone)sysChat(`${gone.name} покинул игру.`);
-          bcastLobby();bcastChat();
-          if(GS){
-            // mark bankrupt in GS if game started
-            if(GS.players[conn.peer]){
-              GS.players[conn.peer].bankrupt=true;
-              GS=addLog(GS,`${GS.players[conn.peer].name} отключился.`);
-              bcastState();
-            }
+  }
+  setConnStatus('');
+  throw lastErr || new Error('Все серверы недоступны');
+}
+
+function setConnStatus(msg) {
+  // показываем статус в кнопках
+  ['create-err','join-err'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (msg) { el.textContent = msg; el.style.display = 'block'; el.style.color = '#f6c90e'; el.style.borderColor = 'rgba(246,201,14,.3)'; el.style.background = 'rgba(246,201,14,.05)'; }
+    else if (el.style.color === 'rgb(246, 201, 14)') el.style.display = 'none';
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   CREATE ROOM
+═══════════════════════════════════════════════════════ */
+
+async function createRoom(){
+  myName=document.getElementById('create-name').value.trim();
+  if(!myName){showErr('create-err','Введи своё имя!');return;}
+  const btn=document.getElementById('btn-create');
+  btn.disabled=true;btn.textContent='⏳ Подключение…';
+  if(peer){try{peer.destroy();}catch(e){}peer=null;}
+  try{
+    peer=await mkPeer(myId);
+  }catch(e){
+    btn.disabled=false;btn.textContent='🚀 Создать комнату';
+    const msg=e?.type==='browser-incompatible'?'Браузер не поддерживает WebRTC. Используй Chrome или Firefox.'
+      :'Не удалось подключиться. Попробуй ещё раз или обнови страницу.';
+    showErr('create-err',msg);return;
+  }
+  amHost=true;
+  lobbyPs=[{id:myId,name:myName,ready:true,isHost:true}];
+  peer.on('connection',conn=>{
+    conn.serialization='json';
+    conn.on('open',()=>{
+      if(lobbyPs.length>=6){send(conn,{t:'KICKED',r:'Лобби заполнено!'});conn.close();return;}
+      gConns[conn.peer]=conn;
+      conn.on('data',d=>onGuestMsg(conn.peer,d));
+      conn.on('close',()=>{
+        delete gConns[conn.peer];
+        const gone=lobbyPs.find(p=>p.id===conn.peer);
+        lobbyPs=lobbyPs.filter(p=>p.id!==conn.peer);
+        if(gone)sysChat(`${gone.name} покинул игру.`);
+        bcastLobby();bcastChat();
+        if(GS){
+          // mark bankrupt in GS if game started
+          if(GS.players[conn.peer]){
+            GS.players[conn.peer].bankrupt=true;
+            GS=addLog(GS,`${GS.players[conn.peer].name} отключился.`);
+            bcastState();
           }
-        });
+        }
       });
     });
-    document.getElementById('disp-code').textContent=myId;
-    vis('btn-start',true);vis('btn-ready',false);
-    document.getElementById('lstatus').textContent='Ты хост. Жди игроков!';
-    renderLobby();showScreen('lobby');
-    btn.disabled=false;btn.textContent='🚀 Создать комнату';
+  });
+  document.getElementById('disp-code').textContent=myId;
+  vis('btn-start',true);vis('btn-ready',false);
+  document.getElementById('lstatus').textContent='Ты хост. Жди игроков!';
+  renderLobby();showScreen('lobby');
+  btn.disabled=false;btn.textContent='🚀 Создать комнату';
+}
+
+/* ═══════════════════════════════════════════════════════
+   JOIN ROOM
+═══════════════════════════════════════════════════════ */
+
+async function joinRoom(){
+  myName=document.getElementById('join-name').value.trim();
+  const code=document.getElementById('join-code').value.trim().replace(/\s/g,'');
+  if(!myName){showErr('join-err','Введи своё имя!');return;}
+  if(!code){showErr('join-err','Введи код комнаты!');return;}
+  if(code.length < 6){showErr('join-err','Код слишком короткий. Скопируй его полностью!');return;}
+  const btn=document.getElementById('btn-join');
+  btn.disabled=true;btn.textContent='⏳ Подключение…';
+  if(peer){try{peer.destroy();}catch(e){}peer=null;}
+  try{
+    peer=await mkPeer(myId);
+  }catch(e){
+    btn.disabled=false;btn.textContent='🎯 Войти в комнату';
+    showErr('join-err','Не удалось подключиться к серверу. Попробуй ещё раз.');return;
   }
+  btn.textContent='⏳ Ищем хоста…';
+  const conn=peer.connect(code,{reliable:true,serialization:'json'});
+  hostConn=conn;
+  let opened=false;
 
-  /* ═══════════════════════════════════════════════════════
-     JOIN ROOM
-  ═══════════════════════════════════════════════════════ */
-
-  async function joinRoom(){
-    myName=document.getElementById('join-name').value.trim();
-    const code=document.getElementById('join-code').value.trim().replace(/\s/g,'');
-    if(!myName){showErr('join-err','Введи своё имя!');return;}
-    if(!code){showErr('join-err','Введи код комнаты!');return;}
-    if(code.length < 6){showErr('join-err','Код слишком короткий. Скопируй его полностью!');return;}
-    const btn=document.getElementById('btn-join');
-    btn.disabled=true;btn.textContent='⏳ Подключение…';
-    if(peer){try{peer.destroy();}catch(e){}peer=null;}
-    try{
-      peer=await mkPeer(myId);
-    }catch(e){
+  const joinTimeout=setTimeout(()=>{
+    if(!opened){
       btn.disabled=false;btn.textContent='🎯 Войти в комнату';
-      showErr('join-err','Не удалось подключиться к серверу. Попробуй ещё раз.');return;
+      try{conn.close();}catch(e){}
+      showErr('join-err','❌ Хост не отвечает. Убедись что: 1) код скопирован полностью, 2) хост онлайн, 3) оба используют один браузер.');
     }
-    btn.textContent='⏳ Ищем хоста…';
-    const conn=peer.connect(code,{reliable:true,serialization:'json'});
-    hostConn=conn;
-    let opened=false;
+  },15000);
 
-    const joinTimeout=setTimeout(()=>{
-      if(!opened){
-        btn.disabled=false;btn.textContent='🎯 Войти в комнату';
-        try{conn.close();}catch(e){}
-        showErr('join-err','❌ Хост не отвечает. Убедись что: 1) код скопирован полностью, 2) хост онлайн, 3) оба используют один браузер.');
-      }
-    },15000);
+  conn.on('open',()=>{
+    opened=true;
+    clearTimeout(joinTimeout);
+    send(conn,{t:'JOIN',id:myId,name:myName});
+    vis('btn-ready',true);vis('btn-start',false);
+    document.getElementById('lstatus').textContent='✅ Подключён! Жди начала.';
+    document.getElementById('disp-code').textContent=code;
+    showScreen('lobby');
+    btn.disabled=false;btn.textContent='🎯 Войти в комнату';
+    notif('✅ Подключён к лобби!');
+  });
+  conn.on('data',d=>onHostMsg(d));
+  conn.on('close',()=>{
+    clearTimeout(joinTimeout);
+    if(document.getElementById('s-game').classList.contains('active')){notif('⚠️ Хост отключился!');}
+  });
+  conn.on('error',(e)=>{
+    clearTimeout(joinTimeout);
+    btn.disabled=false;btn.textContent='🎯 Войти в комнату';
+    let msg='Не удалось подключиться.';
+    if(e?.type==='peer-unavailable')msg='❌ Хост не найден. Проверь код — он должен быть точно таким же, как у хоста.';
+    else if(e?.type==='network')msg='❌ Проблема с сетью. Проверь интернет.';
+    showErr('join-err',msg);
+  });
+}
 
-    conn.on('open',()=>{
-      opened=true;
-      clearTimeout(joinTimeout);
-      send(conn,{t:'JOIN',id:myId,name:myName});
-      vis('btn-ready',true);vis('btn-start',false);
-      document.getElementById('lstatus').textContent='✅ Подключён! Жди начала.';
-      document.getElementById('disp-code').textContent=code;
-      showScreen('lobby');
-      btn.disabled=false;btn.textContent='🎯 Войти в комнату';
-      notif('✅ Подключён к лобби!');
-    });
-    conn.on('data',d=>onHostMsg(d));
-    conn.on('close',()=>{
-      clearTimeout(joinTimeout);
-      if(document.getElementById('s-game').classList.contains('active')){notif('⚠️ Хост отключился!');}
-    });
-    conn.on('error',(e)=>{
-      clearTimeout(joinTimeout);
-      btn.disabled=false;btn.textContent='🎯 Войти в комнату';
-      let msg='Не удалось подключиться.';
-      if(e?.type==='peer-unavailable')msg='❌ Хост не найден. Проверь код — он должен быть точно таким же, как у хоста.';
-      else if(e?.type==='network')msg='❌ Проблема с сетью. Проверь интернет.';
-      showErr('join-err',msg);
-    });
+/* ═══════════════════════════════════════════════════════
+   MESSAGING
+═══════════════════════════════════════════════════════ */
+
+function send(conn,data){try{conn.send(data);}catch(e){}}
+function bcast(data){Object.values(gConns).forEach(c=>send(c,data));}
+function bcastLobby(){bcast({t:'LOBBY',players:lobbyPs});renderLobby();}
+function bcastChat(){bcast({t:'CHAT',log:chatLog});renderChat();}
+function bcastState(){bcast({t:'STATE',state:GS});renderGame();}
+
+function onGuestMsg(from,msg){
+  if(msg.t==='JOIN'){
+    lobbyPs.push({id:from,name:msg.name,ready:false,isHost:false});
+    sysChat(`${msg.name} зашёл в лобби! 👋`);
+    bcastLobby();bcastChat();
   }
+  if(msg.t==='READY'){const p=lobbyPs.find(x=>x.id===from);if(p)p.ready=!p.ready;bcastLobby();}
+  if(msg.t==='CHAT'){addChat('chat',msg.name,msg.text);bcastChat();}
+  if(msg.t==='ACTION'){applyAction(msg.action);}
+}
+function onHostMsg(msg){
+  if(msg.t==='KICKED'){alert(msg.r);location.reload();return;}
+  if(msg.t==='LOBBY'){lobbyPs=msg.players;renderLobby();}
+  if(msg.t==='CHAT'){chatLog=msg.log;renderChat();}
+  if(msg.t==='START'){GS=msg.state;buildBoard();enterGame();}
+  if(msg.t==='STATE'){GS=msg.state;renderGame();}
+}
 
-  /* ═══════════════════════════════════════════════════════
-     MESSAGING
-  ═══════════════════════════════════════════════════════ */
-
-  function send(conn,data){try{conn.send(data);}catch(e){}}
-  function bcast(data){Object.values(gConns).forEach(c=>send(c,data));}
-  function bcastLobby(){bcast({t:'LOBBY',players:lobbyPs});renderLobby();}
-  function bcastChat(){bcast({t:'CHAT',log:chatLog});renderChat();}
-  function bcastState(){bcast({t:'STATE',state:GS});renderGame();}
-
-  function onGuestMsg(from,msg){
-    if(msg.t==='JOIN'){
-      lobbyPs.push({id:from,name:msg.name,ready:false,isHost:false});
-      sysChat(`${msg.name} зашёл в лобби! 👋`);
-      bcastLobby();bcastChat();
-    }
-    if(msg.t==='READY'){const p=lobbyPs.find(x=>x.id===from);if(p)p.ready=!p.ready;bcastLobby();}
-    if(msg.t==='CHAT'){addChat('chat',msg.name,msg.text);bcastChat();}
-    if(msg.t==='ACTION'){applyAction(msg.action);}
-  }
-  function onHostMsg(msg){
-    if(msg.t==='KICKED'){alert(msg.r);location.reload();return;}
-    if(msg.t==='LOBBY'){lobbyPs=msg.players;renderLobby();}
-    if(msg.t==='CHAT'){chatLog=msg.log;renderChat();}
-    if(msg.t==='START'){GS=msg.state;buildBoard();enterGame();}
-    if(msg.t==='STATE'){GS=msg.state;renderGame();}
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     LOBBY UI
-  ═══════════════════════════════════════════════════════ */
-  function copyCode(){
-    const c=document.getElementById('disp-code').textContent;
-    navigator.clipboard?.writeText(c).catch(()=>{});
-    notif('✅ Код скопирован! Отправь другу.');
-  }
-  function renderLobby(){
-    const n=document.getElementById('lcount');if(n)n.textContent=lobbyPs.length;
-    const l=document.getElementById('lplayers');if(!l)return;
-    l.innerHTML='';
-    lobbyPs.forEach((p,i)=>{
-      const d=document.createElement('div');d.className='pitem';
-      d.style.animationDelay=(i*.06)+'s';
-      d.innerHTML=`<div class="pavatar" style="background:${COLORS[i%COLORS.length]}22;color:${COLORS[i%COLORS.length]}">${TOKENS[i%TOKENS.length]}</div>
+/* ═══════════════════════════════════════════════════════
+   LOBBY UI
+═══════════════════════════════════════════════════════ */
+function copyCode(){
+  const c=document.getElementById('disp-code').textContent;
+  navigator.clipboard?.writeText(c).catch(()=>{});
+  notif('✅ Код скопирован! Отправь другу.');
+}
+function renderLobby(){
+  const n=document.getElementById('lcount');if(n)n.textContent=lobbyPs.length;
+  const l=document.getElementById('lplayers');if(!l)return;
+  l.innerHTML='';
+  lobbyPs.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='pitem';
+    d.style.animationDelay=(i*.06)+'s';
+    d.innerHTML=`<div class="pavatar" style="background:${COLORS[i%COLORS.length]}22;color:${COLORS[i%COLORS.length]}">${TOKENS[i%TOKENS.length]}</div>
       <div><div class="pname">${p.name}${p.id===myId?' (Ты)':''}</div>
       <div class="prole">${p.isHost?'👑 Хост':p.ready?'✅ Готов':'⏳ Ждёт'}</div></div>
       <div class="pdot"></div>`;
-      l.appendChild(d);
-    });
-  }
-  function toggleReady(){
-    if(amHost)return;
-    send(hostConn,{t:'READY'});
-  }
-  function hostStart(){
-    if(!amHost)return;
-    if(lobbyPs.length<2){showErr('lobby-err','Нужно минимум 2 игрока!');return;}
-    GS=makeGS(lobbyPs);
-    bcast({t:'START',state:GS});
-    buildBoard();enterGame();
-  }
+    l.appendChild(d);
+  });
+}
+function toggleReady(){
+  if(amHost)return;
+  send(hostConn,{t:'READY'});
+}
+function hostStart(){
+  if(!amHost)return;
+  if(lobbyPs.length<2){showErr('lobby-err','Нужно минимум 2 игрока!');return;}
+  GS=makeGS(lobbyPs);
+  bcast({t:'START',state:GS});
+  buildBoard();enterGame();
+}
 
-  /* ═══════════════════════════════════════════════════════
-     CHAT
-  ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   CHAT
+═══════════════════════════════════════════════════════ */
 
-  function sysChat(t){addChat('sys','',t);}
-  function addChat(type,name,text){chatLog.push({type,name,text});if(chatLog.length>100)chatLog.shift();}
-  function renderChat(){
-    ['lchat','gchat'].forEach(id=>{
-      const el=document.getElementById(id);if(!el)return;
-      el.innerHTML=chatLog.map(m=>
-              m.type==='sys'?`<div class="cmsg csys">${m.text}</div>`
-                      :`<div class="cmsg"><span class="cnm">${m.name}: </span>${m.text}</div>`
-      ).join('');
-      el.scrollTop=9999;
-    });
-  }
-  function sendChat(){
-    const el=document.getElementById('linput');
-    const t=el.value.trim();if(!t)return;el.value='';
-    if(amHost){addChat('chat',myName,t);bcastChat();}
-    else send(hostConn,{t:'CHAT',name:myName,text:t});
-  }
-  function sendGameChat(){
-    const el=document.getElementById('ginput');
-    const t=el.value.trim();if(!t)return;el.value='';
-    if(amHost){addChat('chat',myName,t);bcastChat();}
-    else send(hostConn,{t:'CHAT',name:myName,text:t});
-  }
+function sysChat(t){addChat('sys','',t);}
+function addChat(type,name,text){chatLog.push({type,name,text});if(chatLog.length>100)chatLog.shift();}
+function renderChat(){
+  ['lchat','gchat'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.innerHTML=chatLog.map(m=>
+      m.type==='sys'?`<div class="cmsg csys">${m.text}</div>`
+      :`<div class="cmsg"><span class="cnm">${m.name}: </span>${m.text}</div>`
+    ).join('');
+    el.scrollTop=9999;
+  });
+}
+function sendChat(){
+  const el=document.getElementById('linput');
+  const t=el.value.trim();if(!t)return;el.value='';
+  if(amHost){addChat('chat',myName,t);bcastChat();}
+  else send(hostConn,{t:'CHAT',name:myName,text:t});
+}
+function sendGameChat(){
+  const el=document.getElementById('ginput');
+  const t=el.value.trim();if(!t)return;el.value='';
+  if(amHost){addChat('chat',myName,t);bcastChat();}
+  else send(hostConn,{t:'CHAT',name:myName,text:t});
+}
 
-  /* ═══════════════════════════════════════════════════════
-     GAME STATE
-  ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   GAME STATE
+═══════════════════════════════════════════════════════ */
 
-  function copyCode(){
-    const c=document.getElementById('disp-code').textContent;
-    navigator.clipboard?.writeText(c).catch(()=>{});
-    notif('✅ Код скопирован! Отправь другу.',3000);
-  }
-  function renderLobby(){
-    const n=document.getElementById('lcount');if(n)n.textContent=lobbyPs.length;
-    const l=document.getElementById('lplayers');if(!l)return;
-    l.innerHTML='';
-    lobbyPs.forEach((p,i)=>{
-      const d=document.createElement('div');d.className='pitem';d.style.animationDelay=(i*.06)+'s';
-      d.innerHTML=`<div class="pavatar" style="background:${COLORS[i%COLORS.length]}22;border-color:${COLORS[i%COLORS.length]}55;border-width:2px;border-style:solid">${TOKENS[i%TOKENS.length]}</div>
+function copyCode(){
+  const c=document.getElementById('disp-code').textContent;
+  navigator.clipboard?.writeText(c).catch(()=>{});
+  notif('✅ Код скопирован! Отправь другу.',3000);
+}
+function renderLobby(){
+  const n=document.getElementById('lcount');if(n)n.textContent=lobbyPs.length;
+  const l=document.getElementById('lplayers');if(!l)return;
+  l.innerHTML='';
+  lobbyPs.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='pitem';d.style.animationDelay=(i*.06)+'s';
+    d.innerHTML=`<div class="pavatar" style="background:${COLORS[i%COLORS.length]}22;border-color:${COLORS[i%COLORS.length]}55;border-width:2px;border-style:solid">${TOKENS[i%TOKENS.length]}</div>
       <div><div class="pname-t">${p.name}${p.id===myId?' (Ты)':''}</div><div class="prole-t">${p.isHost?'👑 Хост':p.ready?'✅ Готов':'⏳ Ждёт'}</div></div>
       <div class="live-dot"></div>`;
-      l.appendChild(d);
-    });
-  }
-  function toggleReady(){if(amHost)return;send(hostConn,{t:'READY'});}
-  function hostStart(){
-    if(!amHost)return;
-    if(lobbyPs.length<2){showErr('lobby-err','Нужно минимум 2 игрока!');return;}
-    GS=makeGS(lobbyPs);
-    bcast({t:'START',state:GS});
-    buildBoard();enterGame();
-  }
-  function sendChat(){
-    const el=document.getElementById('linput');const t=el.value.trim();if(!t)return;el.value='';
-    if(amHost){addChat('chat',myName,t);bcastChat();}
-    else send(hostConn,{t:'CHAT',name:myName,text:t});
-  }
-  function sendGameChat(){
-    const el=document.getElementById('ginput');const t=el.value.trim();if(!t)return;el.value='';
-    if(amHost){addChat('chat',myName,t);bcastChat();}
-    else send(hostConn,{t:'CHAT',name:myName,text:t});
-  }
-  function renderChat(){
-    ['lchat','gchat'].forEach(id=>{
-      const el=document.getElementById(id);if(!el)return;
-      el.innerHTML=chatLog.map(m=>m.type==='sys'?`<div class="cmsg csys">${m.text}</div>`:`<div class="cmsg"><span class="cnm">${m.name}: </span>${m.text}</div>`).join('');
-      el.scrollTop=9999;
-    });
-  }
+    l.appendChild(d);
+  });
+}
+function toggleReady(){if(amHost)return;send(hostConn,{t:'READY'});}
+function hostStart(){
+  if(!amHost)return;
+  if(lobbyPs.length<2){showErr('lobby-err','Нужно минимум 2 игрока!');return;}
+  GS=makeGS(lobbyPs);
+  bcast({t:'START',state:GS});
+  buildBoard();enterGame();
+}
+function sendChat(){
+  const el=document.getElementById('linput');const t=el.value.trim();if(!t)return;el.value='';
+  if(amHost){addChat('chat',myName,t);bcastChat();}
+  else send(hostConn,{t:'CHAT',name:myName,text:t});
+}
+function sendGameChat(){
+  const el=document.getElementById('ginput');const t=el.value.trim();if(!t)return;el.value='';
+  if(amHost){addChat('chat',myName,t);bcastChat();}
+  else send(hostConn,{t:'CHAT',name:myName,text:t});
+}
+function renderChat(){
+  ['lchat','gchat'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    el.innerHTML=chatLog.map(m=>m.type==='sys'?`<div class="cmsg csys">${m.text}</div>`:`<div class="cmsg"><span class="cnm">${m.name}: </span>${m.text}</div>`).join('');
+    el.scrollTop=9999;
+  });
+}
 
 
-  function makeGS(players){
-    const ps={};
-    players.forEach((p,i)=>{
-      ps[p.id]={id:p.id,name:p.name,token:TOKENS[i%TOKENS.length],color:COLORS[i%COLORS.length],
-        money:1500,position:0,inJail:false,jailTurns:0,jailFreeCards:0,
-        bankrupt:false,properties:[],doublesCount:0};
-    });
-    return{players:ps,order:players.map(p=>p.id),curIdx:0,props:{},
-      phase:'roll',dice:[1,1],turnStarted:false,
-      log:['🎲 Игра началась! Удачи!'],
-      chIdx:0,comIdx:0,
-      chDeck:shuf([...Array(CHANCE_C.length).keys()]),
-      comDeck:shuf([...Array(COMM_C.length).keys()]),
-      parking:0,auction:null,card:null,winner:null};
+function makeGS(players){
+  const ps={};
+  players.forEach((p,i)=>{
+    ps[p.id]={id:p.id,name:p.name,token:TOKENS[i%TOKENS.length],color:COLORS[i%COLORS.length],
+      money:1500,position:0,inJail:false,jailTurns:0,jailFreeCards:0,
+      bankrupt:false,properties:[],doublesCount:0};
+  });
+  return{players:ps,order:players.map(p=>p.id),curIdx:0,props:{},
+    phase:'roll',dice:[1,1],turnStarted:false,
+    log:['🎲 Игра началась! Удачи!'],
+    chIdx:0,comIdx:0,
+    chDeck:shuf([...Array(CHANCE_C.length).keys()]),
+    comDeck:shuf([...Array(COMM_C.length).keys()]),
+    parking:0,auction:null,card:null,winner:null};
+}
+
+function enterGame(){
+  sysChat('🎮 Игра началась!');
+  if(amHost)bcastChat();
+  showScreen('game');renderGame();
+}
+
+/* ═══════════════════════════════════════════════════════
+   ACTION DISPATCH
+═══════════════════════════════════════════════════════ */
+
+function act(type){
+  const extra={};
+  if(type==='AUCTION_BID'){
+    const b=parseInt(document.getElementById('auction-bid').value);
+    if(isNaN(b))return;extra.bid=b;
+    document.getElementById('auction-bid').value='';
   }
-
-  function enterGame(){
-    sysChat('🎮 Игра началась!');
-    if(amHost)bcastChat();
-    showScreen('game');renderGame();
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     ACTION DISPATCH
-  ═══════════════════════════════════════════════════════ */
-
-  function act(type){
-    const extra={};
-    if(type==='AUCTION_BID'){
-      const b=parseInt(document.getElementById('auction-bid').value);
-      if(isNaN(b))return;extra.bid=b;
-      document.getElementById('auction-bid').value='';
+  if(type==='AUCTION'){
+    // start auction immediately — handled locally then broadcast
+    if(amHost){
+      const sp=BOARD[GS.players[myId].position];
+      let g={...GS,phase:'auction',auction:{spaceId:GS.players[myId].position,bid:1,bidder:null}};
+      g=addLog(g,`${GS.players[myId].name} отказался от ${sp.name} — аукцион от $1!`);
+      GS=g;bcastState();return;
     }
-    if(type==='AUCTION'){
-      // start auction immediately — handled locally then broadcast
-      if(amHost){
-        const sp=BOARD[GS.players[myId].position];
-        let g={...GS,phase:'auction',auction:{spaceId:GS.players[myId].position,bid:1,bidder:null}};
-        g=addLog(g,`${GS.players[myId].name} отказался от ${sp.name} — аукцион от $1!`);
-        GS=g;bcastState();return;
-      }
+  }
+  const action={type,playerId:myId,...extra};
+  if(amHost)applyAction(action);
+  else send(hostConn,{t:'ACTION',action});
+}
+
+
+function applyAction(a){
+  if(!amHost)return;
+  const fns={ROLL:doRollL,BUY:doBuyL,AUCTION_BID:doAucBidL,END_AUCTION:doEndAucL,
+    CARD_OK:doCardL,END_TURN:()=>nextTurn(GS),PAY_JAIL:doPayJailL,JAIL_CARD:doJailCardL,
+    TRADE:doTradeL,BUILD:doBuildL};
+  const fn=fns[a.type];
+  if(!fn)return;
+  const newGs=fn(GS,a);
+  if(!newGs)return;
+  GS=newGs;bcastState();
+}
+
+/* ═══════════════════════════════════════════════════════
+   LOGIC HELPERS
+═══════════════════════════════════════════════════════ */
+
+function addLog(gs,msg){return{...gs,log:[...(gs.log||[]),msg].slice(-60)};}
+function nextTurn(gs){
+  const alive=gs.order.filter(id=>!gs.players[id]?.bankrupt);
+  if(!alive.length)return gs;
+  const ci=alive.indexOf(gs.order[gs.curIdx]);
+  const nxt=alive[(ci+1)%alive.length];
+  return{...gs,curIdx:gs.order.indexOf(nxt),phase:'roll',turnStarted:false,card:null};
+}
+function payRent(gs,from,to,sid){
+  const sp=BOARD[sid];const pd=gs.props[sid];
+  if(!pd||pd.mortgaged)return gs;
+  let rent=0;
+  if(sp.type==='property'){
+    const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
+    const all=grp.every(s=>gs.props[s.id]?.owner===to);
+    const h=pd.houses||0;
+    rent=h===0?(all?sp.rent[0]*2:sp.rent[0]):sp.rent[Math.min(h,5)];
+  }else if(sp.type==='railroad'){
+    const cnt=BOARD.filter(s=>s.type==='railroad'&&gs.props[s.id]?.owner===to).length;
+    rent=sp.rent[Math.min(cnt-1,3)];
+  }else if(sp.type==='utility'){
+    const cnt=BOARD.filter(s=>s.type==='utility'&&gs.props[s.id]?.owner===to).length;
+    rent=(gs.dice[0]+gs.dice[1])*(cnt===2?10:4);
+  }
+  const actual=Math.min(rent,gs.players[from].money);
+  return{...gs,players:{...gs.players,
+    [from]:{...gs.players[from],money:gs.players[from].money-actual},
+    [to]:  {...gs.players[to],  money:gs.players[to].money+actual}
+  }};
+}
+function land(gs,pid,pos){
+  const sp=BOARD[pos];let g={...gs};
+  if(sp.type==='tax'){
+    g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money-sp.amount}}};
+    g=addLog(g,`${g.players[pid].name} заплатил налог $${sp.amount} 💸`);
+  }else if(sp.type==='gotojail'){
+    g={...g,players:{...g.players,[pid]:{...g.players[pid],position:10,inJail:true,jailTurns:0}}};
+    g=addLog(g,`${g.players[pid].name} — в тюрьму! 🚔`);
+  }else if(sp.type==='chance'){
+    const card=CHANCE_C[g.chDeck[g.chIdx%g.chDeck.length]];
+    g={...g,chIdx:g.chIdx+1,card:{...card,kind:'Шанс'}};
+    g=addLog(g,`${g.players[pid].name} тянет Шанс: "${card.text}"`);
+  }else if(sp.type==='community'){
+    const card=COMM_C[g.comDeck[g.comIdx%g.comDeck.length]];
+    g={...g,comIdx:g.comIdx+1,card:{...card,kind:'Общ. касса'}};
+    g=addLog(g,`${g.players[pid].name} тянет Кассу: "${card.text}"`);
+  }else if(sp.type==='freeparking'){
+    if(g.parking>0){
+      g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+g.parking}},parking:0};
+      g=addLog(g,`${g.players[pid].name} забирает $${g.parking} с парковки! 🅿️`);
+    }else g=addLog(g,`${g.players[pid].name} на Бесплатной парковке.`);
+  }else if(['property','railroad','utility'].includes(sp.type)){
+    const pd=g.props[pos];
+    if(!pd){g={...g,phase:'buy'};g=addLog(g,`${g.players[pid].name} на ${sp.name} ($${sp.price}) — свободен!`);}
+    else if(pd.owner&&pd.owner!==pid&&!pd.mortgaged){
+      g=payRent(g,pid,pd.owner,pos);
+      g=addLog(g,`${g.players[pid].name} платит аренду → ${g.players[pd.owner]?.name}`);
+    }else g=addLog(g,`${g.players[pid].name} на ${sp.name} (свой).`);
+  }else g=addLog(g,`${g.players[pid].name} на ${sp.name}.`);
+  // bankrupt
+  if(g.players[pid].money<0){
+    g={...g,players:{...g.players,[pid]:{...g.players[pid],bankrupt:true}}};
+    g=addLog(g,`${g.players[pid].name} — БАНКРОТ! 💀`);
+  }
+  // winner
+  const alive=Object.values(g.players).filter(p=>!p.bankrupt);
+  if(alive.length===1){g={...g,phase:'end',winner:alive[0].id};g=addLog(g,`🏆 ${alive[0].name} ПОБЕДИЛ!`);}
+  return g;
+}
+
+function doRollL(gs,a){
+  const pid=a.playerId;
+  if(gs.order[gs.curIdx]!==pid||gs.phase!=='roll')return gs;
+  const d1=rnd6(),d2=rnd6();
+  let g={...gs,dice:[d1,d2],turnStarted:true};
+  const pl=g.players[pid];const dbl=d1===d2;
+  if(pl.inJail){
+    if(dbl){g={...g,players:{...g.players,[pid]:{...pl,inJail:false,jailTurns:0,doublesCount:0}}};g=addLog(g,`${pl.name} вышел из тюрьмы дублем! 🎉`);}
+    else{
+      const jt=(pl.jailTurns||0)+1;
+      if(jt>=3){g={...g,players:{...g.players,[pid]:{...pl,inJail:false,jailTurns:0,money:pl.money-50}}};g=addLog(g,`${pl.name} заплатил $50, вышел.`);}
+      else{g={...g,players:{...g.players,[pid]:{...pl,jailTurns:jt}}};g=addLog(g,`${pl.name} в тюрьме (${jt}/3).`);return nextTurn(g);}
     }
-    const action={type,playerId:myId,...extra};
-    if(amHost)applyAction(action);
-    else send(hostConn,{t:'ACTION',action});
   }
+  const dc=dbl?(g.players[pid].doublesCount||0)+1:0;
+  if(dc>=3){g={...g,players:{...g.players,[pid]:{...g.players[pid],position:10,inJail:true,jailTurns:0,doublesCount:0}}};g=addLog(g,`${pl.name} — 3 дубля → тюрьма!`);return nextTurn(g);}
+  g={...g,players:{...g.players,[pid]:{...g.players[pid],doublesCount:dc}}};
+  const old=g.players[pid].position;const np=(old+d1+d2)%40;
+  if((old+d1+d2)>=40&&np!==0){g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+200,position:np}}};g=addLog(g,`${pl.name} прошёл СТАРТ +$200 💰`);}
+  else g={...g,players:{...g.players,[pid]:{...g.players[pid],position:np}}};
+  g=addLog(g,`${pl.name}: ${d1}+${d2}=${d1+d2} → ${BOARD[np].name}`);
+  g=land(g,pid,np);
+  if(g.phase==='roll'&&!g.card){if(dbl&&!g.players[pid].inJail)g=addLog(g,`${pl.name} — дубль, ещё раз!`);else g=nextTurn(g);}
+  return g;
+}
+function doBuyL(gs,a){
+  const pid=a.playerId;
+  if(gs.order[gs.curIdx]!==pid||gs.phase!=='buy')return gs;
+  const sp=BOARD[gs.players[pid].position];const pl=gs.players[pid];
+  if(pl.money<sp.price)return gs;
+  let g={...gs,players:{...gs.players,[pid]:{...pl,money:pl.money-sp.price,properties:[...(pl.properties||[]),sp.id]}},props:{...gs.props,[sp.id]:{owner:pid,houses:0,mortgaged:false}}};
+  g=addLog(g,`${pl.name} купил ${sp.name} за $${sp.price}! 🏠`);
+  return gs.dice[0]===gs.dice[1]?{...g,phase:'roll'}:nextTurn(g);
+}
+function doAucBidL(gs,a){
+  if(!gs.auction||a.bid<=gs.auction.bid||a.bid>gs.players[a.playerId].money)return gs;
+  let g={...gs,auction:{...gs.auction,bid:a.bid,bidder:a.playerId}};
+  return addLog(g,`${gs.players[a.playerId].name} ставит $${a.bid}!`);
+}
+function doEndAucL(gs){
+  if(!gs.auction)return gs;
+  const{spaceId,bid,bidder}=gs.auction;
+  let g={...gs,auction:null};
+  if(bidder){
+    const w=gs.players[bidder];
+    g={...g,players:{...g.players,[bidder]:{...w,money:w.money-bid,properties:[...(w.properties||[]),spaceId]}},props:{...g.props,[spaceId]:{owner:bidder,houses:0,mortgaged:false}}};
+    g=addLog(g,`${w.name} выиграл аукцион: ${BOARD[spaceId].name} за $${bid}!`);
+  }
+  return nextTurn(g);
+}
+function doCardL(gs,a){
+  const pid=a.playerId;
+  if(!gs.card||gs.order[gs.curIdx]!==pid)return gs;
+  const card=gs.card;let g={...gs,card:null};const pl=g.players[pid];
+  if(card.action==='goto'){
+    const pGo=card.target<pl.position;
+    if(pGo)g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+200}}};
+    g={...g,players:{...g.players,[pid]:{...g.players[pid],position:card.target}}};
+    g=land(g,pid,card.target);
+  }else if(card.action==='collect'){g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+card.amount}}};}
+  else if(card.action==='pay'){g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-card.amount}}};}
+  else if(card.action==='jail'){g={...g,players:{...g.players,[pid]:{...pl,position:10,inJail:true,jailTurns:0}}};}
+  else if(card.action==='jailFree'){g={...g,players:{...g.players,[pid]:{...pl,jailFreeCards:(pl.jailFreeCards||0)+1}}};}
+  else if(card.action==='back3'){const np=((pl.position-3)+40)%40;g={...g,players:{...g.players,[pid]:{...pl,position:np}}};g=land(g,pid,np);}
+  else if(card.action==='nearestRR'){
+    const rrs=[5,15,25,35];const nr=rrs.reduce((b,r)=>(r-pl.position+40)%40<(b-pl.position+40)%40?r:b);
+    g={...g,players:{...g.players,[pid]:{...pl,position:nr}}};g=land(g,pid,nr);
+  }else if(card.action==='payAll'){
+    const oth=Object.keys(g.players).filter(id=>id!==pid&&!g.players[id].bankrupt);
+    const np={...g.players};let tot=0;
+    oth.forEach(id=>{np[id]={...np[id],money:np[id].money+card.amount};tot+=card.amount;});
+    np[pid]={...np[pid],money:np[pid].money-tot};g={...g,players:np};
+  }else if(card.action==='collectAll'){
+    const oth=Object.keys(g.players).filter(id=>id!==pid&&!g.players[id].bankrupt);
+    const np={...g.players};let tot=0;
+    oth.forEach(id=>{np[id]={...np[id],money:Math.max(0,np[id].money-card.amount)};tot+=card.amount;});
+    np[pid]={...np[pid],money:np[pid].money+tot};g={...g,players:np};
+  }
+  if(g.phase==='roll'&&!g.card)g=nextTurn(g);
+  return g;
+}
+function doPayJailL(gs,a){
+  const pl=gs.players[a.playerId];
+  if(!pl.inJail||pl.money<50)return gs;
+  let g={...gs,players:{...gs.players,[a.playerId]:{...pl,inJail:false,jailTurns:0,money:pl.money-50}}};
+  return addLog(g,`${pl.name} заплатил $50 и вышел.`);
+}
+function doJailCardL(gs,a){
+  const pl=gs.players[a.playerId];
+  if(!pl.inJail||!pl.jailFreeCards)return gs;
+  let g={...gs,players:{...gs.players,[a.playerId]:{...pl,inJail:false,jailTurns:0,jailFreeCards:pl.jailFreeCards-1}}};
+  return addLog(g,`${pl.name} использовал карту освобождения!`);
+}
+function doTradeL(gs,a){
+  const{from,to,giveMoney,takeMoney,giveProps,takeProps}=a;
+  const fp=gs.players[from],tp=gs.players[to];if(!fp||!tp)return gs;
+  const nfp=[...(fp.properties||[]).filter(p=>!giveProps.includes(p)),...takeProps];
+  const ntp=[...(tp.properties||[]).filter(p=>!takeProps.includes(p)),...giveProps];
+  const np={...gs.props};
+  giveProps.forEach(id=>{if(np[id])np[id]={...np[id],owner:to};});
+  takeProps.forEach(id=>{if(np[id])np[id]={...np[id],owner:from};});
+  let g={...gs,players:{...gs.players,[from]:{...fp,money:fp.money-giveMoney+takeMoney,properties:nfp},[to]:{...tp,money:tp.money+giveMoney-takeMoney,properties:ntp}},props:np};
+  return addLog(g,`${fp.name} и ${tp.name} заключили сделку! 🤝`);
+}
+function doBuildL(gs,a){
+  const{playerId:pid,spaceId,op}=a;
+  const sp=BOARD[spaceId];const pd=gs.props[spaceId];
+  if(!pd||pd.owner!==pid)return gs;
+  const pl=gs.players[pid];let g={...gs};
+  if(op==='buy'){
+    // Нельзя строить без монополии (все участки одного цвета)
+    const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
+    const hasMonopoly=grp.every(s=>gs.props[s.id]?.owner===pid);
+    if(!hasMonopoly)return gs;
+    if(pd.houses>=5||pl.money<sp.hc)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-sp.hc}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses+1}}};
+    g=addLog(g,`${pl.name} построил ${pd.houses===4?'отель':'дом'} на ${sp.name}!`);
+  }else if(op==='sell'){
+    if(!pd.houses)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+Math.floor(sp.hc/2)}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses-1}}};
+    g=addLog(g,`${pl.name} продал дом на ${sp.name}.`);
+  }else if(op==='mortgage'){
+    if(pd.mortgaged||pd.houses)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+sp.mg}},props:{...g.props,[spaceId]:{...pd,mortgaged:true}}};
+    g=addLog(g,`${pl.name} заложил ${sp.name} за $${sp.mg}.`);
+  }else if(op==='unmortgage'){
+    if(!pd.mortgaged)return gs;const cost=Math.ceil(sp.mg*1.1);
+    if(pl.money<cost)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-cost}},props:{...g.props,[spaceId]:{...pd,mortgaged:false}}};
+    g=addLog(g,`${pl.name} выкупил ${sp.name} за $${cost}.`);
+  }
+  return g;
+}
 
+/* ═══════════════════════════════════════════════════════
+   BUILD BOARD DOM
+═══════════════════════════════════════════════════════ */
 
-  function applyAction(a){
-    if(!amHost)return;
-    const fns={ROLL:doRollL,BUY:doBuyL,AUCTION_BID:doAucBidL,END_AUCTION:doEndAucL,
-      CARD_OK:doCardL,END_TURN:()=>nextTurn(GS),PAY_JAIL:doPayJailL,JAIL_CARD:doJailCardL,
-      TRADE:doTradeL,BUILD:doBuildL};
-    const fn=fns[a.type];
-    if(!fn)return;
-    const newGs=fn(GS,a);
-    if(!newGs)return;
-    GS=newGs;bcastState();
+function doBuildL(gs,a){
+  const{playerId:pid,spaceId,op}=a;
+  const sp=BOARD[spaceId];const pd=gs.props[spaceId];
+  if(!pd||pd.owner!==pid)return gs;
+  const pl=gs.players[pid];let g={...gs};
+  if(op==='buy'){
+    // Нельзя строить без монополии (все участки одного цвета)
+    const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
+    const hasMonopoly=grp.every(s=>gs.props[s.id]?.owner===pid);
+    if(!hasMonopoly)return gs;
+    if(pd.houses>=5||pl.money<sp.hc)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-sp.hc}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses+1}}};
+    g=addLog(g,`${pl.name} построил ${pd.houses===4?'отель':'дом'} на ${sp.name}!`);
+  }else if(op==='sell'){
+    if(!pd.houses)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+Math.floor(sp.hc/2)}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses-1}}};
+    g=addLog(g,`${pl.name} продал дом на ${sp.name}.`);
+  }else if(op==='mortgage'){
+    if(pd.mortgaged||pd.houses)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+sp.mg}},props:{...g.props,[spaceId]:{...pd,mortgaged:true}}};
+    g=addLog(g,`${pl.name} заложил ${sp.name} за $${sp.mg}.`);
+  }else if(op==='unmortgage'){
+    if(!pd.mortgaged)return gs;const cost=Math.ceil(sp.mg*1.1);
+    if(pl.money<cost)return gs;
+    g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-cost}},props:{...g.props,[spaceId]:{...pd,mortgaged:false}}};
+    g=addLog(g,`${pl.name} выкупил ${sp.name} за $${cost}.`);
   }
+  return g;
+}
 
-  /* ═══════════════════════════════════════════════════════
-     LOGIC HELPERS
-  ═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════════
+   BUILD BOARD DOM
+═══════════════════════════════════════════════════════ */
 
-  function addLog(gs,msg){return{...gs,log:[...(gs.log||[]),msg].slice(-60)};}
-  function nextTurn(gs){
-    const alive=gs.order.filter(id=>!gs.players[id]?.bankrupt);
-    if(!alive.length)return gs;
-    const ci=alive.indexOf(gs.order[gs.curIdx]);
-    const nxt=alive[(ci+1)%alive.length];
-    return{...gs,curIdx:gs.order.indexOf(nxt),phase:'roll',turnStarted:false,card:null};
-  }
-  function payRent(gs,from,to,sid){
-    const sp=BOARD[sid];const pd=gs.props[sid];
-    if(!pd||pd.mortgaged)return gs;
-    let rent=0;
-    if(sp.type==='property'){
-      const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
-      const all=grp.every(s=>gs.props[s.id]?.owner===to);
-      const h=pd.houses||0;
-      rent=h===0?(all?sp.rent[0]*2:sp.rent[0]):sp.rent[Math.min(h,5)];
-    }else if(sp.type==='railroad'){
-      const cnt=BOARD.filter(s=>s.type==='railroad'&&gs.props[s.id]?.owner===to).length;
-      rent=sp.rent[Math.min(cnt-1,3)];
-    }else if(sp.type==='utility'){
-      const cnt=BOARD.filter(s=>s.type==='utility'&&gs.props[s.id]?.owner===to).length;
-      rent=(gs.dice[0]+gs.dice[1])*(cnt===2?10:4);
-    }
-    const actual=Math.min(rent,gs.players[from].money);
-    return{...gs,players:{...gs.players,
-        [from]:{...gs.players[from],money:gs.players[from].money-actual},
-        [to]:  {...gs.players[to],  money:gs.players[to].money+actual}
-      }};
-  }
-  function land(gs,pid,pos){
-    const sp=BOARD[pos];let g={...gs};
-    if(sp.type==='tax'){
-      g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money-sp.amount}}};
-      g=addLog(g,`${g.players[pid].name} заплатил налог $${sp.amount} 💸`);
-    }else if(sp.type==='gotojail'){
-      g={...g,players:{...g.players,[pid]:{...g.players[pid],position:10,inJail:true,jailTurns:0}}};
-      g=addLog(g,`${g.players[pid].name} — в тюрьму! 🚔`);
-    }else if(sp.type==='chance'){
-      const card=CHANCE_C[g.chDeck[g.chIdx%g.chDeck.length]];
-      g={...g,chIdx:g.chIdx+1,card:{...card,kind:'Шанс'}};
-      g=addLog(g,`${g.players[pid].name} тянет Шанс: "${card.text}"`);
-    }else if(sp.type==='community'){
-      const card=COMM_C[g.comDeck[g.comIdx%g.comDeck.length]];
-      g={...g,comIdx:g.comIdx+1,card:{...card,kind:'Общ. касса'}};
-      g=addLog(g,`${g.players[pid].name} тянет Кассу: "${card.text}"`);
-    }else if(sp.type==='freeparking'){
-      if(g.parking>0){
-        g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+g.parking}},parking:0};
-        g=addLog(g,`${g.players[pid].name} забирает $${g.parking} с парковки! 🅿️`);
-      }else g=addLog(g,`${g.players[pid].name} на Бесплатной парковке.`);
-    }else if(['property','railroad','utility'].includes(sp.type)){
-      const pd=g.props[pos];
-      if(!pd){g={...g,phase:'buy'};g=addLog(g,`${g.players[pid].name} на ${sp.name} ($${sp.price}) — свободен!`);}
-      else if(pd.owner&&pd.owner!==pid&&!pd.mortgaged){
-        g=payRent(g,pid,pd.owner,pos);
-        g=addLog(g,`${g.players[pid].name} платит аренду → ${g.players[pd.owner]?.name}`);
-      }else g=addLog(g,`${g.players[pid].name} на ${sp.name} (свой).`);
-    }else g=addLog(g,`${g.players[pid].name} на ${sp.name}.`);
-    // bankrupt
-    if(g.players[pid].money<0){
-      g={...g,players:{...g.players,[pid]:{...g.players[pid],bankrupt:true}}};
-      g=addLog(g,`${g.players[pid].name} — БАНКРОТ! 💀`);
-    }
-    // winner
-    const alive=Object.values(g.players).filter(p=>!p.bankrupt);
-    if(alive.length===1){g={...g,phase:'end',winner:alive[0].id};g=addLog(g,`🏆 ${alive[0].name} ПОБЕДИЛ!`);}
-    return g;
-  }
+/* ═══════════════════════════════════════════════════════
+   BOARD GRID POSITION
+═══════════════════════════════════════════════════════ */
+function gp(id){
+  if(id<=10)return{c:10-id+1,r:11};
+  if(id<=20)return{c:1,r:10-(id-10)+1};
+  if(id<=30)return{c:(id-20)+1,r:1};
+  return{c:11,r:(id-30)+1};
+}
 
-  function doRollL(gs,a){
-    const pid=a.playerId;
-    if(gs.order[gs.curIdx]!==pid||gs.phase!=='roll')return gs;
-    const d1=rnd6(),d2=rnd6();
-    let g={...gs,dice:[d1,d2],turnStarted:true};
-    const pl=g.players[pid];const dbl=d1===d2;
-    if(pl.inJail){
-      if(dbl){g={...g,players:{...g.players,[pid]:{...pl,inJail:false,jailTurns:0,doublesCount:0}}};g=addLog(g,`${pl.name} вышел из тюрьмы дублем! 🎉`);}
-      else{
-        const jt=(pl.jailTurns||0)+1;
-        if(jt>=3){g={...g,players:{...g.players,[pid]:{...pl,inJail:false,jailTurns:0,money:pl.money-50}}};g=addLog(g,`${pl.name} заплатил $50, вышел.`);}
-        else{g={...g,players:{...g.players,[pid]:{...pl,jailTurns:jt}}};g=addLog(g,`${pl.name} в тюрьме (${jt}/3).`);return nextTurn(g);}
-      }
-    }
-    const dc=dbl?(g.players[pid].doublesCount||0)+1:0;
-    if(dc>=3){g={...g,players:{...g.players,[pid]:{...g.players[pid],position:10,inJail:true,jailTurns:0,doublesCount:0}}};g=addLog(g,`${pl.name} — 3 дубля → тюрьма!`);return nextTurn(g);}
-    g={...g,players:{...g.players,[pid]:{...g.players[pid],doublesCount:dc}}};
-    const old=g.players[pid].position;const np=(old+d1+d2)%40;
-    if((old+d1+d2)>=40&&np!==0){g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+200,position:np}}};g=addLog(g,`${pl.name} прошёл СТАРТ +$200 💰`);}
-    else g={...g,players:{...g.players,[pid]:{...g.players[pid],position:np}}};
-    g=addLog(g,`${pl.name}: ${d1}+${d2}=${d1+d2} → ${BOARD[np].name}`);
-    g=land(g,pid,np);
-    if(g.phase==='roll'&&!g.card){if(dbl&&!g.players[pid].inJail)g=addLog(g,`${pl.name} — дубль, ещё раз!`);else g=nextTurn(g);}
-    return g;
-  }
-  function doBuyL(gs,a){
-    const pid=a.playerId;
-    if(gs.order[gs.curIdx]!==pid||gs.phase!=='buy')return gs;
-    const sp=BOARD[gs.players[pid].position];const pl=gs.players[pid];
-    if(pl.money<sp.price)return gs;
-    let g={...gs,players:{...gs.players,[pid]:{...pl,money:pl.money-sp.price,properties:[...(pl.properties||[]),sp.id]}},props:{...gs.props,[sp.id]:{owner:pid,houses:0,mortgaged:false}}};
-    g=addLog(g,`${pl.name} купил ${sp.name} за $${sp.price}! 🏠`);
-    return gs.dice[0]===gs.dice[1]?{...g,phase:'roll'}:nextTurn(g);
-  }
-  function doAucBidL(gs,a){
-    if(!gs.auction||a.bid<=gs.auction.bid||a.bid>gs.players[a.playerId].money)return gs;
-    let g={...gs,auction:{...gs.auction,bid:a.bid,bidder:a.playerId}};
-    return addLog(g,`${gs.players[a.playerId].name} ставит $${a.bid}!`);
-  }
-  function doEndAucL(gs){
-    if(!gs.auction)return gs;
-    const{spaceId,bid,bidder}=gs.auction;
-    let g={...gs,auction:null};
-    if(bidder){
-      const w=gs.players[bidder];
-      g={...g,players:{...g.players,[bidder]:{...w,money:w.money-bid,properties:[...(w.properties||[]),spaceId]}},props:{...g.props,[spaceId]:{owner:bidder,houses:0,mortgaged:false}}};
-      g=addLog(g,`${w.name} выиграл аукцион: ${BOARD[spaceId].name} за $${bid}!`);
-    }
-    return nextTurn(g);
-  }
-  function doCardL(gs,a){
-    const pid=a.playerId;
-    if(!gs.card||gs.order[gs.curIdx]!==pid)return gs;
-    const card=gs.card;let g={...gs,card:null};const pl=g.players[pid];
-    if(card.action==='goto'){
-      const pGo=card.target<pl.position;
-      if(pGo)g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+200}}};
-      g={...g,players:{...g.players,[pid]:{...g.players[pid],position:card.target}}};
-      g=land(g,pid,card.target);
-    }else if(card.action==='collect'){g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+card.amount}}};}
-    else if(card.action==='pay'){g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-card.amount}}};}
-    else if(card.action==='jail'){g={...g,players:{...g.players,[pid]:{...pl,position:10,inJail:true,jailTurns:0}}};}
-    else if(card.action==='jailFree'){g={...g,players:{...g.players,[pid]:{...pl,jailFreeCards:(pl.jailFreeCards||0)+1}}};}
-    else if(card.action==='back3'){const np=((pl.position-3)+40)%40;g={...g,players:{...g.players,[pid]:{...pl,position:np}}};g=land(g,pid,np);}
-    else if(card.action==='nearestRR'){
-      const rrs=[5,15,25,35];const nr=rrs.reduce((b,r)=>(r-pl.position+40)%40<(b-pl.position+40)%40?r:b);
-      g={...g,players:{...g.players,[pid]:{...pl,position:nr}}};g=land(g,pid,nr);
-    }else if(card.action==='payAll'){
-      const oth=Object.keys(g.players).filter(id=>id!==pid&&!g.players[id].bankrupt);
-      const np={...g.players};let tot=0;
-      oth.forEach(id=>{np[id]={...np[id],money:np[id].money+card.amount};tot+=card.amount;});
-      np[pid]={...np[pid],money:np[pid].money-tot};g={...g,players:np};
-    }else if(card.action==='collectAll'){
-      const oth=Object.keys(g.players).filter(id=>id!==pid&&!g.players[id].bankrupt);
-      const np={...g.players};let tot=0;
-      oth.forEach(id=>{np[id]={...np[id],money:Math.max(0,np[id].money-card.amount)};tot+=card.amount;});
-      np[pid]={...np[pid],money:np[pid].money+tot};g={...g,players:np};
-    }
-    if(g.phase==='roll'&&!g.card)g=nextTurn(g);
-    return g;
-  }
-  function doPayJailL(gs,a){
-    const pl=gs.players[a.playerId];
-    if(!pl.inJail||pl.money<50)return gs;
-    let g={...gs,players:{...gs.players,[a.playerId]:{...pl,inJail:false,jailTurns:0,money:pl.money-50}}};
-    return addLog(g,`${pl.name} заплатил $50 и вышел.`);
-  }
-  function doJailCardL(gs,a){
-    const pl=gs.players[a.playerId];
-    if(!pl.inJail||!pl.jailFreeCards)return gs;
-    let g={...gs,players:{...gs.players,[a.playerId]:{...pl,inJail:false,jailTurns:0,jailFreeCards:pl.jailFreeCards-1}}};
-    return addLog(g,`${pl.name} использовал карту освобождения!`);
-  }
-  function doTradeL(gs,a){
-    const{from,to,giveMoney,takeMoney,giveProps,takeProps}=a;
-    const fp=gs.players[from],tp=gs.players[to];if(!fp||!tp)return gs;
-    const nfp=[...(fp.properties||[]).filter(p=>!giveProps.includes(p)),...takeProps];
-    const ntp=[...(tp.properties||[]).filter(p=>!takeProps.includes(p)),...giveProps];
-    const np={...gs.props};
-    giveProps.forEach(id=>{if(np[id])np[id]={...np[id],owner:to};});
-    takeProps.forEach(id=>{if(np[id])np[id]={...np[id],owner:from};});
-    let g={...gs,players:{...gs.players,[from]:{...fp,money:fp.money-giveMoney+takeMoney,properties:nfp},[to]:{...tp,money:tp.money+giveMoney-takeMoney,properties:ntp}},props:np};
-    return addLog(g,`${fp.name} и ${tp.name} заключили сделку! 🤝`);
-  }
-  function doBuildL(gs,a){
-    const{playerId:pid,spaceId,op}=a;
-    const sp=BOARD[spaceId];const pd=gs.props[spaceId];
-    if(!pd||pd.owner!==pid)return gs;
-    const pl=gs.players[pid];let g={...gs};
-    if(op==='buy'){
-      // Нельзя строить без монополии (все участки одного цвета)
-      const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
-      const hasMonopoly=grp.every(s=>gs.props[s.id]?.owner===pid);
-      if(!hasMonopoly)return gs;
-      if(pd.houses>=5||pl.money<sp.hc)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-sp.hc}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses+1}}};
-      g=addLog(g,`${pl.name} построил ${pd.houses===4?'отель':'дом'} на ${sp.name}!`);
-    }else if(op==='sell'){
-      if(!pd.houses)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+Math.floor(sp.hc/2)}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses-1}}};
-      g=addLog(g,`${pl.name} продал дом на ${sp.name}.`);
-    }else if(op==='mortgage'){
-      if(pd.mortgaged||pd.houses)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+sp.mg}},props:{...g.props,[spaceId]:{...pd,mortgaged:true}}};
-      g=addLog(g,`${pl.name} заложил ${sp.name} за $${sp.mg}.`);
-    }else if(op==='unmortgage'){
-      if(!pd.mortgaged)return gs;const cost=Math.ceil(sp.mg*1.1);
-      if(pl.money<cost)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-cost}},props:{...g.props,[spaceId]:{...pd,mortgaged:false}}};
-      g=addLog(g,`${pl.name} выкупил ${sp.name} за $${cost}.`);
-    }
-    return g;
-  }
+/* ═══════════════════════════════════════════════════════
+   BUILD BOARD
+═══════════════════════════════════════════════════════ */
+function buildBoard(){
+  const board=document.getElementById('board');
+  board.innerHTML='';
 
-  /* ═══════════════════════════════════════════════════════
-     BUILD BOARD DOM
-  ═══════════════════════════════════════════════════════ */
-
-  function doBuildL(gs,a){
-    const{playerId:pid,spaceId,op}=a;
-    const sp=BOARD[spaceId];const pd=gs.props[spaceId];
-    if(!pd||pd.owner!==pid)return gs;
-    const pl=gs.players[pid];let g={...gs};
-    if(op==='buy'){
-      // Нельзя строить без монополии (все участки одного цвета)
-      const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
-      const hasMonopoly=grp.every(s=>gs.props[s.id]?.owner===pid);
-      if(!hasMonopoly)return gs;
-      if(pd.houses>=5||pl.money<sp.hc)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-sp.hc}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses+1}}};
-      g=addLog(g,`${pl.name} построил ${pd.houses===4?'отель':'дом'} на ${sp.name}!`);
-    }else if(op==='sell'){
-      if(!pd.houses)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+Math.floor(sp.hc/2)}},props:{...g.props,[spaceId]:{...pd,houses:pd.houses-1}}};
-      g=addLog(g,`${pl.name} продал дом на ${sp.name}.`);
-    }else if(op==='mortgage'){
-      if(pd.mortgaged||pd.houses)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money+sp.mg}},props:{...g.props,[spaceId]:{...pd,mortgaged:true}}};
-      g=addLog(g,`${pl.name} заложил ${sp.name} за $${sp.mg}.`);
-    }else if(op==='unmortgage'){
-      if(!pd.mortgaged)return gs;const cost=Math.ceil(sp.mg*1.1);
-      if(pl.money<cost)return gs;
-      g={...g,players:{...g.players,[pid]:{...pl,money:pl.money-cost}},props:{...g.props,[spaceId]:{...pd,mortgaged:false}}};
-      g=addLog(g,`${pl.name} выкупил ${sp.name} за $${cost}.`);
-    }
-    return g;
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     BUILD BOARD DOM
-  ═══════════════════════════════════════════════════════ */
-
-  /* ═══════════════════════════════════════════════════════
-     BOARD GRID POSITION
-  ═══════════════════════════════════════════════════════ */
-  function gp(id){
-    if(id<=10)return{c:10-id+1,r:11};
-    if(id<=20)return{c:1,r:10-(id-10)+1};
-    if(id<=30)return{c:(id-20)+1,r:1};
-    return{c:11,r:(id-30)+1};
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     BUILD BOARD
-  ═══════════════════════════════════════════════════════ */
-  function buildBoard(){
-    const board=document.getElementById('board');
-    board.innerHTML='';
-
-    // Center
-    const center=document.createElement('div');
-    center.id='bc-center';
-    center.style.cssText='grid-column:2/11;grid-row:2/11;position:relative;';
-    center.innerHTML=`
+  // Center
+  const center=document.createElement('div');
+  center.id='bc-center';
+  center.style.cssText='grid-column:2/11;grid-row:2/11;position:relative;';
+  center.innerHTML=`
     <div class="bc-inner">
       <div class="bc-logo">МОНОПОЛИЯ</div>
       <div class="bc-sub">🌍 Мировое господство</div>
@@ -1447,26 +1443,26 @@
       <div id="center-info"></div>
     </div>
   `;
-    board.appendChild(center);
+  board.appendChild(center);
 
-    BOARD.forEach(sp=>{
-      const{c,r}=gp(sp.id);
-      const isCorner=[0,10,20,30].includes(sp.id);
-      const d=document.createElement('div');
-      d.className='sp'+(isCorner?' sp-corner':'');
-      d.id='sp'+sp.id;
-      d.style.cssText=`grid-column:${c};grid-row:${r}`;
-      d.onclick=()=>spClick(sp.id);
+  BOARD.forEach(sp=>{
+    const{c,r}=gp(sp.id);
+    const isCorner=[0,10,20,30].includes(sp.id);
+    const d=document.createElement('div');
+    d.className='sp'+(isCorner?' sp-corner':'');
+    d.id='sp'+sp.id;
+    d.style.cssText=`grid-column:${c};grid-row:${r}`;
+    d.onclick=()=>spClick(sp.id);
 
-      let inner='';
-      if(isCorner){
-        const icons={0:'🏁',10:'⛓️',20:'🅿️',30:'🚔'};
-        const labels={0:'СТАРТ',10:'ТЮРЬМА',20:'ПАРКОВКА',30:'В ТЮРЬМУ'};
-        inner=`<div class="sp-corner-icon">${icons[sp.id]||''}</div><div class="sp-corner-label">${labels[sp.id]||''}</div>`;
-      } else if(sp.type==='property'||sp.type==='railroad'||sp.type==='utility'){
-        const flag=sp.name.match(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]/u)||[''];
-        const cleanName=sp.name.replace(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]\s*/gu,'').trim();
-        inner=`
+    let inner='';
+    if(isCorner){
+      const icons={0:'🏁',10:'⛓️',20:'🅿️',30:'🚔'};
+      const labels={0:'СТАРТ',10:'ТЮРЬМА',20:'ПАРКОВКА',30:'В ТЮРЬМУ'};
+      inner=`<div class="sp-corner-icon">${icons[sp.id]||''}</div><div class="sp-corner-label">${labels[sp.id]||''}</div>`;
+    } else if(sp.type==='property'||sp.type==='railroad'||sp.type==='utility'){
+      const flag=sp.name.match(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]/u)||[''];
+      const cleanName=sp.name.replace(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]\s*/gu,'').trim();
+      inner=`
         ${sp.color?`<div class="sp-color-bar" style="background:${sp.color}"></div>`:''}
         <div class="sp-flag">${flag[0]||''}</div>
         <div class="sp-name">${cleanName}</div>
@@ -1474,116 +1470,116 @@
         <div class="sp-houses" id="h${sp.id}"></div>
         <div class="sp-own" id="o${sp.id}"></div>
       `;
-      } else {
-        // tax, chance, community
-        const icons2={tax:'💸',chance:'🎲',community:'📦',gotojail:'🚔',freeparking:'🅿️',jail:'⛓️',go:'🏁'};
-        inner=`
+    } else {
+      // tax, chance, community
+      const icons2={tax:'💸',chance:'🎲',community:'📦',gotojail:'🚔',freeparking:'🅿️',jail:'⛓️',go:'🏁'};
+      inner=`
         <div class="sp-special-icon">${icons2[sp.type]||'?'}</div>
         <div class="sp-special-name">${sp.name.replace(/[💸🎲📦]/,'').trim()}</div>
       `;
-      }
-      inner+=`<div class="sp-tokens" id="t${sp.id}"></div>`;
-      d.innerHTML=inner;
-      board.appendChild(d);
-    });
-  }
-
-  function spClick(id){
-    if(!GS)return;
-    const sp=BOARD[id];const pd=GS.props[id];
-    if(['property','railroad','utility'].includes(sp.type)){
-      const owner=pd?.owner?GS.players[pd.owner]?.name:'Свободен';
-      const price=!pd?`  Цена: $${sp.price}`:'';
-      const h=pd?.houses===5?'🏨 Отель':pd?.houses?`🏠×${pd.houses}`:'';
-      const m=pd?.mortgaged?'🔒':'';
-      notif(`${sp.name}  👤 ${owner}${price}  ${h} ${m}`,3000);
     }
+    inner+=`<div class="sp-tokens" id="t${sp.id}"></div>`;
+    d.innerHTML=inner;
+    board.appendChild(d);
+  });
+}
+
+function spClick(id){
+  if(!GS)return;
+  const sp=BOARD[id];const pd=GS.props[id];
+  if(['property','railroad','utility'].includes(sp.type)){
+    const owner=pd?.owner?GS.players[pd.owner]?.name:'Свободен';
+    const price=!pd?`  Цена: $${sp.price}`:'';
+    const h=pd?.houses===5?'🏨 Отель':pd?.houses?`🏠×${pd.houses}`:'';
+    const m=pd?.mortgaged?'🔒':'';
+    notif(`${sp.name}  👤 ${owner}${price}  ${h} ${m}`,3000);
   }
+}
 
-  /* ═══════════════════════════════════════════════════════
-     3D DICE ANIMATION — IN CENTER OF BOARD
-  ═══════════════════════════════════════════════════════ */
-  function showDiceOverlay(d1, d2){
-    const faces=['','⚀','⚁','⚂','⚃','⚄','⚅'];
-    const wrap=document.getElementById('center-dice');
-    const die1=document.getElementById('cdice1');
-    const die2=document.getElementById('cdice2');
-    const ci=document.getElementById('center-info');
-    if(!wrap||!die1||!die2)return;
-    ci.style.display='none';
-    wrap.style.display='flex';
-    wrap.style.opacity='1';
+/* ═══════════════════════════════════════════════════════
+   3D DICE ANIMATION — IN CENTER OF BOARD
+═══════════════════════════════════════════════════════ */
+function showDiceOverlay(d1, d2){
+  const faces=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+  const wrap=document.getElementById('center-dice');
+  const die1=document.getElementById('cdice1');
+  const die2=document.getElementById('cdice2');
+  const ci=document.getElementById('center-info');
+  if(!wrap||!die1||!die2)return;
+  ci.style.display='none';
+  wrap.style.display='flex';
+  wrap.style.opacity='1';
 
-    let f=0;
-    const iv=setInterval(()=>{
-      die1.textContent=faces[Math.ceil(Math.random()*6)];
-      die2.textContent=faces[Math.ceil(Math.random()*6)];
-      die1.classList.toggle('spin');
-      die2.classList.toggle('spin');
-      f++;
-    },80);
+  let f=0;
+  const iv=setInterval(()=>{
+    die1.textContent=faces[Math.ceil(Math.random()*6)];
+    die2.textContent=faces[Math.ceil(Math.random()*6)];
+    die1.classList.toggle('spin');
+    die2.classList.toggle('spin');
+    f++;
+  },80);
 
+  setTimeout(()=>{
+    clearInterval(iv);
+    die1.textContent=faces[d1];
+    die2.textContent=faces[d2];
+    die1.classList.remove('spin');
+    die2.classList.remove('spin');
+    die1.classList.add('land');
+    die2.classList.add('land');
+    // Update small dice
+    document.getElementById('die1').textContent=faces[d1];
+    document.getElementById('die2').textContent=faces[d2];
+    document.getElementById('die1').dataset.val=d1;
+    document.getElementById('die2').dataset.val=d2;
+    const dbl=d1===d2;
+    document.getElementById('dice-lbl').textContent=`${d1+d2}${dbl?' 🎯':''}`; 
     setTimeout(()=>{
-      clearInterval(iv);
-      die1.textContent=faces[d1];
-      die2.textContent=faces[d2];
-      die1.classList.remove('spin');
-      die2.classList.remove('spin');
-      die1.classList.add('land');
-      die2.classList.add('land');
-      // Update small dice
-      document.getElementById('die1').textContent=faces[d1];
-      document.getElementById('die2').textContent=faces[d2];
-      document.getElementById('die1').dataset.val=d1;
-      document.getElementById('die2').dataset.val=d2;
-      const dbl=d1===d2;
-      document.getElementById('dice-lbl').textContent=`${d1+d2}${dbl?' 🎯':''}`;
-      setTimeout(()=>{
-        die1.classList.remove('land');
-        die2.classList.remove('land');
-        wrap.style.display='none';
-        ci.style.display='';
-      },1600);
-    },700);
+      die1.classList.remove('land');
+      die2.classList.remove('land');
+      wrap.style.display='none';
+      ci.style.display='';
+    },1600);
+  },700);
+}
+
+/* ═══════════════════════════════════════════════════════
+   WINNER
+═══════════════════════════════════════════════════════ */
+function showWinner(wid,players){
+  const w=players[wid];
+  document.getElementById('win-name').textContent=`${w.token} ${w.name}`;
+  document.getElementById('win-sub').textContent=`Состояние: $${w.money.toLocaleString()}`;
+  document.getElementById('win-overlay').style.display='flex';
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='conf';
+    const cols=['#f6c90e','#e74c3c','#3498db','#2ecc71','#9b59b6','#ff6b35'];
+    c.style.cssText=`left:${Math.random()*100}vw;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;`;
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),5000);
   }
+}
 
-  /* ═══════════════════════════════════════════════════════
-     WINNER
-  ═══════════════════════════════════════════════════════ */
-  function showWinner(wid,players){
-    const w=players[wid];
-    document.getElementById('win-name').textContent=`${w.token} ${w.name}`;
-    document.getElementById('win-sub').textContent=`Состояние: $${w.money.toLocaleString()}`;
-    document.getElementById('win-overlay').style.display='flex';
-    for(let i=0;i<60;i++){
-      const c=document.createElement('div');c.className='conf';
-      const cols=['#f6c90e','#e74c3c','#3498db','#2ecc71','#9b59b6','#ff6b35'];
-      c.style.cssText=`left:${Math.random()*100}vw;background:${cols[~~(Math.random()*cols.length)]};animation-duration:${2+Math.random()*3}s;animation-delay:${Math.random()*1.5}s;border-radius:${Math.random()>.5?'50%':'2px'};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;`;
-      document.body.appendChild(c);
-      setTimeout(()=>c.remove(),5000);
-    }
-  }
+/* ═══════════════════════════════════════════════════════
+   RENDER GAME STATE
+═══════════════════════════════════════════════════════ */
+function renderGame(){
+  if(!GS)return;
+  const gs=GS;
+  const curId=gs.order[gs.curIdx];
+  const isMe=curId===myId;
+  const myP=gs.players[myId];
 
-  /* ═══════════════════════════════════════════════════════
-     RENDER GAME STATE
-  ═══════════════════════════════════════════════════════ */
-  function renderGame(){
-    if(!GS)return;
-    const gs=GS;
-    const curId=gs.order[gs.curIdx];
-    const isMe=curId===myId;
-    const myP=gs.players[myId];
-
-    /* ── Players ── */
-    const pp=document.getElementById('panel-players');
-    if(pp){
-      pp.innerHTML='<div class="panel-title">👥 Игроки</div>';
-      gs.order.forEach(pid=>{
-        const p=gs.players[pid];if(!p)return;
-        const isCur=pid===curId;
-        const d=document.createElement('div');
-        d.className='gc'+(isCur?' cur':'')+(p.bankrupt?' bust':'');
-        d.innerHTML=`
+  /* ── Players ── */
+  const pp=document.getElementById('panel-players');
+  if(pp){
+    pp.innerHTML='<div class="panel-title">👥 Игроки</div>';
+    gs.order.forEach(pid=>{
+      const p=gs.players[pid];if(!p)return;
+      const isCur=pid===curId;
+      const d=document.createElement('div');
+      d.className='gc'+(isCur?' cur':'')+(p.bankrupt?' bust':'');
+      d.innerHTML=`
         <div class="gc-avatar" style="background:${p.color}22;border-color:${p.color}66">${p.token}</div>
         <div class="gc-info">
           <div class="gc-name">${p.name}${pid===myId?' <span style="color:#888;font-size:.65rem">(Ты)</span>':''}</div>
@@ -1593,361 +1589,360 @@
         ${isCur&&!p.bankrupt?'<div class="gc-badge cur-badge">ХОД</div>':''}
         ${p.bankrupt?'<div class="gc-badge bust-badge">БАНКРОТ</div>':''}
       `;
-        pp.appendChild(d);
+      pp.appendChild(d);
+    });
+  }
+
+  /* ── Action buttons ── */
+  vis('a-roll',    isMe&&gs.phase==='roll'&&!gs.card);
+  vis('a-buy',     isMe&&gs.phase==='buy');
+  vis('a-auction', isMe&&gs.phase==='buy');
+  vis('a-card-ok', isMe&&!!gs.card);
+  vis('a-end',     isMe&&gs.phase==='roll'&&gs.turnStarted&&!gs.card&&!myP?.inJail);
+  vis('a-payjail', isMe&&gs.phase==='roll'&&!!myP?.inJail&&!gs.card);
+  vis('a-jailcard',isMe&&gs.phase==='roll'&&!!myP?.inJail&&(myP?.jailFreeCards||0)>0);
+  if(isMe&&gs.phase==='buy'){
+    const sp=BOARD[myP.position];
+    document.getElementById('a-buy').textContent=`🏠 Купить $${sp.price}`;
+  }
+
+  /* ── Small dice ── */
+  const DFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
+  const prevD1=parseInt(document.getElementById('die1').dataset.val||'0');
+  const prevD2=parseInt(document.getElementById('die2').dataset.val||'0');
+  document.getElementById('die1').textContent=DFACE[gs.dice[0]];
+  document.getElementById('die1').dataset.val=gs.dice[0];
+  document.getElementById('die2').textContent=DFACE[gs.dice[1]];
+  document.getElementById('die2').dataset.val=gs.dice[1];
+  const dbl=gs.dice[0]===gs.dice[1];
+  document.getElementById('dice-lbl').textContent=`${gs.dice[0]+gs.dice[1]}${dbl?' 🎯':''}`;
+  if(!amHost&&gs.turnStarted&&(gs.dice[0]!==prevD1||gs.dice[1]!==prevD2)&&prevD1!==0){
+    showDiceOverlay(gs.dice[0],gs.dice[1]);
+  }
+
+  /* ── Board tokens + houses ── */
+  BOARD.forEach(sp=>{
+    const tt=document.getElementById('t'+sp.id);
+    if(tt){
+      tt.innerHTML='';
+      gs.order.forEach(pid=>{
+        const p=gs.players[pid];
+        if(!p||p.bankrupt||p.position!==sp.id)return;
+        const s=document.createElement('span');
+        s.className='tok';s.title=p.name;s.textContent=p.token;
+        s.style.cssText=`text-shadow:0 0 8px ${p.color},0 2px 4px rgba(0,0,0,.8)`;
+        tt.appendChild(s);
       });
     }
-
-    /* ── Action buttons ── */
-    vis('a-roll',    isMe&&gs.phase==='roll'&&!gs.card);
-    vis('a-buy',     isMe&&gs.phase==='buy');
-    vis('a-auction', isMe&&gs.phase==='buy');
-    vis('a-card-ok', isMe&&!!gs.card);
-    vis('a-end',     isMe&&gs.phase==='roll'&&gs.turnStarted&&!gs.card&&!myP?.inJail);
-    vis('a-payjail', isMe&&gs.phase==='roll'&&!!myP?.inJail&&!gs.card);
-    vis('a-jailcard',isMe&&gs.phase==='roll'&&!!myP?.inJail&&(myP?.jailFreeCards||0)>0);
-    if(isMe&&gs.phase==='buy'){
-      const sp=BOARD[myP.position];
-      document.getElementById('a-buy').textContent=`🏠 Купить $${sp.price}`;
+    const hw=document.getElementById('h'+sp.id);
+    if(hw){
+      hw.innerHTML='';
+      const pd=gs.props[sp.id];
+      if(pd?.houses>0){
+        for(let i=0;i<Math.min(pd.houses,4);i++){const d=document.createElement('div');d.className='hdot';hw.appendChild(d);}
+        if(pd.houses===5){hw.innerHTML='<div class="hotdot">H</div>';}
+      }
     }
-
-    /* ── Small dice ── */
-    const DFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
-    const prevD1=parseInt(document.getElementById('die1').dataset.val||'0');
-    const prevD2=parseInt(document.getElementById('die2').dataset.val||'0');
-    document.getElementById('die1').textContent=DFACE[gs.dice[0]];
-    document.getElementById('die1').dataset.val=gs.dice[0];
-    document.getElementById('die2').textContent=DFACE[gs.dice[1]];
-    document.getElementById('die2').dataset.val=gs.dice[1];
-    const dbl=gs.dice[0]===gs.dice[1];
-    document.getElementById('dice-lbl').textContent=`${gs.dice[0]+gs.dice[1]}${dbl?' 🎯':''}`;
-    if(!amHost&&gs.turnStarted&&(gs.dice[0]!==prevD1||gs.dice[1]!==prevD2)&&prevD1!==0){
-      showDiceOverlay(gs.dice[0],gs.dice[1]);
+    const ow=document.getElementById('o'+sp.id);
+    if(ow){
+      const pd=gs.props[sp.id];
+      if(pd?.owner){
+        const ownerP=gs.players[pd.owner];
+        ow.style.background=ownerP?.color||'#fff';
+      } else ow.style.background='transparent';
     }
+  });
 
-    /* ── Board tokens + houses ── */
-    BOARD.forEach(sp=>{
-      const tt=document.getElementById('t'+sp.id);
-      if(tt){
-        tt.innerHTML='';
-        gs.order.forEach(pid=>{
-          const p=gs.players[pid];
-          if(!p||p.bankrupt||p.position!==sp.id)return;
-          const s=document.createElement('span');
-          s.className='tok';s.title=p.name;s.textContent=p.token;
-          s.style.cssText=`text-shadow:0 0 8px ${p.color},0 2px 4px rgba(0,0,0,.8)`;
-          tt.appendChild(s);
-        });
-      }
-      const hw=document.getElementById('h'+sp.id);
-      if(hw){
-        hw.innerHTML='';
-        const pd=gs.props[sp.id];
-        if(pd?.houses>0){
-          for(let i=0;i<Math.min(pd.houses,4);i++){const d=document.createElement('div');d.className='hdot';hw.appendChild(d);}
-          if(pd.houses===5){hw.innerHTML='<div class="hotdot">H</div>';}
-        }
-      }
-      const ow=document.getElementById('o'+sp.id);
-      if(ow){
-        const pd=gs.props[sp.id];
-        if(pd?.owner){
-          const ownerP=gs.players[pd.owner];
-          ow.style.background=ownerP?.color||'#fff';
-        } else ow.style.background='transparent';
-      }
-    });
-
-    /* ── Center info ── */
-    const ci=document.getElementById('center-info');
-    if(ci&&document.getElementById('center-dice').style.display==='none'){
-      if(gs.winner){
-        showWinner(gs.winner,gs.players);
-      } else if(gs.card){
-        const isChance=gs.card.kind==='Шанс';
-        ci.innerHTML=`<div class="center-card ${isChance?'card-chance':'card-comm'}">
+  /* ── Center info ── */
+  const ci=document.getElementById('center-info');
+  if(ci&&document.getElementById('center-dice').style.display==='none'){
+    if(gs.winner){
+      showWinner(gs.winner,gs.players);
+    } else if(gs.card){
+      const isChance=gs.card.kind==='Шанс';
+      ci.innerHTML=`<div class="center-card ${isChance?'card-chance':'card-comm'}">
         <div class="center-card-type">${isChance?'🎲 Шанс':'📦 Общ. касса'}</div>
         <div class="center-card-text">${gs.card.text}</div>
       </div>`;
-      } else if(gs.phase==='auction'&&gs.auction){
-        const sp=BOARD[gs.auction.spaceId];
-        ci.innerHTML=`<div class="center-auction">
+    } else if(gs.phase==='auction'&&gs.auction){
+      const sp=BOARD[gs.auction.spaceId];
+      ci.innerHTML=`<div class="center-auction">
         <div style="font-size:.7rem;color:#f87171;font-weight:900;letter-spacing:2px">🔨 АУКЦИОН</div>
         <div style="font-size:.9rem;font-weight:800;margin:4px 0">${sp.name}</div>
         <div style="font-size:1.8rem;font-weight:900;color:#f87171">$${gs.auction.bid}</div>
         ${gs.auction.bidder?`<div style="font-size:.65rem;color:#aaa">Лидирует: ${gs.players[gs.auction.bidder]?.name}</div>`:''}
       </div>`;
-      } else {
-        const cp=gs.players[curId];
-        if(cp){
-          ci.innerHTML=`<div class="center-turn">
+    } else {
+      const cp=gs.players[curId];
+      if(cp){
+        ci.innerHTML=`<div class="center-turn">
           <div class="center-turn-tok" style="text-shadow:0 0 20px ${cp.color}">${cp.token}</div>
           <div class="center-turn-name">${cp.name}</div>
-          <div class="center-turn-label">${curId===myId?'ТВОЙВой ХОД! 🎯':'Ждём ход...':'ожидаем'}</div>
+          <div class="center-turn-label">${curId===myId?'ТВОЙ ХОД! 🎯':'Ждём ход...'}</div>
         </div>`;
-          // fix label
-          ci.querySelector('.center-turn-label').textContent = curId===myId?'ТВОЙ ХОД! 🎯':'Ждём ход...';
-        }
+        ci.querySelector('.center-turn-label').textContent = curId===myId?'ТВОЙ ХОД! 🎯':'Ждём ход...';
       }
     }
+  }
 
-    /* ── Auction panel ── */
-    if(gs.phase==='auction'&&gs.auction){
-      document.getElementById('panel-auction').style.display='block';
-      const sp=BOARD[gs.auction.spaceId];
-      document.getElementById('auction-info').innerHTML=`<div class="aucbox">
+  /* ── Auction panel ── */
+  if(gs.phase==='auction'&&gs.auction){
+    document.getElementById('panel-auction').style.display='block';
+    const sp=BOARD[gs.auction.spaceId];
+    document.getElementById('auction-info').innerHTML=`<div class="aucbox">
       <div style="font-size:.75rem;color:#aaa">${sp.name}</div>
       <div class="aucprice">$${gs.auction.bid}</div>
       ${gs.auction.bidder?`<div style="font-size:.7rem;color:#888">Лидирует: ${gs.players[gs.auction.bidder]?.name}</div>`:''}
     </div>`;
-      vis('btn-end-auctn',amHost);
-    } else document.getElementById('panel-auction').style.display='none';
+    vis('btn-end-auctn',amHost);
+  } else document.getElementById('panel-auction').style.display='none';
 
-    /* ── My props ── */
-    const mp=document.getElementById('my-props');
-    if(mp){
-      const props=myP?.properties||[];
-      mp.innerHTML=props.length?props.map(pid=>{
-        const sp=BOARD[pid];const pd=gs.props[pid];
-        const h=pd?.houses===5?'🏨':pd?.houses?`🏠${pd.houses}`:'';
-        return `<div class="propitem">
+  /* ── My props ── */
+  const mp=document.getElementById('my-props');
+  if(mp){
+    const props=myP?.properties||[];
+    mp.innerHTML=props.length?props.map(pid=>{
+      const sp=BOARD[pid];const pd=gs.props[pid];
+      const h=pd?.houses===5?'🏨':pd?.houses?`🏠${pd.houses}`:'';
+      return `<div class="propitem">
         ${sp.color?`<div class="propdot" style="background:${sp.color};box-shadow:0 0 6px ${sp.color}66"></div>`:'<div style="width:10px"></div>'}
         <div><div class="propname">${sp.name}</div><div class="propinfo">${h}${pd?.mortgaged?' 🔒':''}</div></div>
       </div>`;
-      }).join(''):'<div style="font-size:.74rem;color:#444;padding:8px">Нет участков.</div>';
-    }
-
-    /* ── Log ── */
-    const lg=document.getElementById('glog');
-    if(lg){lg.innerHTML=(gs.log||[]).map(e=>`<div class="loge">${e}</div>`).join('');lg.scrollTop=9999;}
+    }).join(''):'<div style="font-size:.74rem;color:#444;padding:8px">Нет участков.</div>';
   }
 
-  const _origAct=act;
-  window.act=function(type,...args){
-    if(type==='ROLL'){
-      if(amHost){
-        _origAct(type,...args);
-        if(GS)showDiceOverlay(GS.dice[0],GS.dice[1]);
-      } else _origAct(type,...args);
-    } else _origAct(type,...args);
-  };
+  /* ── Log ── */
+  const lg=document.getElementById('glog');
+  if(lg){lg.innerHTML=(gs.log||[]).map(e=>`<div class="loge">${e}</div>`).join('');lg.scrollTop=9999;}
+}
 
-
-  function openTrade(){
-    if(!GS)return;
-    const sel=document.getElementById('t-who');
-    sel.innerHTML='<option value="">Выбери игрока…</option>';
-    Object.values(GS.players).forEach(p=>{
-      if(p.id!==myId&&!p.bankrupt){const o=document.createElement('option');o.value=p.id;o.textContent=`${p.token} ${p.name}`;sel.appendChild(o);}
-    });
-    tGive=[];tTake=[];refreshTP();
-    document.getElementById('t-give-m').value='';
-    document.getElementById('t-take-m').value='';
-    document.getElementById('t-err').style.display='none';
-    document.getElementById('m-trade').style.display='flex';
-  }
-  function closeTrade(){document.getElementById('m-trade').style.display='none';}
-  function refreshTP(){
-    const myP=GS?.players[myId];
-    const gEl=document.getElementById('t-give-p');gEl.innerHTML='';
-    (myP?.properties||[]).forEach(pid=>{
-      const sp=BOARD[pid];const t=document.createElement('span');
-      t.className='tag'+(tGive.includes(pid)?' on':'');
-      t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
-      t.onclick=()=>{if(tGive.includes(pid))tGive=tGive.filter(x=>x!==pid);else tGive.push(pid);refreshTP();};
-      gEl.appendChild(t);
-    });
-    const tid=document.getElementById('t-who').value;
-    const tEl=document.getElementById('t-take-p');tEl.innerHTML='';
-    if(tid&&GS?.players[tid]){
-      (GS.players[tid].properties||[]).forEach(pid=>{
-        const sp=BOARD[pid];const t=document.createElement('span');
-        t.className='tag'+(tTake.includes(pid)?' on':'');
-        t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
-        t.onclick=()=>{if(tTake.includes(pid))tTake=tTake.filter(x=>x!==pid);else tTake.push(pid);refreshTP();};
-        tEl.appendChild(t);
-      });
-    }
-  }
-  function doTrade(){
-    const to=document.getElementById('t-who').value;
-    if(!to){showErr('t-err','Выбери игрока!');return;}
-    const gm=parseInt(document.getElementById('t-give-m').value)||0;
-    const tm=parseInt(document.getElementById('t-take-m').value)||0;
-    const myP=GS.players[myId],tp=GS.players[to];
-    if(gm>myP.money){showErr('t-err','У тебя нет столько!');return;}
-    if(tm>tp.money){showErr('t-err','У него нет столько!');return;}
+const _origAct=act;
+window.act=function(type,...args){
+  if(type==='ROLL'){
     if(amHost){
-      const ng=doTradeL(GS,{from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake});
-      if(ng){GS=ng;bcastState();}
-    }else send(hostConn,{t:'ACTION',action:{type:'TRADE',from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake}});
-    closeTrade();
-  }
+      _origAct(type,...args);
+      if(GS)showDiceOverlay(GS.dice[0],GS.dice[1]);
+    } else _origAct(type,...args);
+  } else _origAct(type,...args);
+};
 
-  /* ═══════════════════════════════════════════════════════
-     BUILD MODAL
-  ═══════════════════════════════════════════════════════ */
 
-  function openBuild(){
-    if(!GS)return;
-    const myP=GS.players[myId];
-    const list=document.getElementById('build-list');
-    document.getElementById('build-err').style.display='none';
-    list.innerHTML='';
-    if(!(myP?.properties?.length)){list.innerHTML='<div style="font-size:.82rem;color:#666;padding:12px;text-align:center">У тебя нет участков.</div>';document.getElementById('m-build').style.display='flex';return;}
-
-    // Group by color
-    const byColor={};
-    (myP?.properties||[]).forEach(pid=>{
-      const sp=BOARD[pid];
-      if(!sp.color){byColor['none']=byColor['none']||[];byColor['none'].push(pid);return;}
-      byColor[sp.color]=byColor[sp.color]||[];byColor[sp.color].push(pid);
+function openTrade(){
+  if(!GS)return;
+  const sel=document.getElementById('t-who');
+  sel.innerHTML='<option value="">Выбери игрока…</option>';
+  Object.values(GS.players).forEach(p=>{
+    if(p.id!==myId&&!p.bankrupt){const o=document.createElement('option');o.value=p.id;o.textContent=`${p.token} ${p.name}`;sel.appendChild(o);}
+  });
+  tGive=[];tTake=[];refreshTP();
+  document.getElementById('t-give-m').value='';
+  document.getElementById('t-take-m').value='';
+  document.getElementById('t-err').style.display='none';
+  document.getElementById('m-trade').style.display='flex';
+}
+function closeTrade(){document.getElementById('m-trade').style.display='none';}
+function refreshTP(){
+  const myP=GS?.players[myId];
+  const gEl=document.getElementById('t-give-p');gEl.innerHTML='';
+  (myP?.properties||[]).forEach(pid=>{
+    const sp=BOARD[pid];const t=document.createElement('span');
+    t.className='tag'+(tGive.includes(pid)?' on':'');
+    t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
+    t.onclick=()=>{if(tGive.includes(pid))tGive=tGive.filter(x=>x!==pid);else tGive.push(pid);refreshTP();};
+    gEl.appendChild(t);
+  });
+  const tid=document.getElementById('t-who').value;
+  const tEl=document.getElementById('t-take-p');tEl.innerHTML='';
+  if(tid&&GS?.players[tid]){
+    (GS.players[tid].properties||[]).forEach(pid=>{
+      const sp=BOARD[pid];const t=document.createElement('span');
+      t.className='tag'+(tTake.includes(pid)?' on':'');
+      t.innerHTML=`${sp.color?`<span class="tdot" style="background:${sp.color}"></span>`:''}${sp.name.split(' ')[0]}`;
+      t.onclick=()=>{if(tTake.includes(pid))tTake=tTake.filter(x=>x!==pid);else tTake.push(pid);refreshTP();};
+      tEl.appendChild(t);
     });
+  }
+}
+function doTrade(){
+  const to=document.getElementById('t-who').value;
+  if(!to){showErr('t-err','Выбери игрока!');return;}
+  const gm=parseInt(document.getElementById('t-give-m').value)||0;
+  const tm=parseInt(document.getElementById('t-take-m').value)||0;
+  const myP=GS.players[myId],tp=GS.players[to];
+  if(gm>myP.money){showErr('t-err','У тебя нет столько!');return;}
+  if(tm>tp.money){showErr('t-err','У него нет столько!');return;}
+  if(amHost){
+    const ng=doTradeL(GS,{from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake});
+    if(ng){GS=ng;bcastState();}
+  }else send(hostConn,{t:'ACTION',action:{type:'TRADE',from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake}});
+  closeTrade();
+}
 
-    (myP?.properties||[]).forEach(pid=>{
-      const sp=BOARD[pid];const pd=GS.props[pid]||{houses:0,mortgaged:false};
-      const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
-      const all=sp.color?grp.every(s=>GS.props[s.id]?.owner===myId):false;
-      const owned=sp.color?grp.filter(s=>GS.props[s.id]?.owner===myId).length:0;
-      const htxt=pd.houses===5?'🏨 Отель':pd.houses?`🏠×${pd.houses}`:'—';
+/* ═══════════════════════════════════════════════════════
+   BUILD MODAL
+═══════════════════════════════════════════════════════ */
 
-      const d=document.createElement('div');d.className='bi';
-      const monopolyBadge=all
-              ?`<span style="font-size:.62rem;background:rgba(74,222,128,.2);color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:1px 6px;border-radius:10px;margin-left:6px">✅ МОНОПОЛИЯ</span>`
-              :(sp.color&&sp.type==='property'?`<span style="font-size:.6rem;color:#f87171;margin-left:6px">${owned}/${grp.length} куплено</span>`:'');
+function openBuild(){
+  if(!GS)return;
+  const myP=GS.players[myId];
+  const list=document.getElementById('build-list');
+  document.getElementById('build-err').style.display='none';
+  list.innerHTML='';
+  if(!(myP?.properties?.length)){list.innerHTML='<div style="font-size:.82rem;color:#666;padding:12px;text-align:center">У тебя нет участков.</div>';document.getElementById('m-build').style.display='flex';return;}
 
-      d.innerHTML=`<div class="bihd">
+  // Group by color
+  const byColor={};
+  (myP?.properties||[]).forEach(pid=>{
+    const sp=BOARD[pid];
+    if(!sp.color){byColor['none']=byColor['none']||[];byColor['none'].push(pid);return;}
+    byColor[sp.color]=byColor[sp.color]||[];byColor[sp.color].push(pid);
+  });
+
+  (myP?.properties||[]).forEach(pid=>{
+    const sp=BOARD[pid];const pd=GS.props[pid]||{houses:0,mortgaged:false};
+    const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
+    const all=sp.color?grp.every(s=>GS.props[s.id]?.owner===myId):false;
+    const owned=sp.color?grp.filter(s=>GS.props[s.id]?.owner===myId).length:0;
+    const htxt=pd.houses===5?'🏨 Отель':pd.houses?`🏠×${pd.houses}`:'—';
+
+    const d=document.createElement('div');d.className='bi';
+    const monopolyBadge=all
+      ?`<span style="font-size:.62rem;background:rgba(74,222,128,.2);color:#4ade80;border:1px solid rgba(74,222,128,.4);padding:1px 6px;border-radius:10px;margin-left:6px">✅ МОНОПОЛИЯ</span>`
+      :(sp.color&&sp.type==='property'?`<span style="font-size:.6rem;color:#f87171;margin-left:6px">${owned}/${grp.length} куплено</span>`:'');
+
+    d.innerHTML=`<div class="bihd">
       ${sp.color?`<div class="propdot" style="background:${sp.color};box-shadow:0 0 8px ${sp.color}"></div>`:''}
       <div style="flex:1">
         <div class="binm">${sp.name}${monopolyBadge}</div>
         <div class="biinf">${htxt}${pd.mortgaged?' 🔒 Заложен':''}${sp.hc?` · Дом $${sp.hc}`:''}</div>
       </div>
     </div><div class="biacts"></div>`;
-      const acts=d.querySelector('.biacts');
-      if(sp.type==='property'&&all&&!pd.mortgaged&&pd.houses<5){
-        const b=document.createElement('button');b.className='btn btn-green btn-sm';
-        b.textContent=pd.houses===4?'🏨 +Отель':'🏠 +Дом';
-        b.onclick=()=>{bAct(pid,'buy');};acts.appendChild(b);
-      }
-      if(sp.type==='property'&&pd.houses>0){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent='−Дом';b.onclick=()=>bAct(pid,'sell');acts.appendChild(b);}
-      if(!pd.mortgaged&&!pd.houses){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent=`🔒 $${sp.mg}`;b.onclick=()=>bAct(pid,'mortgage');acts.appendChild(b);}
-      if(pd.mortgaged){const cost=Math.ceil(sp.mg*1.1);const b=document.createElement('button');b.className='btn btn-blue btn-sm';b.textContent=`🔓 $${cost}`;b.onclick=()=>bAct(pid,'unmortgage');acts.appendChild(b);}
-      if(!all&&sp.type==='property'&&!pd.mortgaged&&pd.houses===0){
-        acts.innerHTML=`<span style="font-size:.68rem;color:#f59e0b">⚠️ Нужна монополия (${grp.length - owned} ещё)</span>`;
-      } else if(!acts.children.length) acts.innerHTML='<span style="font-size:.7rem;color:#556">—</span>';
-      list.appendChild(d);
-    });
-    document.getElementById('m-build').style.display='flex';
+    const acts=d.querySelector('.biacts');
+    if(sp.type==='property'&&all&&!pd.mortgaged&&pd.houses<5){
+      const b=document.createElement('button');b.className='btn btn-green btn-sm';
+      b.textContent=pd.houses===4?'🏨 +Отель':'🏠 +Дом';
+      b.onclick=()=>{bAct(pid,'buy');};acts.appendChild(b);
+    }
+    if(sp.type==='property'&&pd.houses>0){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent='−Дом';b.onclick=()=>bAct(pid,'sell');acts.appendChild(b);}
+    if(!pd.mortgaged&&!pd.houses){const b=document.createElement('button');b.className='btn btn-ghost btn-sm';b.textContent=`🔒 $${sp.mg}`;b.onclick=()=>bAct(pid,'mortgage');acts.appendChild(b);}
+    if(pd.mortgaged){const cost=Math.ceil(sp.mg*1.1);const b=document.createElement('button');b.className='btn btn-blue btn-sm';b.textContent=`🔓 $${cost}`;b.onclick=()=>bAct(pid,'unmortgage');acts.appendChild(b);}
+    if(!all&&sp.type==='property'&&!pd.mortgaged&&pd.houses===0){
+      acts.innerHTML=`<span style="font-size:.68rem;color:#f59e0b">⚠️ Нужна монополия (${grp.length - owned} ещё)</span>`;
+    } else if(!acts.children.length) acts.innerHTML='<span style="font-size:.7rem;color:#556">—</span>';
+    list.appendChild(d);
+  });
+  document.getElementById('m-build').style.display='flex';
+}
+
+function closeBuild(){document.getElementById('m-build').style.display='none';}
+
+function bAct(sid,op){
+  if(amHost){const ng=doBuildL(GS,{playerId:myId,spaceId:sid,op});if(ng){GS=ng;bcastState();}}
+  else send(hostConn,{t:'ACTION',action:{type:'BUILD',playerId:myId,spaceId:sid,op}});
+  closeBuild();setTimeout(openBuild,200);
+}
+
+/* ═══════════════════════════════════════════════════════
+   ENTER key bindings
+═══════════════════════════════════════════════════════ */
+document.getElementById('create-name').addEventListener('keydown',e=>{if(e.key==='Enter')createRoom();});
+document.getElementById('join-name').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
+document.getElementById('join-code').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
+
+
+// Enter key bindings
+document.getElementById('create-name').addEventListener('keydown',e=>{if(e.key==='Enter')createRoom();});
+document.getElementById('join-name').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
+document.getElementById('join-code').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
+
+// Ripple effect
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.btn');if(!btn||btn.disabled)return;
+  const r=document.createElement('span');r.className='rpl';
+  const rect=btn.getBoundingClientRect();const size=Math.max(rect.width,rect.height)*2;
+  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+  btn.appendChild(r);setTimeout(()=>r.remove(),500);
+});
+
+// File protocol detection
+(function(){if(location.protocol==='file:'){document.getElementById('file-protocol-warn').style.display='block';}})();
+
+
+async function testConnection(){
+  const btn = document.querySelector('[onclick="testConnection()"]');
+  if(btn){btn.disabled=true;btn.textContent='🔌 Проверяем…';}
+  let tempPeer = null;
+  try {
+    tempPeer = await mkPeer('test_'+Math.random().toString(36).slice(2,8));
+    tempPeer.destroy();
+    if(btn){btn.disabled=false;btn.textContent='🔍 Проверить соединение';}
+    notif('✅ Соединение работает! Можно играть.',4000);
+  } catch(e) {
+    if(tempPeer){try{tempPeer.destroy();}catch(_){}}
+    if(btn){btn.disabled=false;btn.textContent='🔍 Проверить соединение';}
+    notif('❌ Проблема с соединением. Попробуй другую сеть или VPN.',5000);
   }
+}
 
-  function closeBuild(){document.getElementById('m-build').style.display='none';}
+/* ═══════════════════════════════════════════════════════
+   3D DICE OVERLAY ANIMATION
+═══════════════════════════════════════════════════════ */
+function showDiceOverlay(d1, d2) {
+  const overlay = document.getElementById('dice-overlay');
+  const bg = document.getElementById('dice-overlay-bg');
+  const wrap = document.getElementById('dice-3d-wrap');
+  const totalEl = document.getElementById('dice-total-big');
+  const bigDie1 = document.getElementById('big-die1');
+  const bigDie2 = document.getElementById('big-die2');
+  const faces = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
 
-  function bAct(sid,op){
-    if(amHost){const ng=doBuildL(GS,{playerId:myId,spaceId:sid,op});if(ng){GS=ng;bcastState();}}
-    else send(hostConn,{t:'ACTION',action:{type:'BUILD',playerId:myId,spaceId:sid,op}});
-    closeBuild();setTimeout(openBuild,200);
-  }
+  // Show overlay
+  overlay.style.display = 'flex';
+  overlay.style.pointerEvents = 'all';
+  setTimeout(()=>{ bg.style.opacity='1'; wrap.style.transform='scale(1)'; },20);
 
-  /* ═══════════════════════════════════════════════════════
-     ENTER key bindings
-  ═══════════════════════════════════════════════════════ */
-  document.getElementById('create-name').addEventListener('keydown',e=>{if(e.key==='Enter')createRoom();});
-  document.getElementById('join-name').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
-  document.getElementById('join-code').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
+  // Animate through random faces
+  let frame=0;
+  const interval = setInterval(()=>{
+    const r1=Math.floor(Math.random()*6)+1;
+    const r2=Math.floor(Math.random()*6)+1;
+    bigDie1.textContent = faces[r1];
+    bigDie2.textContent = faces[r2];
+    frame++;
+  },80);
 
-
-  // Enter key bindings
-  document.getElementById('create-name').addEventListener('keydown',e=>{if(e.key==='Enter')createRoom();});
-  document.getElementById('join-name').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
-  document.getElementById('join-code').addEventListener('keydown',e=>{if(e.key==='Enter')joinRoom();});
-
-  // Ripple effect
-  document.addEventListener('click',e=>{
-    const btn=e.target.closest('.btn');if(!btn||btn.disabled)return;
-    const r=document.createElement('span');r.className='rpl';
-    const rect=btn.getBoundingClientRect();const size=Math.max(rect.width,rect.height)*2;
-    r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-    btn.appendChild(r);setTimeout(()=>r.remove(),500);
+  // Spin animation
+  [bigDie1, bigDie2].forEach((d,i)=>{
+    d.classList.remove('spin3d');
+    void d.offsetWidth;
+    setTimeout(()=>d.classList.add('spin3d'), i*100);
   });
 
-  // File protocol detection
-  (function(){if(location.protocol==='file:'){document.getElementById('file-protocol-warn').style.display='block';}})();
+  // After 700ms show final result
+  setTimeout(()=>{
+    clearInterval(interval);
+    bigDie1.textContent = faces[d1];
+    bigDie2.textContent = faces[d2];
+    bigDie1.classList.remove('spin3d');
+    bigDie2.classList.remove('spin3d');
+    const doubles = d1===d2;
+    totalEl.textContent = `${d1+d2}${doubles?' 🎯 ДУБЛЬ!':''}`;
+    totalEl.style.opacity='1';
 
+    // Small dice update
+    document.getElementById('die1').textContent = faces[d1];
+    document.getElementById('die2').textContent = faces[d2];
+    document.getElementById('dice-lbl').textContent = `Итого: ${d1+d2}${doubles?' 🎯 Дубль!':''}`;
 
-  async function testConnection(){
-    const btn = document.querySelector('[onclick="testConnection()"]');
-    if(btn){btn.disabled=true;btn.textContent='🔌 Проверяем…';}
-    let tempPeer = null;
-    try {
-      tempPeer = await mkPeer('test_'+Math.random().toString(36).slice(2,8));
-      tempPeer.destroy();
-      if(btn){btn.disabled=false;btn.textContent='🔍 Проверить соединение';}
-      notif('✅ Соединение работает! Можно играть.',4000);
-    } catch(e) {
-      if(tempPeer){try{tempPeer.destroy();}catch(_){}}
-      if(btn){btn.disabled=false;btn.textContent='🔍 Проверить соединение';}
-      notif('❌ Проблема с соединением. Попробуй другую сеть или VPN.',5000);
-    }
-  }
-
-  /* ═══════════════════════════════════════════════════════
-     3D DICE OVERLAY ANIMATION
-  ═══════════════════════════════════════════════════════ */
-  function showDiceOverlay(d1, d2) {
-    const overlay = document.getElementById('dice-overlay');
-    const bg = document.getElementById('dice-overlay-bg');
-    const wrap = document.getElementById('dice-3d-wrap');
-    const totalEl = document.getElementById('dice-total-big');
-    const bigDie1 = document.getElementById('big-die1');
-    const bigDie2 = document.getElementById('big-die2');
-    const faces = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
-
-    // Show overlay
-    overlay.style.display = 'flex';
-    overlay.style.pointerEvents = 'all';
-    setTimeout(()=>{ bg.style.opacity='1'; wrap.style.transform='scale(1)'; },20);
-
-    // Animate through random faces
-    let frame=0;
-    const interval = setInterval(()=>{
-      const r1=Math.floor(Math.random()*6)+1;
-      const r2=Math.floor(Math.random()*6)+1;
-      bigDie1.textContent = faces[r1];
-      bigDie2.textContent = faces[r2];
-      frame++;
-    },80);
-
-    // Spin animation
-    [bigDie1, bigDie2].forEach((d,i)=>{
-      d.classList.remove('spin3d');
-      void d.offsetWidth;
-      setTimeout(()=>d.classList.add('spin3d'), i*100);
-    });
-
-    // After 700ms show final result
+    // Hide overlay after 1.5s
     setTimeout(()=>{
-      clearInterval(interval);
-      bigDie1.textContent = faces[d1];
-      bigDie2.textContent = faces[d2];
-      bigDie1.classList.remove('spin3d');
-      bigDie2.classList.remove('spin3d');
-      const doubles = d1===d2;
-      totalEl.textContent = `${d1+d2}${doubles?' 🎯 ДУБЛЬ!':''}`;
-      totalEl.style.opacity='1';
-
-      // Small dice update
-      document.getElementById('die1').textContent = faces[d1];
-      document.getElementById('die2').textContent = faces[d2];
-      document.getElementById('dice-lbl').textContent = `Итого: ${d1+d2}${doubles?' 🎯 Дубль!':''}`;
-
-      // Hide overlay after 1.5s
-      setTimeout(()=>{
-        wrap.style.transform='scale(0)';
-        bg.style.opacity='0';
-        totalEl.style.opacity='0';
-        setTimeout(()=>{ overlay.style.display='none'; overlay.style.pointerEvents='none'; },400);
-      },1400);
-    },700);
-  }
+      wrap.style.transform='scale(0)';
+      bg.style.opacity='0';
+      totalEl.style.opacity='0';
+      setTimeout(()=>{ overlay.style.display='none'; overlay.style.pointerEvents='none'; },400);
+    },1400);
+  },700);
+}
 
 
 </script>
