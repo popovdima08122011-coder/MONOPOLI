@@ -184,6 +184,13 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .col-opt.sel{border-color:#fff;box-shadow:0 0 14px currentColor}
 .col-opt.taken{opacity:.25;cursor:not-allowed}
 
+/* Avatar upload */
+.avatar-upload-box{margin-top:10px;padding:12px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid rgba(255,255,255,.06)}
+.avatar-upload-btn{display:block;text-align:center;padding:10px;background:rgba(124,58,237,.15);border:1px dashed rgba(124,58,237,.4);border-radius:10px;cursor:pointer;font-size:.82rem;font-weight:700;color:#a78bfa;transition:all .15s}
+.avatar-upload-btn:hover{background:rgba(124,58,237,.25)}
+.avatar-preview{margin-top:8px;width:60px;height:60px;border-radius:50%;background-size:cover;background-position:center;margin-left:auto;margin-right:auto;border:2px solid rgba(124,58,237,.4);display:none}
+.avatar-preview.show{display:block}
+
 /* ══════════════════════════════════
    GAME SCREEN
 ══════════════════════════════════ */
@@ -205,7 +212,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Board area ── */
 .board-area{
   flex:1;display:flex;align-items:center;justify-content:center;
-  min-width:0;padding:8px;padding-top:100px;
+  min-width:0;padding:8px;padding-top:140px;
   background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
   position:relative;overflow:hidden;
 }
@@ -245,10 +252,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 @keyframes curPulse{from{box-shadow:0 0 10px rgba(124,58,237,.15)}to{box-shadow:0 0 24px rgba(124,58,237,.35)}}
 .gc.bust{opacity:.25;filter:grayscale(1)}
 .gc-avatar{
-  width:52px;height:52px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:1.7rem;
+  width:64px;height:64px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:2.1rem;
   flex-shrink:0;border:3px solid transparent;
-  box-shadow:0 0 12px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.1);
+  box-shadow:0 0 14px rgba(0,0,0,.5),inset 0 0 0 2px rgba(255,255,255,.1);
+  background-size:cover!important;background-position:center!important;overflow:hidden;
 }
 .gc-info{flex:1;min-width:0}
 .gc-name{font-size:.92rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -295,10 +303,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 ═══════════════════════ */
 .board{
   display:grid;
-  grid-template-columns:110px repeat(9,1fr) 110px;
-  grid-template-rows:110px repeat(9,1fr) 110px;
-  width:min(960px, calc(100vw - 470px), calc(100vh - 24px));
-  height:min(960px, calc(100vw - 470px), calc(100vh - 24px));
+  grid-template-columns:115px repeat(9,1fr) 115px;
+  grid-template-rows:115px repeat(9,1fr) 115px;
+  width:min(1020px, calc(100vw - 460px), calc(100vh - 30px));
+  height:min(1020px, calc(100vw - 460px), calc(100vh - 30px));
   gap:3px;padding:3px;
   background:#0d1f0d;
   border:3px solid #1b4d1b;
@@ -339,9 +347,9 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* Dice in center of board */
 /* Layout: top area + middle */
 .bc-top{
-  position:absolute;top:-90px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;z-index:50;
-  width:max-content;
+  position:absolute;top:-130px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;z-index:50;
+  width:max-content;pointer-events:none;
 }
 .bc-middle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
 .center-turn-top{display:flex;flex-direction:column;align-items:center;gap:2px;animation:fadeIn .4s ease}
@@ -447,10 +455,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .sp-corner-icon{font-size:min(4.5vw,32px);filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
 .sp-corner-label{font-size:min(1.35vw,.58rem);font-weight:900;color:#c4b5fd;letter-spacing:.5px;line-height:1.1;text-transform:uppercase}
 
-.sp-color-bar{
-  position:absolute;top:0;left:0;right:0;height:30%;z-index:2;
-  box-shadow:0 2px 4px rgba(0,0,0,.2);
+.sp-top-bar{
+  position:absolute;top:0;left:0;right:0;height:26%;z-index:3;
+  background:rgba(0,0,0,.35);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.3);transition:background .25s;
 }
+.sp-top-price{font-size:min(1.5vw,.66rem);font-weight:900;color:#4ade80;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+.sp-top-bar.owned .sp-top-price{display:none}
 .sp-owner-bar{
   position:absolute;inset:0;z-index:1;pointer-events:none;
   border:0 solid transparent;border-radius:inherit;
@@ -570,6 +582,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 @keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
 
+/* Rotate card content to face center */
+.side-left .sp-name,.side-left .sp-price,.side-left .sp-flag,.side-left .sp-img{transform:rotate(90deg)}
+.side-right .sp-name,.side-right .sp-price,.side-right .sp-flag,.side-right .sp-img{transform:rotate(-90deg)}
+.side-top .sp-name,.side-top .sp-flag{transform:rotate(180deg)}
+/* For left/right, swap layout to vertical reading */
+.side-left,.side-right{justify-content:center}
+.side-left .sp-name,.side-right .sp-name{white-space:nowrap}
+
 /* Movement highlight */
 @keyframes moveHighlight{
   0%{box-shadow:0 0 0 0 rgba(246,201,14,.8)}
@@ -652,6 +672,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
       <div class="panel-title">Игроки (<span id="lcount">1</span>/6)</div>
       <div id="lplayers" class="plist"></div>
       <div id="token-picker" class="token-picker-box"></div>
+      <div class="avatar-upload-box">
+        <div class="panel-title">Своя аватарка (фото)</div>
+        <label class="avatar-upload-btn">
+          📷 Загрузить фото
+          <input type="file" accept="image/*" onchange="uploadAvatar(event)" style="display:none"/>
+        </label>
+        <div id="my-avatar-preview" class="avatar-preview"></div>
+      </div>
       <div id="lobby-err" class="err" style="display:none"></div>
       <button id="btn-ready" class="btn btn-green" onclick="toggleReady()" style="display:none">✅ Я готов</button>
       <button id="btn-start" class="btn btn-purple" onclick="hostStart()" style="display:none">🚀 Начать игру!</button>
@@ -1108,7 +1136,7 @@ function onGuestMsg(from,msg){
     bcastLobby();bcastChat();
   }
   if(msg.t==='READY'){const p=lobbyPs.find(x=>x.id===from);if(p)p.ready=!p.ready;bcastLobby();}
-  if(msg.t==='PICK'){const p=lobbyPs.find(x=>x.id===from);if(p){if(msg.token)p.token=msg.token;if(msg.color)p.color=msg.color;}bcastLobby();}
+  if(msg.t==='PICK'){const p=lobbyPs.find(x=>x.id===from);if(p){if(msg.token)p.token=msg.token;if(msg.color)p.color=msg.color;if(msg.avatar)p.avatar=msg.avatar;}bcastLobby();}
   if(msg.t==='CHAT'){addChat('chat',msg.name,msg.text);bcastChat();}
   if(msg.t==='ACTION'){applyAction(msg.action);}
 }
@@ -1200,7 +1228,7 @@ function renderLobby(){
     const tok=p.token||TOKENS[i%TOKENS.length];
     const col=p.color||COLORS[i%COLORS.length];
     const d=document.createElement('div');d.className='pitem';d.style.animationDelay=(i*.06)+'s';
-    d.innerHTML=`<div class="pavatar" style="background:${col}33;border-color:${col};border-width:3px;border-style:solid">${tok}</div>
+    d.innerHTML=`<div class="pavatar" style="${p.avatar?`background-image:url('${p.avatar}');background-size:cover;background-position:center;`:`background:${col}33;`}border-color:${col};border-width:3px;border-style:solid">${p.avatar?'':tok}</div>
       <div><div class="pname-t">${p.name}${p.id===myId?' (Ты)':''}</div><div class="prole-t">${p.isHost?'👑 Хост':p.ready?'✅ Готов':'⏳ Ждёт'}</div></div>
       <div class="live-dot"></div>`;
     l.appendChild(d);
@@ -1241,6 +1269,32 @@ function pickColor(c){
     bcastLobby();
   } else send(hostConn,{t:'PICK',color:c});
   renderTokenPicker();
+}
+function uploadAvatar(e){
+  const file=e.target.files[0];if(!file)return;
+  if(file.size>500000){notif('⚠️ Фото слишком большое! Выбери поменьше (до 500КБ)',4000);return;}
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    // resize to keep it small for network
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const size=120;canvas.width=size;canvas.height=size;
+      const ctx=canvas.getContext('2d');
+      // crop square center
+      const min=Math.min(img.width,img.height);
+      ctx.drawImage(img,(img.width-min)/2,(img.height-min)/2,min,min,0,0,size,size);
+      const dataUrl=canvas.toDataURL('image/jpeg',0.7);
+      const prev=document.getElementById('my-avatar-preview');
+      prev.style.backgroundImage=`url('${dataUrl}')`;prev.classList.add('show');
+      // sync
+      if(amHost){const me=lobbyPs.find(p=>p.id===myId);if(me)me.avatar=dataUrl;bcastLobby();}
+      else send(hostConn,{t:'PICK',avatar:dataUrl});
+      notif('✅ Аватарка загружена!',2500);
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
 }
 function toggleReady(){if(amHost)return;send(hostConn,{t:'READY'});}
 function hostStart(){
@@ -1303,6 +1357,7 @@ function makeGS(players){
     ps[p.id]={id:p.id,name:p.name,
       token:p.token||TOKENS[i%TOKENS.length],
       color:p.color||COLORS[i%COLORS.length],
+      avatar:p.avatar||null,
       money:1500,position:0,inJail:false,jailTurns:0,jailFreeCards:0,
       bankrupt:false,properties:[],doublesCount:0};
   });
@@ -1650,7 +1705,15 @@ function buildBoard(){
     const{c,r}=gp(sp.id);
     const isCorner=[0,10,20,30].includes(sp.id);
     const d=document.createElement('div');
-    d.className='sp'+(isCorner?' sp-corner':'');
+    // определить сторону для поворота текста к центру
+    let side='';
+    if(!isCorner){
+      if(sp.id>0&&sp.id<10)side=' side-bottom';
+      else if(sp.id>10&&sp.id<20)side=' side-left';
+      else if(sp.id>20&&sp.id<30)side=' side-top';
+      else if(sp.id>30&&sp.id<40)side=' side-right';
+    }
+    d.className='sp'+(isCorner?' sp-corner':'')+side;
     d.id='sp'+sp.id;
     d.style.cssText=`grid-column:${c};grid-row:${r}`;
     d.onclick=()=>spClick(sp.id);
@@ -1665,11 +1728,10 @@ function buildBoard(){
       const cleanName=sp.name.replace(/[\u{1F1E0}-\u{1F1FF}]{2}|[🌍✈️⚡💧]\s*/gu,'').trim();
       const img=cityImgUrl(sp.id);
       inner=`
-        ${sp.color?`<div class="sp-color-bar" id="cb${sp.id}" style="background:${sp.color}"></div>`:''}
+        <div class="sp-top-bar" id="cb${sp.id}"><span class="sp-top-price" id="pr${sp.id}">$${sp.price||''}</span></div>
         <div class="sp-owner-bar" id="ob${sp.id}"></div>
         ${img?`<div class="sp-img" style="background-image:url('${img}')"></div>`:`<div class="sp-flag">${flag[0]||''}</div>`}
         <div class="sp-name">${cleanName}</div>
-        ${sp.price?`<div class="sp-price">$${sp.price}</div>`:''}
         <div class="sp-houses" id="h${sp.id}"></div>
         <div class="sp-own" id="o${sp.id}"></div>
       `;
@@ -1811,7 +1873,7 @@ function renderGame(){
       const d=document.createElement('div');
       d.className='gc'+(isCur?' cur':'')+(p.bankrupt?' bust':'');
       d.innerHTML=`
-        <div class="gc-avatar" style="background:${p.color}22;border-color:${p.color}66">${p.token}</div>
+        <div class="gc-avatar" style="${p.avatar?`background-image:url('${p.avatar}');`:`background:${p.color}22;`}border-color:${p.color}">${p.avatar?'':p.token}</div>
         <div class="gc-info">
           <div class="gc-name">${p.name}${pid===myId?' <span style="color:#888;font-size:.65rem">(Ты)</span>':''}</div>
           <div class="gc-money">$${p.money.toLocaleString()}</div>
@@ -1893,14 +1955,11 @@ function renderGame(){
         const ownerP=gs.players[pd.owner];
         const col=ownerP?.color||'#fff';
         ow.style.background=col;ow.style.borderColor='#fff';ow.textContent=ownerP?.token||'';
-        // top bar becomes owner color
-        if(cbar)cbar.style.background=col;
-        // glow border around whole space in owner color
+        if(cbar){cbar.style.background=col;cbar.classList.add('owned');}
         if(ob){ob.style.border='3px solid '+col;ob.style.boxShadow='inset 0 0 10px '+col;}
       } else {
         ow.style.background='transparent';ow.style.borderColor='transparent';ow.textContent='';
-        // restore country color
-        if(cbar)cbar.style.background=sp.color||'transparent';
+        if(cbar){cbar.style.background='rgba(0,0,0,.35)';cbar.classList.remove('owned');}
         if(ob){ob.style.border='0 solid transparent';ob.style.boxShadow='none';}
       }
     }
