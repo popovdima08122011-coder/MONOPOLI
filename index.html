@@ -458,12 +458,17 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .sp-corner-label{font-size:min(1.35vw,.58rem);font-weight:900;color:#c4b5fd;letter-spacing:.5px;line-height:1.1;text-transform:uppercase}
 
 .sp-top-bar{
-  position:absolute;top:0;left:0;right:0;height:26%;z-index:3;
-  background:rgba(0,0,0,.35);
+  position:absolute;top:0;left:0;right:0;z-index:4;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 4px rgba(0,0,0,.3);transition:background .25s;
+  height:auto;padding:2px 0;transition:all .25s;
+  background:transparent;
 }
-.sp-top-price{font-size:min(1.5vw,.66rem);font-weight:900;color:#4ade80;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+.sp-top-bar.owned{height:26%;box-shadow:0 2px 6px rgba(0,0,0,.4)}
+.sp-top-price{
+  font-size:min(1.6vw,.7rem);font-weight:900;color:#fff;
+  background:rgba(0,0,0,.6);border-radius:0 0 8px 8px;padding:2px 8px;
+  text-shadow:0 1px 2px #000;
+}
 .sp-top-bar.owned .sp-top-price{display:none}
 .sp-owner-bar{
   position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -571,6 +576,12 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .win-title{font-family:'Bebas Neue',cursive;font-size:3rem;letter-spacing:6px;background:linear-gradient(135deg,var(--gold),#ff8c00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .conf{position:fixed;animation:confFall linear forwards}
 @keyframes confFall{0%{opacity:1;transform:translateY(-10px)rotate(0)}100%{opacity:0;transform:translateY(100vh)rotate(720deg)}}
+
+/* Auction */
+.auction-timer-bar{height:8px;background:rgba(255,255,255,.1);border-radius:10px;overflow:hidden;margin:6px 0}
+#auction-timer-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);width:100%;transition:width .3s linear;border-radius:10px}
+.auction-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.auction-btns .btn{margin:0}
 
 /* Notifications */
 .notif-el{
@@ -783,6 +794,39 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
     <div style="display:flex;gap:8px;margin-top:10px">
       <button class="btn btn-green" onclick="doTrade()" style="flex:1">✅ Сделка!</button>
       <button class="btn btn-ghost" onclick="closeTrade()" style="flex:1">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- Auction overlay (blocks everyone) -->
+<div id="m-auction" class="moverlay" style="display:none">
+  <div class="modal" style="max-width:420px;text-align:center">
+    <h3 style="color:#f87171">🔨 АУКЦИОН</h3>
+    <div id="auction-prop" style="font-size:1.1rem;font-weight:800;margin-bottom:6px"></div>
+    <div id="auction-flag" style="width:80px;height:80px;border-radius:14px;background-size:cover;background-position:center;margin:0 auto 10px;border:2px solid rgba(255,255,255,.2)"></div>
+    <div style="font-size:.8rem;color:#888">Текущая ставка</div>
+    <div id="auction-bid-big" style="font-size:2.8rem;font-weight:900;color:#4ade80;text-shadow:0 0 20px rgba(74,222,128,.4)">$10</div>
+    <div id="auction-leader" style="font-size:.85rem;color:#a78bfa;margin-bottom:6px;min-height:20px"></div>
+    <div class="auction-timer-bar"><div id="auction-timer-fill"></div></div>
+    <div id="auction-time-text" style="font-size:.8rem;color:#f59e0b;margin:6px 0">⏱ 6 сек</div>
+    <div class="auction-btns">
+      <button class="btn btn-blue" onclick="aucBid(2)">+$2</button>
+      <button class="btn btn-blue" onclick="aucBid(10)">+$10</button>
+      <button class="btn btn-purple" onclick="aucBid(50)">+$50</button>
+      <button class="btn btn-gold" onclick="aucBid(100)">+$100</button>
+    </div>
+    <div style="font-size:.72rem;color:#666;margin-top:10px">Аукцион закончится когда таймер дойдёт до нуля</div>
+  </div>
+</div>
+
+<!-- Trade offer received modal -->
+<div id="m-trade-offer" class="moverlay" style="display:none">
+  <div class="modal">
+    <h3>📨 Предложение сделки</h3>
+    <div id="trade-offer-content"></div>
+    <div style="display:flex;gap:8px;margin-top:14px">
+      <button class="btn btn-green" onclick="respondTrade(true)" style="flex:1">✅ Принять</button>
+      <button class="btn btn-red" onclick="respondTrade(false)" style="flex:1">❌ Отклонить</button>
     </div>
   </div>
 </div>
@@ -1270,28 +1314,30 @@ function pickColor(c){
 }
 function uploadAvatar(e){
   const file=e.target.files[0];if(!file)return;
-  if(file.size>500000){notif('⚠️ Фото слишком большое! Выбери поменьше (до 500КБ)',4000);return;}
+  notif('⏳ Обработка фото…',2000);
   const reader=new FileReader();
   reader.onload=function(ev){
-    // resize to keep it small for network
     const img=new Image();
     img.onload=function(){
+      // Сжимаем любое фото до маленького квадрата 100x100
       const canvas=document.createElement('canvas');
-      const size=120;canvas.width=size;canvas.height=size;
+      const size=100;canvas.width=size;canvas.height=size;
       const ctx=canvas.getContext('2d');
-      // crop square center
       const min=Math.min(img.width,img.height);
       ctx.drawImage(img,(img.width-min)/2,(img.height-min)/2,min,min,0,0,size,size);
-      const dataUrl=canvas.toDataURL('image/jpeg',0.7);
+      // снижаем качество пока не станет меньше 30КБ для надёжной передачи
+      let q=0.6,dataUrl=canvas.toDataURL('image/jpeg',q);
+      while(dataUrl.length>40000&&q>0.2){q-=0.1;dataUrl=canvas.toDataURL('image/jpeg',q);}
       const prev=document.getElementById('my-avatar-preview');
       prev.style.backgroundImage=`url('${dataUrl}')`;prev.classList.add('show');
-      // sync
       if(amHost){const me=lobbyPs.find(p=>p.id===myId);if(me)me.avatar=dataUrl;bcastLobby();}
       else send(hostConn,{t:'PICK',avatar:dataUrl});
       notif('✅ Аватарка загружена!',2500);
     };
+    img.onerror=function(){notif('❌ Не удалось загрузить это фото',3000);};
     img.src=ev.target.result;
   };
+  reader.onerror=function(){notif('❌ Ошибка чтения файла',3000);};
   reader.readAsDataURL(file);
 }
 function toggleReady(){if(amHost)return;send(hostConn,{t:'READY'});}
@@ -1389,9 +1435,9 @@ function act(type){
     // start auction immediately — handled locally then broadcast
     if(amHost){
       const sp=BOARD[GS.players[myId].position];
-      let g={...GS,phase:'auction',auction:{spaceId:GS.players[myId].position,bid:1,bidder:null}};
-      g=addLog(g,`${GS.players[myId].name} отказался от ${sp.name} — аукцион от $1!`);
-      GS=g;bcastState();return;
+      let g={...GS,phase:'auction',auction:{spaceId:GS.players[myId].position,bid:10,bidder:null,deadline:Date.now()+6000}};
+      g=addLog(g,`🔨 АУКЦИОН: ${sp.name} стартовая цена $10!`);
+      GS=g;bcastState();startAuctionTimer();return;
     }
   }
   const action={type,playerId:myId,...extra};
@@ -1404,6 +1450,11 @@ function applyAction(a){
   if(!amHost)return;
   // Handle cheat command from guest
   if(a.type==='CHEAT_CMD'&&a.gs){GS=a.gs;bcastState();return;}
+  // Trade offer flow
+  if(a.type==='TRADE_OFFER'){GS={...GS,pendingTrade:{from:a.from,to:a.to,giveMoney:a.giveMoney,takeMoney:a.takeMoney,giveProps:a.giveProps,takeProps:a.takeProps}};bcastState();return;}
+  if(a.type==='TRADE_ACCEPT'){if(GS.pendingTrade){let g=doTradeL(GS,GS.pendingTrade);g={...g,pendingTrade:null};GS=g;bcastState();}return;}
+  if(a.type==='TRADE_REJECT'){GS={...GS,pendingTrade:null};GS=addLog(GS,'❌ Сделка отклонена');bcastState();return;}
+  if(a.type==='AUCTION_BID'){const g=doAucBidL(GS,a);GS=g;bcastState();startAuctionTimer();return;}
   const fns={ROLL:doRollL,BUY:doBuyL,AUCTION_BID:doAucBidL,END_AUCTION:doEndAucL,
     CARD_OK:doCardL,END_TURN:()=>nextTurn(GS),PAY_JAIL:doPayJailL,JAIL_CARD:doJailCardL,
     TRADE:doTradeL,BUILD:doBuildL};
@@ -1537,9 +1588,12 @@ function doBuyL(gs,a){
   return gs.dice[0]===gs.dice[1]?{...g,phase:'roll'}:nextTurn(g);
 }
 function doAucBidL(gs,a){
-  if(!gs.auction||a.bid<=gs.auction.bid||a.bid>gs.players[a.playerId].money)return gs;
-  let g={...gs,auction:{...gs.auction,bid:a.bid,bidder:a.playerId}};
-  return addLog(g,`${gs.players[a.playerId].name} ставит $${a.bid}!`);
+  if(!gs.auction)return gs;
+  // a.inc = сумма прибавки (+2/+10/+50/+100)
+  const newBid=gs.auction.bid+(a.inc||0);
+  if(newBid>gs.players[a.playerId].money)return gs;
+  let g={...gs,auction:{...gs.auction,bid:newBid,bidder:a.playerId,deadline:Date.now()+6000}};
+  return addLog(g,`${gs.players[a.playerId].name} ставит $${newBid}!`);
 }
 function doEndAucL(gs){
   if(!gs.auction)return gs;
@@ -1548,7 +1602,9 @@ function doEndAucL(gs){
   if(bidder){
     const w=gs.players[bidder];
     g={...g,players:{...g.players,[bidder]:{...w,money:w.money-bid,properties:[...(w.properties||[]),spaceId]}},props:{...g.props,[spaceId]:{owner:bidder,houses:0,mortgaged:false}}};
-    g=addLog(g,`${w.name} выиграл аукцион: ${BOARD[spaceId].name} за $${bid}!`);
+    g=addLog(g,`${w.name} выиграл аукцион: ${BOARD[spaceId].name} за $${bid}! 🔨`);
+  }else{
+    g=addLog(g,`Аукцион завершён — никто не купил ${BOARD[spaceId].name}.`);
   }
   return nextTurn(g);
 }
@@ -2013,17 +2069,53 @@ function renderGame(){
     }
   } else if(ctt){ ctt.innerHTML=''; }
 
-  /* ── Auction panel ── */
+  /* ── Auction full overlay ── */
+  const aucModal=document.getElementById('m-auction');
   if(gs.phase==='auction'&&gs.auction){
-    document.getElementById('panel-auction').style.display='block';
     const sp=BOARD[gs.auction.spaceId];
-    document.getElementById('auction-info').innerHTML=`<div class="aucbox">
-      <div style="font-size:.75rem;color:#aaa">${sp.name}</div>
-      <div class="aucprice">$${gs.auction.bid}</div>
-      ${gs.auction.bidder?`<div style="font-size:.7rem;color:#888">Лидирует: ${gs.players[gs.auction.bidder]?.name}</div>`:''}
-    </div>`;
-    vis('btn-end-auctn',amHost);
-  } else document.getElementById('panel-auction').style.display='none';
+    aucModal.style.display='flex';
+    document.getElementById('auction-prop').textContent=sp.name;
+    const img=cityImgUrl(gs.auction.spaceId);
+    document.getElementById('auction-flag').style.backgroundImage=img?`url('${img}')`:'none';
+    document.getElementById('auction-bid-big').textContent='$'+gs.auction.bid;
+    document.getElementById('auction-leader').textContent=gs.auction.bidder?`Лидирует: ${gs.players[gs.auction.bidder]?.name}`:'Пока нет ставок';
+    // timer bar
+    const left=Math.max(0,(gs.auction.deadline-Date.now())/6000);
+    document.getElementById('auction-timer-fill').style.width=(left*100)+'%';
+    document.getElementById('auction-time-text').textContent='⏱ '+Math.ceil(left*6)+' сек';
+  } else {
+    aucModal.style.display='none';
+  }
+  const oldPanel=document.getElementById('panel-auction');if(oldPanel)oldPanel.style.display='none';
+
+  /* ── Trade offer popup (for receiver) ── */
+  const tradeModal=document.getElementById('m-trade-offer');
+  if(gs.pendingTrade && gs.pendingTrade.to===myId){
+    const tr=gs.pendingTrade;
+    const fromP=gs.players[tr.from];
+    const propNames=(arr)=>arr.length?arr.map(id=>BOARD[id].name).join(', '):'—';
+    document.getElementById('trade-offer-content').innerHTML=`
+      <div style="font-size:.9rem;line-height:1.7">
+        <b style="color:#a78bfa">${fromP?.name}</b> предлагает тебе сделку:
+        <div style="background:rgba(34,197,94,.1);border-radius:10px;padding:10px;margin:10px 0">
+          <div style="color:#4ade80;font-weight:700;margin-bottom:4px">Ты получаешь:</div>
+          ${tr.giveMoney>0?`💵 $${tr.giveMoney}<br>`:''}
+          🏠 ${propNames(tr.giveProps)}
+        </div>
+        <div style="background:rgba(239,68,68,.1);border-radius:10px;padding:10px">
+          <div style="color:#f87171;font-weight:700;margin-bottom:4px">Ты отдаёшь:</div>
+          ${tr.takeMoney>0?`💵 $${tr.takeMoney}<br>`:''}
+          🏠 ${propNames(tr.takeProps)}
+        </div>
+      </div>`;
+    tradeModal.style.display='flex';
+  } else if(tradeModal && (!gs.pendingTrade || gs.pendingTrade.to!==myId)){
+    tradeModal.style.display='none';
+  }
+  // Notify sender that offer is pending
+  if(gs.pendingTrade && gs.pendingTrade.from===myId){
+    // sender just waits
+  }
 
   /* ── My props ── */
   const mp=document.getElementById('my-props');
@@ -2046,6 +2138,38 @@ function renderGame(){
   /* ── Log ── */
   const lg=document.getElementById('glog');
   if(lg){lg.innerHTML=(gs.log||[]).map(e=>`<div class="loge">${e}</div>`).join('');lg.scrollTop=9999;}
+}
+
+// ═══ АУКЦИОН: таймер и ставки ═══
+let _aucTimer=null;
+// Плавное обновление таймера аукциона у всех
+let _aucRenderTimer=setInterval(()=>{
+  if(GS&&GS.phase==='auction'&&GS.auction){
+    const left=Math.max(0,(GS.auction.deadline-Date.now())/6000);
+    const fill=document.getElementById('auction-timer-fill');
+    const txt=document.getElementById('auction-time-text');
+    if(fill)fill.style.width=(left*100)+'%';
+    if(txt)txt.textContent='⏱ '+Math.ceil(left*6)+' сек';
+  }
+},300);
+function startAuctionTimer(){
+  if(!amHost)return;
+  clearInterval(_aucTimer);
+  _aucTimer=setInterval(()=>{
+    if(!GS||!GS.auction){clearInterval(_aucTimer);return;}
+    if(Date.now()>=GS.auction.deadline){
+      clearInterval(_aucTimer);
+      const g=doEndAucL(GS);GS=g;bcastState();
+    }
+  },300);
+}
+function aucBid(inc){
+  if(!GS||!GS.auction)return;
+  const myMoney=GS.players[myId]?.money||0;
+  if(GS.auction.bid+inc>myMoney){notif('💸 Недостаточно денег!',2000);return;}
+  if(amHost){
+    const g=doAucBidL(GS,{playerId:myId,inc});GS=g;bcastState();startAuctionTimer();
+  }else send(hostConn,{t:'ACTION',action:{type:'AUCTION_BID',playerId:myId,inc}});
 }
 
 const _origAct=act;
@@ -2109,11 +2233,27 @@ function doTrade(){
   const myP=GS.players[myId],tp=GS.players[to];
   if(gm>myP.money){showErr('t-err','У тебя нет столько!');return;}
   if(tm>tp.money){showErr('t-err','У него нет столько!');return;}
+  if(tGive.length===0&&tTake.length===0&&gm===0&&tm===0){showErr('t-err','Пустая сделка!');return;}
+  // Отправляем ПРЕДЛОЖЕНИЕ (не применяем сразу)
+  const offer={from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:[...tGive],takeProps:[...tTake]};
   if(amHost){
-    const ng=doTradeL(GS,{from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake});
-    if(ng){GS=ng;bcastState();}
-  }else send(hostConn,{t:'ACTION',action:{type:'TRADE',from:myId,to,giveMoney:gm,takeMoney:tm,giveProps:tGive,takeProps:tTake}});
+    GS={...GS,pendingTrade:offer};bcastState();
+  }else send(hostConn,{t:'ACTION',action:{type:'TRADE_OFFER',...offer}});
   closeTrade();
+  notif('📨 Предложение отправлено! Ждём ответа…',3000);
+}
+
+// Принять/отклонить сделку
+function respondTrade(accept){
+  const tr=GS?.pendingTrade;if(!tr)return;
+  if(accept){
+    if(amHost){
+      let g=doTradeL(GS,tr);g={...g,pendingTrade:null};GS=g;bcastState();
+    }else send(hostConn,{t:'ACTION',action:{type:'TRADE_ACCEPT'}});
+  }else{
+    if(amHost){GS={...GS,pendingTrade:null};GS=addLog(GS,'❌ Сделка отклонена');bcastState();}
+    else send(hostConn,{t:'ACTION',action:{type:'TRADE_REJECT'}});
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
