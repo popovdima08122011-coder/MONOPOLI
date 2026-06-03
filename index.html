@@ -212,7 +212,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Board area ── */
 .board-area{
   flex:1;display:flex;align-items:center;justify-content:center;
-  min-width:0;padding:8px;padding-top:130px;
+  min-width:0;padding:8px;padding-top:165px;
   background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
   position:relative;overflow:hidden;
 }
@@ -347,22 +347,23 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* Dice in center of board */
 /* Layout: top area + middle */
 .bc-top{
-  position:absolute;top:-118px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:4px;z-index:50;
+  position:absolute;top:-150px;left:50%;transform:translateX(-50%);
+  display:flex;flex-row;flex-direction:row;align-items:center;gap:14px;z-index:50;
   width:max-content;pointer-events:none;
-  background:rgba(14,14,26,.85);padding:8px 24px;border-radius:16px;
-  backdrop-filter:blur(6px);border:1px solid rgba(124,58,237,.2);
+  background:rgba(14,14,26,.9);padding:10px 28px;border-radius:18px;
+  backdrop-filter:blur(8px);border:1px solid rgba(124,58,237,.25);
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
 }
 .bc-middle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
-.center-turn-top{display:flex;flex-direction:column;align-items:center;gap:2px;animation:fadeIn .4s ease}
+.center-turn-top{display:flex;flex-direction:row;align-items:center;gap:10px;animation:fadeIn .4s ease}
 .ctt-tok{
-  width:min(7vw,56px);height:min(7vw,56px);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:min(4vw,30px);
-  border:3px solid;box-shadow:0 0 16px currentColor,0 4px 12px rgba(0,0,0,.5);
-  background:rgba(255,255,255,.1);
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+  border:3px solid;box-shadow:0 0 14px currentColor;
+  background:rgba(255,255,255,.12);background-size:cover;background-position:center;flex-shrink:0;
 }
-.ctt-name{font-size:min(1.8vw,1rem);font-weight:800;color:#fff}
-.ctt-label{font-size:min(1.3vw,.7rem);color:#c4b5fd;letter-spacing:1px;font-weight:700}
+.ctt-name{font-size:.95rem;font-weight:800;color:#fff}
+.ctt-label{font-size:.72rem;color:#c4b5fd;letter-spacing:.5px;font-weight:700}
 
 /* 3D DICE */
 .center-dice3d{
@@ -512,9 +513,10 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 
 .sp-houses{
-  position:absolute;top:29%;left:1px;right:1px;
-  display:flex;justify-content:center;gap:1px;z-index:10;
+  position:absolute;top:27%;left:0;right:0;
+  display:flex;justify-content:center;z-index:10;
 }
+.house-emoji{font-size:min(2.2vw,14px);letter-spacing:-2px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.8))}
 .hdot{width:4px;height:5px;background:#22c55e;border-radius:1px;box-shadow:0 0 3px #22c55e}
 .hotdot{
   width:90%;height:5px;background:#dc2626;border-radius:2px;
@@ -599,6 +601,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 .side-top .sp-name,.side-top .sp-special-name{transform:rotate(180deg)}
 .side-top .sp-flag{transform:rotate(180deg)}
 
+@keyframes debtBlink{0%,100%{opacity:1}50%{opacity:.5}}
 /* Movement highlight */
 @keyframes moveHighlight{
   0%{box-shadow:0 0 0 0 rgba(246,201,14,.8)}
@@ -721,7 +724,8 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
       <button id="a-payjail" class="btn btn-red"    onclick="act('PAY_JAIL')" style="display:none">🔓 Выйти $50</button>
       <button id="a-jailcard"class="btn btn-blue"   onclick="act('JAIL_CARD')"style="display:none">🃏 Карта выхода</button>
       <button class="btn btn-ghost" onclick="openTrade()">🤝 Торговля</button>
-      <button class="btn btn-ghost" onclick="openBuild()">🏗 Строить</button>
+      <button class="btn btn-ghost" onclick="openBuild()">🏗 Строить дома</button>
+      <button class="btn btn-red" onclick="declareBankrupt()" style="font-size:.74rem;padding:7px;opacity:.7">🏳️ Сдаться (банкрот)</button>
     </div>
     <div class="pcard dice-wrap">
       <div class="panel-title">🎲 Кубики</div>
@@ -795,6 +799,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
       <button class="btn btn-green" onclick="doTrade()" style="flex:1">✅ Сделка!</button>
       <button class="btn btn-ghost" onclick="closeTrade()" style="flex:1">Отмена</button>
     </div>
+  </div>
+</div>
+
+<!-- Quick build menu (click own property) -->
+<div id="m-quickbuild" class="moverlay" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal" style="max-width:340px">
+    <h3>🏗 Управление участком</h3>
+    <div id="qb-content"></div>
   </div>
 </div>
 
@@ -1455,6 +1467,7 @@ function applyAction(a){
   if(a.type==='TRADE_ACCEPT'){if(GS.pendingTrade){let g=doTradeL(GS,GS.pendingTrade);g={...g,pendingTrade:null};GS=g;bcastState();}return;}
   if(a.type==='TRADE_REJECT'){GS={...GS,pendingTrade:null};GS=addLog(GS,'❌ Сделка отклонена');bcastState();return;}
   if(a.type==='AUCTION_BID'){const g=doAucBidL(GS,a);GS=g;bcastState();startAuctionTimer();return;}
+  if(a.type==='BANKRUPT'){GS=doBankruptL(GS,a);bcastState();return;}
   const fns={ROLL:doRollL,BUY:doBuyL,AUCTION_BID:doAucBidL,END_AUCTION:doEndAucL,
     CARD_OK:doCardL,END_TURN:()=>nextTurn(GS),PAY_JAIL:doPayJailL,JAIL_CARD:doJailCardL,
     TRADE:doTradeL,BUILD:doBuildL};
@@ -1534,14 +1547,13 @@ function land(gs,pid,pos){
       g=addLog(g,`${g.players[pid].name} платит аренду → ${g.players[pd.owner]?.name}`);
     }else g=addLog(g,`${g.players[pid].name} на ${sp.name} (свой).`);
   }else g=addLog(g,`${g.players[pid].name} на ${sp.name}.`);
-  // bankrupt
+  // НЕ авто-банкрот — игрок сам решает (продать/заложить/сдаться)
   if(g.players[pid].money<0){
-    g={...g,players:{...g.players,[pid]:{...g.players[pid],bankrupt:true}}};
-    g=addLog(g,`${g.players[pid].name} — БАНКРОТ! 💀`);
+    g=addLog(g,`⚠️ ${g.players[pid].name} в долгах! Продай дома, заложи участки или нажми БАНКРОТ.`);
   }
   // winner
   const alive=Object.values(g.players).filter(p=>!p.bankrupt);
-  if(alive.length===1){g={...g,phase:'end',winner:alive[0].id};g=addLog(g,`🏆 ${alive[0].name} ПОБЕДИЛ!`);}
+  if(alive.length===1&&gs.order.length>1){g={...g,phase:'end',winner:alive[0].id};g=addLog(g,`🏆 ${alive[0].name} ПОБЕДИЛ!`);}
   return g;
 }
 
@@ -1837,6 +1849,11 @@ function spClick(id){
     notif(`👑 Забрал ${sp.name}!`,2500);
     return;
   }
+  // Если я владелец и это улица — открыть быстрое меню прокачки
+  if(pd && pd.owner===myId && sp.type==='property'){
+    openQuickBuild(id);
+    return;
+  }
   if(['property','railroad','utility'].includes(sp.type)){
     const owner=pd?.owner?GS.players[pd.owner]?.name:'Свободен';
     const price=!pd?`  Цена: $${sp.price}`:'';
@@ -1844,6 +1861,41 @@ function spClick(id){
     const m=pd?.mortgaged?'🔒':'';
     notif(`${sp.name}  👤 ${owner}${price}  ${h} ${m}`,3000);
   }
+}
+
+// Быстрое меню прокачки по клику на свою карту
+function openQuickBuild(id){
+  const sp=BOARD[id];const pd=GS.props[id];
+  const grp=BOARD.filter(s=>s.color===sp.color&&s.type==='property');
+  const hasMonopoly=grp.every(s=>GS.props[s.id]?.owner===myId);
+  const isMyTurn=GS.order[GS.curIdx]===myId;
+  const houses=pd.houses||0;
+  const houseDisplay=houses===5?'🏨 Отель':houses>0?'🏠'.repeat(houses):'Нет домов';
+
+  const modal=document.getElementById('m-quickbuild');
+  const img=cityImgUrl(id);
+  document.getElementById('qb-content').innerHTML=`
+    <div style="text-align:center">
+      <div style="width:90px;height:90px;border-radius:14px;background:${img?`url('${img}')`:sp.color};background-size:cover;background-position:center;margin:0 auto 10px;border:3px solid ${sp.color}"></div>
+      <div style="font-size:1.2rem;font-weight:900;margin-bottom:4px">${sp.name}</div>
+      <div style="font-size:1.5rem;margin-bottom:8px">${houseDisplay}</div>
+      ${pd.mortgaged?'<div style="color:#f87171;margin-bottom:8px">🔒 Заложен</div>':''}
+      ${!hasMonopoly?`<div style="color:#f59e0b;font-size:.82rem;margin-bottom:10px">⚠️ Нужна монополия (все ${grp.length} ${sp.name.split(' ')[0]==='🇺🇸'?'США':'страны'}) чтобы строить</div>`:''}
+      ${!isMyTurn?'<div style="color:#f59e0b;font-size:.82rem;margin-bottom:10px">⏳ Строить можно только в свой ход</div>':''}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+      ${isMyTurn&&hasMonopoly&&!pd.mortgaged&&houses<5?`<button class="btn btn-green" onclick="qbAct(${id},'buy')">${houses===4?'🏨 Купить ОТЕЛЬ':'🏠 Купить дом'} ($${sp.hc})</button>`:''}
+      ${isMyTurn&&houses>0?`<button class="btn btn-ghost" onclick="qbAct(${id},'sell')">➖ Продать дом (+$${Math.floor(sp.hc/2)})</button>`:''}
+      ${!pd.mortgaged&&houses===0?`<button class="btn btn-ghost" onclick="qbAct(${id},'mortgage')">🔒 Заложить (+$${sp.mg})</button>`:''}
+      ${pd.mortgaged?`<button class="btn btn-blue" onclick="qbAct(${id},'unmortgage')">🔓 Выкупить ($${Math.ceil(sp.mg*1.1)})</button>`:''}
+      <button class="btn btn-ghost" onclick="document.getElementById('m-quickbuild').style.display='none'">Закрыть</button>
+    </div>`;
+  modal.style.display='flex';
+}
+function qbAct(id,op){
+  bAct(id,op);
+  // обновить меню после действия
+  setTimeout(()=>{if(GS&&GS.props[id]?.owner===myId)openQuickBuild(id);else document.getElementById('m-quickbuild').style.display='none';},200);
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1940,11 +1992,12 @@ function renderGame(){
       const isCur=pid===curId;
       const d=document.createElement('div');
       d.className='gc'+(isCur?' cur':'')+(p.bankrupt?' bust':'');
+      const debtStyle=p.money<0?'color:#ef4444;text-shadow:0 0 10px rgba(239,68,68,.5);animation:debtBlink 1s infinite':'';
       d.innerHTML=`
         <div class="gc-avatar" style="${p.avatar?`background-image:url('${p.avatar}');`:`background:${p.color}22;`}border-color:${p.color}">${p.avatar?'':p.token}</div>
         <div class="gc-info">
           <div class="gc-name">${p.name}${pid===myId?' <span style="color:#888;font-size:.65rem">(Ты)</span>':''}</div>
-          <div class="gc-money">$${p.money.toLocaleString()}</div>
+          <div class="gc-money" style="${debtStyle}">$${p.money.toLocaleString()}</div>
           <div class="gc-pos">${BOARD[p.position]?.name||''}${p.inJail?' 🔒':''}</div>
         </div>
         ${isCur&&!p.bankrupt?'<div class="gc-badge cur-badge">ХОД</div>':''}
@@ -1955,6 +2008,11 @@ function renderGame(){
   }
 
   /* ── Action buttons ── */
+  const iAmBankrupt=myP?.bankrupt;
+  if(iAmBankrupt){
+    // наблюдатель — скрыть все кнопки действий
+    ['a-roll','a-buy','a-auction','a-card-ok','a-end','a-payjail','a-jailcard'].forEach(id=>vis(id,false));
+  } else {
   vis('a-roll',    isMe&&gs.phase==='roll'&&!gs.card);
   vis('a-buy',     isMe&&gs.phase==='buy');
   vis('a-auction', isMe&&gs.phase==='buy');
@@ -1966,6 +2024,7 @@ function renderGame(){
     const sp=BOARD[myP.position];
     document.getElementById('a-buy').textContent=`🏠 Купить $${sp.price}`;
   }
+  }  // конец else (не банкрот)
 
   /* ── Small dice ── */
   const DFACE=['','⚀','⚁','⚂','⚃','⚄','⚅'];
@@ -2007,12 +2066,10 @@ function renderGame(){
     }
     const hw=document.getElementById('h'+sp.id);
     if(hw){
-      hw.innerHTML='';
       const pd=gs.props[sp.id];
-      if(pd?.houses>0){
-        for(let i=0;i<Math.min(pd.houses,4);i++){const d=document.createElement('div');d.className='hdot';hw.appendChild(d);}
-        if(pd.houses===5){hw.innerHTML='<div class="hotdot">H</div>';}
-      }
+      if(pd?.houses===5){hw.innerHTML='<span class="house-emoji">🏨</span>';}
+      else if(pd?.houses>0){hw.innerHTML='<span class="house-emoji">'+'🏠'.repeat(pd.houses)+'</span>';}
+      else hw.innerHTML='';
     }
     const ow=document.getElementById('o'+sp.id);
     const ob=document.getElementById('ob'+sp.id);
@@ -2062,9 +2119,11 @@ function renderGame(){
     const cp=gs.players[curId];
     if(cp){
       ctt.innerHTML=`
-        <div class="ctt-tok" style="color:${cp.color};border-color:${cp.color}">${cp.token}</div>
-        <div class="ctt-name">${cp.name}${curId===myId?' (Ты)':''}</div>
-        <div class="ctt-label">${curId===myId?'🎯 ТВОЙ ХОД!':'⏳ Ходит...'}</div>
+        <div class="ctt-tok" style="color:${cp.color};border-color:${cp.color};${cp.avatar?`background-image:url('${cp.avatar}')`:''}">${cp.avatar?'':cp.token}</div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start">
+          <div class="ctt-name">${cp.name}${curId===myId?' (Ты)':''}</div>
+          <div class="ctt-label">${curId===myId?'🎯 ТВОЙ ХОД!':'⏳ Ходит...'}</div>
+        </div>
       `;
     }
   } else if(ctt){ ctt.innerHTML=''; }
@@ -2138,6 +2197,28 @@ function renderGame(){
   /* ── Log ── */
   const lg=document.getElementById('glog');
   if(lg){lg.innerHTML=(gs.log||[]).map(e=>`<div class="loge">${e}</div>`).join('');lg.scrollTop=9999;}
+}
+
+// ═══ БАНКРОТСТВО ═══
+function declareBankrupt(){
+  if(!GS||!GS.players[myId]||GS.players[myId].bankrupt)return;
+  if(!confirm('Точно сдаться? Ты станешь наблюдателем и выйдешь из игры.'))return;
+  if(amHost){GS=doBankruptL(GS,{playerId:myId});bcastState();}
+  else send(hostConn,{t:'ACTION',action:{type:'BANKRUPT',playerId:myId}});
+}
+function doBankruptL(gs,a){
+  const pid=a.playerId;const p=gs.players[pid];if(!p||p.bankrupt)return gs;
+  // освободить все участки игрока
+  const np={...gs.props};
+  (p.properties||[]).forEach(id=>{if(np[id])np[id]={owner:null,houses:0,mortgaged:false};});
+  let g={...gs,players:{...gs.players,[pid]:{...p,bankrupt:true,properties:[],money:0}},props:np};
+  g=addLog(g,`💀 ${p.name} — БАНКРОТ! Стал наблюдателем.`);
+  // победитель?
+  const alive=Object.values(g.players).filter(x=>!x.bankrupt);
+  if(alive.length===1&&gs.order.length>1){g={...g,phase:'end',winner:alive[0].id};g=addLog(g,`🏆 ${alive[0].name} ПОБЕДИЛ!`);}
+  // если ходил банкрот — передать ход
+  if(g.order[g.curIdx]===pid&&!g.winner)g=nextTurn(g);
+  return g;
 }
 
 // ═══ АУКЦИОН: таймер и ставки ═══
