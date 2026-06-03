@@ -26,18 +26,18 @@
 </script>
 <style>
 :root{
-  --bg: #0e0e1a;
-  --panel: #16162a;
-  --panel2: #1c1c30;
-  --border: rgba(255,255,255,.08);
-  --gold: #f6c90e;
-  --purple: #7c3aed;
-  --purple2: #5b21b6;
-  --blue: #2563eb;
-  --green: #16a34a;
-  --red: #dc2626;
-  --text: #e2e8f0;
-  --muted: #64748b;
+  --bg: #1a1035;
+  --panel: #251a4a;
+  --panel2: #2d2058;
+  --border: rgba(168,130,255,.15);
+  --gold: #ffd93d;
+  --purple: #9d5cff;
+  --purple2: #7c3aed;
+  --blue: #4d7cff;
+  --green: #2ee59d;
+  --red: #ff4d6d;
+  --text: #ece8ff;
+  --muted: #9d8fc7;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
@@ -51,8 +51,8 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 ══════════════════════════════════ */
 #s-home{
   flex-direction:column;align-items:center;justify-content:center;
-  background:radial-gradient(ellipse at 30% 40%,#1e1040 0%,#0e0e1a 60%),
-             radial-gradient(ellipse at 70% 60%,#0f2040 0%,transparent 60%);
+  background:radial-gradient(ellipse at 30% 40%,#3a1f7a 0%,#1a1035 60%),
+             radial-gradient(ellipse at 70% 60%,#2a1a6c 0%,transparent 60%);
   padding:20px;overflow-y:auto;
 }
 .home-logo{
@@ -195,14 +195,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
    GAME SCREEN
 ══════════════════════════════════ */
 #s-game{
-  flex-direction:row;background:var(--bg);
+  flex-direction:row;background:linear-gradient(160deg,#1a1035,#150d2e);
   height:100vh;overflow:hidden;
 }
 
 /* ── Left sidebar ── */
 .left-sidebar{
   width:245px;flex-shrink:0;
-  background:var(--panel);
+  background:linear-gradient(180deg,rgba(45,32,88,.6),rgba(37,26,74,.6));
   border-right:1px solid var(--border);
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
@@ -212,15 +212,15 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Board area ── */
 .board-area{
   flex:1;display:flex;align-items:center;justify-content:center;
-  min-width:0;padding:8px;padding-top:165px;
-  background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
+  min-width:0;padding:8px;padding-top:200px;
+  background:radial-gradient(ellipse at 50% 30%,#2a1a5c 0%,#1a1035 60%,#150d2e 100%);
   position:relative;overflow:hidden;
 }
 
 /* ── Right sidebar ── */
 .right-sidebar{
   width:245px;flex-shrink:0;
-  background:var(--panel);
+  background:linear-gradient(180deg,rgba(45,32,88,.6),rgba(37,26,74,.6));
   border-left:1px solid var(--border);
   display:flex;flex-direction:column;
   overflow-y:auto;overflow-x:hidden;
@@ -229,7 +229,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 /* Panel card */
 .pcard{
-  background:rgba(28,28,48,.6);border:1px solid rgba(255,255,255,.08);
+  background:rgba(58,42,108,.45);border:1px solid rgba(157,92,255,.18);
   border-radius:14px;padding:11px;flex-shrink:0;
   backdrop-filter:blur(8px);
 }
@@ -308,14 +308,14 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   width:min(1020px, calc(100vw - 460px), calc(100vh - 30px));
   height:min(1020px, calc(100vw - 460px), calc(100vh - 30px));
   gap:3px;padding:3px;
-  background:#0d1f0d;
-  border:3px solid #1b4d1b;
+  background:linear-gradient(135deg,#241552,#1a0f3d);
+  border:3px solid #6d3fd4;
   border-radius:4px;
   box-shadow:
-    0 0 0 1px rgba(27,77,27,.6),
-    0 0 30px rgba(27,77,27,.4),
-    0 0 80px rgba(27,77,27,.15),
-    0 20px 60px rgba(0,0,0,.8);
+    0 0 0 1px rgba(157,92,255,.4),
+    0 0 40px rgba(157,92,255,.4),
+    0 0 100px rgba(157,92,255,.2),
+    0 20px 60px rgba(0,0,0,.7);
   flex-shrink:0;
   overflow:visible;
   animation:boardIn .8s cubic-bezier(.16,1,.3,1) both;
@@ -325,7 +325,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Center ── */
 .bc-inner{
   position:absolute;inset:3px;border-radius:16px;
-  background:linear-gradient(145deg,#0a1a0a,#0d1a0d,#0a160a);
+  background:linear-gradient(145deg,#1f1248,#251a52,#1a0f3d);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:6px;overflow:hidden;
 }
@@ -347,7 +347,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* Dice in center of board */
 /* Layout: top area + middle */
 .bc-top{
-  position:absolute;top:-150px;left:50%;transform:translateX(-50%);
+  position:absolute;top:-185px;left:50%;transform:translateX(-50%);
   display:flex;flex-row;flex-direction:row;align-items:center;gap:14px;z-index:50;
   width:max-content;pointer-events:none;
   background:rgba(14,14,26,.9);padding:10px 28px;border-radius:18px;
@@ -441,7 +441,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
   border-radius:10px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
   cursor:pointer;position:relative;overflow:hidden;
-  background:linear-gradient(165deg,rgba(40,42,68,.92),rgba(28,30,52,.95));
+  background:linear-gradient(165deg,rgba(58,42,108,.92),rgba(42,30,82,.95));
   text-align:center;transition:all .15s;
   gap:0;
 }
@@ -597,9 +597,12 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 @keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
 
-/* Country image fills whole card */
-.side-top .sp-name,.side-top .sp-special-name{transform:rotate(180deg)}
-.side-top .sp-flag{transform:rotate(180deg)}
+/* Top row: keep text upright (readable) */
+.side-top .sp-name,.side-top .sp-special-name{transform:none}
+.side-top .sp-flag{transform:none}
+/* Top row cards: name at top instead of bottom so it doesn't get cut */
+.side-top{justify-content:flex-start}
+.side-top .sp-name{order:-1}
 
 @keyframes debtBlink{0%,100%{opacity:1}50%{opacity:.5}}
 /* Movement highlight */
