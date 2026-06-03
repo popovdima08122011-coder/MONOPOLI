@@ -212,7 +212,7 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* ── Board area ── */
 .board-area{
   flex:1;display:flex;align-items:center;justify-content:center;
-  min-width:0;padding:8px;padding-top:140px;
+  min-width:0;padding:8px;padding-top:130px;
   background:radial-gradient(ellipse at 50% 50%,#111128 0%,#0a0a18 100%);
   position:relative;overflow:hidden;
 }
@@ -347,9 +347,11 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 /* Dice in center of board */
 /* Layout: top area + middle */
 .bc-top{
-  position:absolute;top:-130px;left:50%;transform:translateX(-50%);
-  display:flex;flex-direction:column;align-items:center;gap:6px;z-index:50;
+  position:absolute;top:-118px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:4px;z-index:50;
   width:max-content;pointer-events:none;
+  background:rgba(14,14,26,.85);padding:8px 24px;border-radius:16px;
+  backdrop-filter:blur(6px);border:1px solid rgba(124,58,237,.2);
 }
 .bc-middle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
 .center-turn-top{display:flex;flex-direction:column;align-items:center;gap:2px;animation:fadeIn .4s ease}
@@ -471,17 +473,17 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 
 .sp-flag{font-size:min(3.5vw,22px);line-height:1;z-index:3;margin-top:28%;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
 .sp-img{
-  position:absolute;top:30%;left:0;right:0;bottom:0;
+  position:absolute;inset:0;
   background-size:cover;background-position:center;
-  z-index:1;opacity:.4;
-  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,1),rgba(0,0,0,.2));
-  mask-image:linear-gradient(180deg,rgba(0,0,0,1),rgba(0,0,0,.2));
+  z-index:1;opacity:.55;
 }
 .sp-name{
-  font-size:min(1.7vw,.74rem);line-height:1.05;
+  font-size:min(1.7vw,.76rem);line-height:1.1;
   z-index:3;word-break:break-word;max-width:100%;
-  font-weight:800;color:#f0f0f5;padding:0 2px;
-  text-shadow:0 1px 2px rgba(0,0,0,.6);
+  font-weight:900;color:#fff;padding:2px 3px;
+  text-shadow:0 1px 3px #000,0 0 6px #000;
+  background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);
+  width:100%;
 }
 .sp-price{font-size:min(1.4vw,.6rem);color:#4ade80;z-index:3;font-weight:900;padding:0 2px;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 
@@ -582,13 +584,9 @@ html,body{width:100%;height:100%;font-family:'Inter',sans-serif;background:var(-
 }
 @keyframes notifIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}
 
-/* Rotate card content to face center */
-.side-left .sp-name,.side-left .sp-price,.side-left .sp-flag,.side-left .sp-img{transform:rotate(90deg)}
-.side-right .sp-name,.side-right .sp-price,.side-right .sp-flag,.side-right .sp-img{transform:rotate(-90deg)}
-.side-top .sp-name,.side-top .sp-flag{transform:rotate(180deg)}
-/* For left/right, swap layout to vertical reading */
-.side-left,.side-right{justify-content:center}
-.side-left .sp-name,.side-right .sp-name{white-space:nowrap}
+/* Country image fills whole card */
+.side-top .sp-name,.side-top .sp-special-name{transform:rotate(180deg)}
+.side-top .sp-flag{transform:rotate(180deg)}
 
 /* Movement highlight */
 @keyframes moveHighlight{
@@ -1424,9 +1422,17 @@ function addLog(gs,msg){return{...gs,log:[...(gs.log||[]),msg].slice(-60)};}
 function nextTurn(gs){
   const alive=gs.order.filter(id=>!gs.players[id]?.bankrupt);
   if(!alive.length)return gs;
-  const ci=alive.indexOf(gs.order[gs.curIdx]);
-  const nxt=alive[(ci+1)%alive.length];
-  return{...gs,curIdx:gs.order.indexOf(nxt),phase:'roll',turnStarted:false,card:null};
+  let ci=alive.indexOf(gs.order[gs.curIdx]);
+  let nxt=alive[(ci+1)%alive.length];
+  let g={...gs};
+  // если у следующего игрока пропуск хода — снять флаг и пропустить
+  if(g.players[nxt]?.skipNext){
+    g={...g,players:{...g.players,[nxt]:{...g.players[nxt],skipNext:false}}};
+    g=addLog(g,`${g.players[nxt].name} пропускает ход (парковка).`);
+    ci=alive.indexOf(nxt);
+    nxt=alive[(ci+1)%alive.length];
+  }
+  return{...g,curIdx:g.order.indexOf(nxt),phase:'roll',turnStarted:false,card:null};
 }
 function payRent(gs,from,to,sid){
   const sp=BOARD[sid];const pd=gs.props[sid];
@@ -1467,10 +1473,8 @@ function land(gs,pid,pos){
     g={...g,comIdx:g.comIdx+1,card:{...card,kind:'Общ. касса'}};
     g=addLog(g,`${g.players[pid].name} тянет Кассу: "${card.text}"`);
   }else if(sp.type==='freeparking'){
-    if(g.parking>0){
-      g={...g,players:{...g.players,[pid]:{...g.players[pid],money:g.players[pid].money+g.parking}},parking:0};
-      g=addLog(g,`${g.players[pid].name} забирает $${g.parking} с парковки! 🅿️`);
-    }else g=addLog(g,`${g.players[pid].name} на Бесплатной парковке.`);
+    g={...g,players:{...g.players,[pid]:{...g.players[pid],skipNext:true}}};
+    g=addLog(g,`${g.players[pid].name} пропускает следующий ход! 🅿️`);
   }else if(['property','railroad','utility'].includes(sp.type)){
     const pd=g.props[pos];
     if(!pd){g={...g,phase:'buy'};g=addLog(g,`${g.players[pid].name} на ${sp.name} ($${sp.price}) — свободен!`);}
@@ -1512,7 +1516,15 @@ function doRollL(gs,a){
   else g={...g,players:{...g.players,[pid]:{...g.players[pid],position:np}}};
   g=addLog(g,`${pl.name}: ${d1}+${d2}=${d1+d2} → ${BOARD[np].name}`);
   g=land(g,pid,np);
-  if(g.phase==='roll'&&!g.card){if(dbl&&!g.players[pid].inJail)g=addLog(g,`${pl.name} — дубль, ещё раз!`);else g=nextTurn(g);}
+  // дубль даёт право ещё раз бросить, но НЕ автоматически — игрок нажмёт сам
+  if(g.phase==='roll'&&!g.card){
+    if(dbl&&!g.players[pid].inJail){
+      g={...g,turnStarted:false};  // позволяет бросить снова вручную
+      g=addLog(g,`${pl.name} — ДУБЛЬ! Бросай ещё раз 🎲`);
+    } else {
+      g=nextTurn(g);
+    }
+  }
   return g;
 }
 function doBuyL(gs,a){
